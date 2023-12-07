@@ -56,27 +56,6 @@ namespace LLMServiceHub
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddLogging();
-
-            //services.AddTransient<IServeSentEventHandler, ServeSentEventHandler>();
-
-
-            // api client config
-            //services.AddClientCredentialsTokenManagement()
-            //       .AddClient("BaiduWenxinWorkshopAuthentication", client =>
-            //       {
-            //           // accesstoken config
-            //           client.TokenEndpoint = "https://aip.baidubce.com/oauth/2.0/token";
-
-            //           client.ClientId = "x5ShRdj0sSMvX5G0FkkzqVAG";
-            //           client.ClientSecret = "QsTQx7BeTYHuCtkeqGmKF9qtCue7R28w";
-            //           client.ClientCredentialStyle = ClientCredentialStyle.AuthorizationHeader;
-
-            //       });
-
-            //services.AddClientAccessTokenHttpClient("client",
-            //configureClient: client => { client.BaseAddress = new Uri("https://demo.duendesoftware.com/api/"); });
-
             var appSettings = Configuration.GetSection(nameof(AppSettings)).Get<AppSettings>();
             services.AddSingleton(appSettings);
 
