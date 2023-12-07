@@ -71,6 +71,7 @@ namespace LLMServiceHub.Controller.v1_0
         public async Task<IActionResult> ApplyText2Img(PaintApplyRequest request)
         {
             var result = await _ernieVilgApiService.Text2ImgV2(request);
+            Response.BuildAIGeneratedResponseFeature();
             return Ok(result);
         }
     }

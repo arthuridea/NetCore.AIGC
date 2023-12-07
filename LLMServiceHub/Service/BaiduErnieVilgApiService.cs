@@ -114,7 +114,7 @@ namespace LLMServiceHub.Service
                     foreach (var image in images)
                     {
                         _logger.LogDebug($"{image}");
-                        await _imageProvider.Save(image, $"/{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.jpg");
+                        await _imageProvider.Save(image, $"aigc\\images\\{DateTime.Now.ToString("yyyyMM")}\\{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.jpg");
                     }
                     break;
                 }

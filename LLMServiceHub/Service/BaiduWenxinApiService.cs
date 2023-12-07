@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using static System.Net.WebRequestMethods;
+using LLMServiceHub.Common;
 
 namespace LLMServiceHub.Service
 {
@@ -117,6 +118,9 @@ namespace LLMServiceHub.Service
             };
             #endregion
 
+            #region 设置响应头
+
+            #endregion
 
             if (!request.Stream) // 非SSE推流格式,正常读取返回json
             {
@@ -141,6 +145,7 @@ namespace LLMServiceHub.Service
                 {
                     _chatDataProvider.ResetSession(request.ConversationId);
                 }
+                response.BuildAIGeneratedResponseFeature();
                 await response.WriteAsJsonAsync(result);
 
                 #endregion 
@@ -164,10 +169,9 @@ namespace LLMServiceHub.Service
                 var apiResponse = await _client.SendAsync(requestHttpMessage, HttpCompletionOption.ResponseHeadersRead);
                 apiResponse.EnsureSuccessStatusCode();
 
-                // 设置请求头
-                response.Headers.CacheControl = "no-cache";
-                // 设置请求头：返回SSE格式
-                response.ContentType = "text/event-stream;charset=utf-8";
+                // 设置响应头
+                // 设置响应头：返回SSE格式
+                response.BuildAIGeneratedResponseFeature(true);
                 // 在读取SSE推流前就开启输出! 
                 await response.Body.FlushAsync();
 
