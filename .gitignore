@@ -428,3 +428,4 @@ logs/*
 .docfx/
 appsettings.Development.json
 appsettings.Production.json
+**/wwwroot/aigc/
