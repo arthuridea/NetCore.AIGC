@@ -1,4 +1,4 @@
-# LLMServiceHub
+# NetCore.BaiduAIGC
 
 ## ErnieBot & ErnieVilgV2 (Baidu) WebApi demo.
 
