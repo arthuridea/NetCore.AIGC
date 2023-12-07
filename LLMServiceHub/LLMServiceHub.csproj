@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="Duende.AccessTokenManagement" Version="2.0.3" />-->
 	<PackageReference Include="Asp.Versioning.Mvc" Version="7.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
     <PackageReference Include="IdentityModel" Version="6.2.0" />
@@ -29,7 +28,6 @@
 	<PackageReference Include="Unchase.Swashbuckle.AspNetCore.Extensions" Version="2.7.1" />
 	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
 	<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
-	<!--<PackageReference Include="XFQ.Lib.Swagger" Version="0.0.6.2" />-->
 	<PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
 	<PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
 	  <PackageReference Include="NSwag.AspNetCore" Version="14.0.0-preview010" />
