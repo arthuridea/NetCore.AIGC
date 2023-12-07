@@ -8,6 +8,7 @@ using Polly;
 using LLMServiceHub.Models;
 using LLMServiceHub.Service;
 using Swashbuckle.AspNetCore.Annotations;
+using LLMServiceHub.Common;
 
 namespace LLMServiceHub.Controller.v1_0
 {
@@ -52,6 +53,7 @@ namespace LLMServiceHub.Controller.v1_0
         [HttpPost("chat")]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(ChatApiResponse), 200)]
+        [AppExceptionInterceptor(ReturnCode = -100001, ApiVersion = "1.0")]
         public async Task Chat(ChatRequest request)
         {
             await _apiService.Chat(request, Response);
@@ -65,6 +67,7 @@ namespace LLMServiceHub.Controller.v1_0
         /// <returns></returns>
         [HttpPost("text2img")]
         [ProducesResponseType(typeof(PaintResultResponse), 200)]
+        [AppExceptionInterceptor(ReturnCode = -100002, ApiVersion = "1.0")]
         public async Task<IActionResult> ApplyText2Img(PaintApplyRequest request)
         {
             var result = await _ernieVilgApiService.Text2ImgV2(request);

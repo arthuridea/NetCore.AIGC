@@ -78,14 +78,37 @@ namespace LLMServiceHub.Authentication
         /// </returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var token = await GetToken();
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            try
+            {
+                var token = await GetToken();
+                if(token == null)
+                {
+                    response.ReasonPhrase = "Invalid token request.";
+                    return await Task.FromResult(response);
+                }
 
-            request.Headers.Authorization = new AuthenticationHeaderValue(token.Scheme, token.AccessToken);
-            var query = HttpUtility.ParseQueryString(request.RequestUri.Query);
-            query.Add("access_token", token.AccessToken);
-            request.RequestUri = new Uri(request.RequestUri + "?" + query.ToString());
+                request.Headers.Authorization = new AuthenticationHeaderValue(token.Scheme, token.AccessToken);
+                var query = HttpUtility.ParseQueryString(request.RequestUri.Query);
+                query.Add("access_token", token.AccessToken);
+                request.RequestUri = new Uri(request.RequestUri + "?" + query.ToString());
 
-            return await base.SendAsync(request, cancellationToken);
+                return await base.SendAsync(request, cancellationToken);
+            }
+            catch(AuthenticationHandlerException ex)
+            {
+                response.ReasonPhrase = "Invalid Token";
+                response.Content = new StringContent(ex.Message);
+                return await Task.FromResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.ReasonPhrase = $"Request failed";
+                response.Content = new StringContent($"{ex.Message}.");
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                return await Task.FromResult(response);
+            }
+
         }
 
         /// <summary>
