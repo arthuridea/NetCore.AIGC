@@ -1,3 +1,8 @@
 # LLMServiceHub
 
-## An Integration service of Baidu Wenxinworkshop API & Baidu ErnieVilgV2 Art Creation API
+## ErnieBot & ErnieVilgV2 (Baidu) WebApi demo.
+
+![vs](https://badgen.net/badge/icon/visualstudio?icon=visualstudio&label)
+![.NET6.0](https://badgen.net/badge/.NET/8.0/green)
+
+
