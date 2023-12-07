@@ -30,26 +30,20 @@
         public async Task<string> Save(string url, string pathname)
         {
             string localPathName = Path.Combine(_env.WebRootPath, pathname);
+            _logger.LogDebug($"LOCAL PATH -> {localPathName}");
+
             var httpClient = _httpClientFactory.CreateClient();
-            var response = await httpClient.GetAsync(url);
-            if (response != null && response.IsSuccessStatusCode)
+            var fileBytes = await httpClient.GetByteArrayAsync(url);
+
+            string directory = Path.GetDirectoryName(localPathName);
+            if (!Directory.Exists(directory))
             {
-                response.EnsureSuccessStatusCode();
-                using(var stream  = await response.Content.ReadAsStreamAsync())
-                {
-                    _logger.LogDebug($"LOCAL PATH -> {localPathName}");
-                    string directory = Path.GetDirectoryName(localPathName);
-                    if(!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-                    using (var fs = new FileStream(localPathName, FileMode.Create))
-                    {
-                        await stream.CopyToAsync(fs);
-                    }
-                }
+                Directory.CreateDirectory(directory);
             }
-            _logger.LogInformation($"[{nameof(LocalImageStorageProvider)}] save: {url} -> {pathname}");
+
+            _logger.LogInformation($"[{nameof(LocalImageStorageProvider)}] save: {url} -> {localPathName}");
+            await File.WriteAllBytesAsync(localPathName, fileBytes);
+
             return await Task.FromResult(localPathName);
         }
     }
