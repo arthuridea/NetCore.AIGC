@@ -72,7 +72,6 @@ public void ConfigureServices(IServiceCollection services, IConfiguration config
         [HttpPost("chat")]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(ChatApiResponse), 200)]
-        [AppExceptionInterceptor(ReturnCode = -100001, ApiVersion = "1.0")]
         public async Task Chat(ChatRequest request)
         {
             await _apiService.Chat(request);
