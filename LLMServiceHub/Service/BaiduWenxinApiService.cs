@@ -1,18 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using Polly;
-using LLMServiceHub.Authentication;
+﻿using LLMServiceHub.Authentication;
 using LLMServiceHub.Authentication.Extentions;
-using LLMServiceHub.Client;
-using LLMServiceHub.Models;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
-using System.Threading;
-using static System.Net.WebRequestMethods;
 using LLMServiceHub.Common;
+using LLMServiceHub.Models;
+using System.Text.Json;
 
 namespace LLMServiceHub.Service
 {
@@ -32,6 +22,11 @@ namespace LLMServiceHub.Service
         /// </summary>
         private readonly IChatDataProvider<BaiduWenxinMessage> _chatDataProvider;
 
+        /// <summary>
+        /// The HTTP context
+        /// </summary>
+        private readonly IHttpContextAccessor _context;
+
         ///// <summary>
         ///// The serve sent event handler
         ///// </summary>
@@ -44,14 +39,17 @@ namespace LLMServiceHub.Service
         /// Initializes a new instance of the <see cref="BaiduWenxinApiService"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
+        /// <param name="context"></param>
         /// <param name="chatDataProvider">数据持久化服务接口，此处实现了一个简单的Memorycache记录当前会话</param>
         /// <param name="logger">The logger.</param>
         public BaiduWenxinApiService(
             IHttpClientFactory factory,
+            IHttpContextAccessor context,
             IChatDataProvider<BaiduWenxinMessage> chatDataProvider,
             ILogger<BaiduWenxinApiService> logger)
         {
             _httpClientFactory = factory;
+            _context = context;
             _chatDataProvider = chatDataProvider;
             _logger = logger;
         }
@@ -71,7 +69,6 @@ namespace LLMServiceHub.Service
         /// 发起对话
         /// </summary>
         /// <param name="request">请求实体</param>
-        /// <param name="response">当前Action的HttpResponse对象</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <seealso cref="ChatRequest" />
@@ -86,8 +83,9 @@ namespace LLMServiceHub.Service
         ///  "user_id": "7ffe3194-2bf0-48ba-8dbd-e888d7d556d3"
         ///  }
         /// </example>
-        public async Task Chat(ChatRequest request, HttpResponse response, CancellationToken cancellationToken = default)
+        public async Task Chat(ChatRequest request, CancellationToken cancellationToken = default)
         {
+            var response = _context.HttpContext.Response;
             #region 初始化会话内容，读取历史记录并加入当前会话中
             if (string.IsNullOrEmpty(request.ConversationId))
             {

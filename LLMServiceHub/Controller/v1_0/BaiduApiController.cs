@@ -16,34 +16,28 @@ namespace LLMServiceHub.Controller.v1_0
     /// 集成百度AI类api
     /// </summary>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="BaiduApiController" /> class.
+    /// </remarks>
+    /// <param name="baiduApiService">The baidu API service.</param>
+    /// <param name="ernieVilgApiService">The ernie vilg API service.</param>
     //[Authorize]
     [ApiVersion("1.0")]
     [ApiController]
     [Route("api/v{version:apiVersion}/baidu")]
     [ApiExplorerSettings(GroupName = "百度大模型")]
-    public class BaiduApiController : ControllerBase
+    public class BaiduApiController(
+        IBaiduWenxinApiService baiduApiService,
+        IBaiduErnieVilgApiService ernieVilgApiService) : ControllerBase
     {
         /// <summary>
         /// The API service
         /// </summary>
-        private readonly IBaiduWenxinApiService _apiService;
+        private readonly IBaiduWenxinApiService _apiService = baiduApiService;
         /// <summary>
         /// The ernie vilg API service
         /// </summary>
-        private readonly IBaiduErnieVilgApiService _ernieVilgApiService;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaiduApiController" /> class.
-        /// </summary>
-        /// <param name="baiduApiService">The baidu API service.</param>
-        /// <param name="ernieVilgApiService">The ernie vilg API service.</param>
-        public BaiduApiController(
-            IBaiduWenxinApiService baiduApiService, 
-            IBaiduErnieVilgApiService ernieVilgApiService)
-        {
-            _apiService = baiduApiService;
-            _ernieVilgApiService = ernieVilgApiService;
-        }
+        private readonly IBaiduErnieVilgApiService _ernieVilgApiService = ernieVilgApiService;
 
         /// <summary>
         /// 发起文心一言大模型对话
@@ -56,7 +50,7 @@ namespace LLMServiceHub.Controller.v1_0
         [AppExceptionInterceptor(ReturnCode = -100001, ApiVersion = "1.0")]
         public async Task Chat(ChatRequest request)
         {
-            await _apiService.Chat(request, Response);
+            await _apiService.Chat(request);
         }
 
         /// <summary>
