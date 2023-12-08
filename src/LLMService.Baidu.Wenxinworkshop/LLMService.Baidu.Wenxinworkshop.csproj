@@ -7,7 +7,15 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageId>Aeex.LLMService.Baidu.Wenxin</PackageId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LLMService.Shared\LLMService.Shared.csproj" />
