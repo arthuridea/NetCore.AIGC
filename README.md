@@ -1,4 +1,4 @@
-# NetCore.BaiduAIGC
+# 百度文心千帆大模型（文心一言、智能作画）SDK (.net6+)
 
 ![.NET6.0](https://badgen.net/badge/.NET/6.0/green)
 ![.NET8.0](https://badgen.net/badge/.NET/8.0/green)
