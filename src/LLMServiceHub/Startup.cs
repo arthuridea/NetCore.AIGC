@@ -88,6 +88,8 @@ namespace LLMServiceHub
                         ));
             });
             
+
+            // Ensure HttpContext injected. It will be accessed in Chat service.
             services.AddHttpContextAccessor();
 
 
