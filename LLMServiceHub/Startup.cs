@@ -113,8 +113,7 @@ namespace LLMServiceHub
                     ernieVilgSettings,
                     BaiduApiConsts.BaiduErnieVilgApiAuthority);
 
-
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
 
             services.AddTransient<IImageStorageProvider, LocalImageStorageProvider>();
             services.AddTransient<IChatDataProvider<BaiduWenxinMessage>, ChatDataProvider<BaiduWenxinMessage>>();
