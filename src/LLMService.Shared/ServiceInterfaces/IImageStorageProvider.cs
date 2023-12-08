@@ -1,7 +1,8 @@
 ﻿namespace LLMService.Shared.ServiceInterfaces
 {
     /// <summary>
-    /// 
+    /// Since AIGC APIs usually provide a temperally resource url, we may want to save aigc media locally.
+    /// This provider shows a proper way to download resources. 
     /// </summary>
     public interface IImageStorageProvider
     {

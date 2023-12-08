@@ -47,7 +47,7 @@ namespace LLMService.Shared.Authentication.Handlers
         /// <param name="accessTokensCacheManager">The access tokens cache manager.</param>
         /// <param name="clientCredentials">The client credentials.</param>
         /// <param name="accessControlHttpClient">The access control HTTP client.</param>
-        /// <exception cref="LLMServiceHub.Authentication.AuthenticationHandlerException"></exception>
+        /// <exception cref="AuthenticationHandlerException"></exception>
         public BaiduApiAuthenticationHandler(
             IAccessTokensCacheManager accessTokensCacheManager,
             ClientCredentials clientCredentials,
@@ -62,7 +62,7 @@ namespace LLMService.Shared.Authentication.Handlers
                 throw new AuthenticationHandlerException($"{nameof(HttpClient.BaseAddress)} should be set to Identity Server url");
             }
 
-            if (!(bool)_accessControlHttpClient.BaseAddress?.AbsoluteUri.EndsWith("/"))
+            if (!(bool)_accessControlHttpClient.BaseAddress?.AbsoluteUri.EndsWith('/'))
             {
                 _accessControlHttpClient.BaseAddress = new Uri(_accessControlHttpClient.BaseAddress.AbsoluteUri + "/");
             }
@@ -78,7 +78,7 @@ namespace LLMService.Shared.Authentication.Handlers
         /// </returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            HttpResponseMessage response = new(HttpStatusCode.Unauthorized);
             try
             {
                 var token = await GetToken();
@@ -132,30 +132,28 @@ namespace LLMService.Shared.Authentication.Handlers
         /// </summary>
         /// <param name="credentials">The credentials.</param>
         /// <returns></returns>
-        /// <exception cref="LLMServiceHub.Authentication.AuthenticationHandlerException"></exception>
+        /// <exception cref="AuthenticationHandlerException"></exception>
         private async Task<TokenResponse> GetNewToken(ClientCredentials credentials)
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Post, _clientCredentials.TokenEndpoint))
+            using var request = new HttpRequestMessage(HttpMethod.Post, _clientCredentials.TokenEndpoint);
+            request.Content = new FormUrlEncodedContent(new[]
             {
-                request.Content = new FormUrlEncodedContent(new[]
-                {
                     new KeyValuePair<string, string>("grant_type", "client_credentials"),
                     new KeyValuePair<string, string>("client_id", credentials.ClientId),
                     new KeyValuePair<string, string>("client_secret", credentials.ClientSecret),
                     new KeyValuePair<string, string>("scope", credentials.Scopes)
                 });
 
-                var response = await _accessControlHttpClient.SendAsync(request);
+            var response = await _accessControlHttpClient.SendAsync(request);
 
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    var tokenResponse = await response.DeserializeAsync<TokenResponse>();
-                    return tokenResponse;
-                }
-
-                var errorMessage = await GetErrorMessageAsync(response);
-                throw new AuthenticationHandlerException(errorMessage);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var tokenResponse = await response.DeserializeAsync<TokenResponse>();
+                return tokenResponse;
             }
+
+            var errorMessage = await GetErrorMessageAsync(response);
+            throw new AuthenticationHandlerException(errorMessage);
         }
 
         /// <summary>

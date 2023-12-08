@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace LLMService.Shared
 {
+    /// <summary>
+    /// consts of LLM service
+    /// </summary>
     public static class LLMServiceConsts
     {
         /***** 文心大模型 ****/
+
+        #region 
         //public const string BaiduApiAuthority = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop";
         /// <summary>
         /// The baidu API authority
@@ -18,10 +23,12 @@ namespace LLMService.Shared
         /// The baidu wenxin API client name
         /// </summary>
         public const string BaiduWenxinApiClientName = "_Baidu_Wenxin_Workshop_Client";
+        #endregion
 
 
         /***** 智能绘画 ****/
 
+        #region
         /// <summary>
         /// The baidu ernie vilg API authority
         /// </summary>
@@ -30,5 +37,6 @@ namespace LLMService.Shared
         /// The baidu ernie vilg API client name
         /// </summary>
         public const string BaiduErnieVilgApiClientName = "_Baidu_ErnieVilg_Client";
+        #endregion
     }
 }

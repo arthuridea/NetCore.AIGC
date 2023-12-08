@@ -93,7 +93,7 @@ namespace LLMService.Shared.Models
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LLMServiceHub.Models.BaiduWenxinChatResponse" />
+    /// <seealso cref="BaiduWenxinChatResponse" />
     public class ChatApiResponse : BaiduWenxinChatResponse
     {
         /// <summary>

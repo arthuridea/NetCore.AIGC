@@ -27,7 +27,7 @@ namespace LLMService.Baidu.ErnieVilg
         /// </summary>
         private readonly ILogger _logger;
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaiduWenxinApiService"/> class.
+        /// Initializes a new instance of the <see cref="BaiduErnieVilgApiService"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="imgProvider"></param>
@@ -49,7 +49,7 @@ namespace LLMService.Baidu.ErnieVilg
         private HttpClient GetClient()
         {
             var client = _httpClientFactory.CreateClient(_api_client_key);
-            _logger.LogDebug($"[API CLIENT]{_api_client_key} -> {client.BaseAddress}");
+            _logger.LogDebug("[API CLIENT]{0} -> {1}", _api_client_key, client.BaseAddress);
             return client;
         }
 
@@ -65,10 +65,10 @@ namespace LLMService.Baidu.ErnieVilg
                 request.ConversationId = Guid.NewGuid().ToString();
             }
 
-            _logger.LogDebug(@$"【CALL ErnieVilg V2】{JsonSerializer.Serialize(request, new JsonSerializerOptions
+            _logger.LogDebug(@"【CALL ErnieVilg V2】{0}", JsonSerializer.Serialize(request, new JsonSerializerOptions
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            })}");
+            }));
 
             var _client = GetClient();
 
@@ -115,8 +115,8 @@ namespace LLMService.Baidu.ErnieVilg
 
                     foreach (var image in images)
                     {
-                        _logger.LogDebug($"{image}");
-                        await _imageProvider.Save(image, $"aigc\\images\\{DateTime.Now.ToString("yyyyMM")}\\{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.jpg");
+                        _logger.LogDebug("{0}", image);
+                        await _imageProvider.Save(image, $"aigc\\images\\{DateTime.Now:yyyyMM}\\{DateTime.Now:yyyyMMddHHmmssffff}.jpg");
                     }
                     break;
                 }

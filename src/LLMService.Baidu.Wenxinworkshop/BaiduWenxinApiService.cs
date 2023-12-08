@@ -98,10 +98,12 @@ namespace LLMService.Baidu.Wenxinworkshop
 
             await _chatDataProvider.AddChatMessage(conversation, request.Message, "user");
 
+#if DEBUG
             _logger.LogDebug(@$"【CALL {request.ModelSchema}】{JsonSerializer.Serialize(conversation, new JsonSerializerOptions
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             })}");
+#endif
             #endregion
 
             #region 准备HttpClient和请求对象实体
@@ -126,7 +128,7 @@ namespace LLMService.Baidu.Wenxinworkshop
             {
                 #region 非流式请求
                 ChatApiResponse result = new();
-                var apiResponse = await _client.PostAsJsonAsync(chatApiEndpoint, postdata);
+                var apiResponse = await _client.PostAsJsonAsync(chatApiEndpoint, postdata, cancellationToken: cancellationToken);
                 apiResponse.EnsureSuccessStatusCode();
 
                 result = await apiResponse.DeserializeAsync<ChatApiResponse>(logger: _logger);
@@ -134,7 +136,7 @@ namespace LLMService.Baidu.Wenxinworkshop
                 result.ModelSchema = request.ModelSchema;
 
                 //只有流模式会返回是否结束标识，在非流式请求中直接设置为true.
-                result.IsEnd = request.Stream ? result.IsEnd : true;
+                result.IsEnd = !request.Stream || result.IsEnd;
 
                 if (!result.NeedClearHistory)
                 {
@@ -146,7 +148,7 @@ namespace LLMService.Baidu.Wenxinworkshop
                     _chatDataProvider.ResetSession(request.ConversationId);
                 }
                 response.BuildAIGeneratedResponseFeature();
-                await response.WriteAsJsonAsync(result);
+                await response.WriteAsJsonAsync(result, cancellationToken: cancellationToken);
 
                 #endregion 
 
@@ -163,19 +165,19 @@ namespace LLMService.Baidu.Wenxinworkshop
                 var requestHttpMessage = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri($"{_client.BaseAddress}{chatApiEndpoint.Substring(1)}"),
+                    RequestUri = new Uri($"{_client.BaseAddress}{chatApiEndpoint[1..]}"),
                     Content = content
                 };
-                var apiResponse = await _client.SendAsync(requestHttpMessage, HttpCompletionOption.ResponseHeadersRead);
+                var apiResponse = await _client.SendAsync(requestHttpMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
                 apiResponse.EnsureSuccessStatusCode();
 
                 // 设置响应头
                 // 设置响应头：返回SSE格式
                 response.BuildAIGeneratedResponseFeature(true);
                 // 在读取SSE推流前就开启输出! 
-                await response.Body.FlushAsync();
+                await response.Body.FlushAsync(cancellationToken);
 
-                using var stream = await apiResponse.Content.ReadAsStreamAsync();
+                using var stream = await apiResponse.Content.ReadAsStreamAsync(cancellationToken);
                 using var reader = new StreamReader(stream);
                 string sseSection = string.Empty;
                 bool isEnd = false;
@@ -186,15 +188,15 @@ namespace LLMService.Baidu.Wenxinworkshop
                     sseSection = await reader.ReadLineAsync();
                     if (!string.IsNullOrEmpty(sseSection))
                     {
-                        await response.WriteAsync($"{sseSection} \n");
-                        await response.WriteAsync("\n");
-                        await response.Body.FlushAsync();
+                        await response.WriteAsync($"{sseSection} \n", cancellationToken: cancellationToken);
+                        await response.WriteAsync("\n", cancellationToken: cancellationToken);
+                        await response.Body.FlushAsync(cancellationToken);
                         if (sseSection.Contains("\"is_end\":true"))
                         {
                             isEnd = true;
                             break;
                         }
-                        await Task.Delay(100);
+                        await Task.Delay(100, cancellationToken);
                     }
                 }
                 #endregion

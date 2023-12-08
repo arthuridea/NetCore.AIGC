@@ -6,7 +6,7 @@ namespace LLMService.Shared.Authentication.Handlers
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LLMServiceHub.Authentication.IAccessTokensCacheManager" />
+    /// <seealso cref="IAccessTokensCacheManager" />
     public class AccessTokensCacheManager : IAccessTokensCacheManager
     {
         /// <summary>

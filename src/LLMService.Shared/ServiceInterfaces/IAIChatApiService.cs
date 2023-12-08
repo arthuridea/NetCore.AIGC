@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace LLMService.Shared.ServiceInterfaces
+﻿namespace LLMService.Shared.ServiceInterfaces
 {
+    /// <summary>
+    /// AI Chat interface
+    /// <para>NOTE: Should ALWAYS initialize <seealso cref="IChatDataProvider{TChatMessage}"/> first before DI.</para>
+    /// </summary>
+    /// <typeparam name="TChatRequest">The type of the chat request.</typeparam>
+    /// <typeparam name="TChatResponse">The type of the chat response.</typeparam>
     public interface IAIChatApiService<TChatRequest, TChatResponse>
     {
         /// <summary>

@@ -5,7 +5,7 @@ namespace LLMService.Shared.Models
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LLMServiceHub.Models.IChatMessage" />
+    /// <seealso cref="IChatMessage" />
     public class BaiduWenxinMessage : IChatMessage
     {
         /// <summary>

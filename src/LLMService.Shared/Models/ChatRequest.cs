@@ -7,7 +7,7 @@ namespace LLMService.Shared.Models
     /// <summary>
     /// 对话请求实体
     /// </summary>
-    /// <seealso cref="LLMServiceHub.Models.AIFeatureModel" />
+    /// <seealso cref="AIFeatureModel" />
     public class ChatRequest: AIFeatureModel
     {
         /// <summary>
