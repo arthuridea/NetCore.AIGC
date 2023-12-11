@@ -31,11 +31,11 @@ dotnet add package Aeex.LLMService.Baidu.Wenxin
 
 #### Package Manager
 
-```
+``` Batch
 Install-Package Aeex.LLMService.Baidu.ErnieVilg
 ```                                         
 #### Cli
-```
+``` Batch
 dotnet add package Aeex.LLMService.Baidu.ErnieVilg
 ```
 
@@ -43,7 +43,7 @@ dotnet add package Aeex.LLMService.Baidu.ErnieVilg
 
 1. 在`ConfigureService`方法中添加依赖注入
 
-```
+``` Csharp
 public void ConfigureServices(IServiceCollection services, IConfiguration config){
     //....
     
@@ -65,7 +65,7 @@ public void ConfigureServices(IServiceCollection services, IConfiguration config
 
 2. Have fun! 
 
-```
+``` Csharp
 
     /// <summary>
     /// 集成百度AI类api
