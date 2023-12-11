@@ -17,11 +17,11 @@
 [Nuget地址](https://www.nuget.org/packages/Aeex.LLMService.Baidu.Wenxin/)
 
 #### Package Manager
-```
+``` bat
 Install-Package Aeex.LLMService.Baidu.Wenxin
 ```
 #### Cli
-```
+``` bat
 dotnet add package Aeex.LLMService.Baidu.Wenxin
 ```
 
@@ -31,11 +31,11 @@ dotnet add package Aeex.LLMService.Baidu.Wenxin
 
 #### Package Manager
 
-``` Batch
+``` bat
 Install-Package Aeex.LLMService.Baidu.ErnieVilg
 ```                                         
 #### Cli
-``` Batch
+``` bat
 dotnet add package Aeex.LLMService.Baidu.ErnieVilg
 ```
 
