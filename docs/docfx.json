@@ -1,0 +1,63 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../src/LLMService.Shared",
+          "files": [
+            "**/bin/Release/net8.0/**.dll"
+          ]
+        },
+        {
+          "src": "../src/LLMService.Baidu.Wenxinworkshop",
+          "files": [
+            "**/bin/Release/net8.0/**.dll"
+          ]
+        },
+        {
+          "src": "../src/LLMService.Baidu.ErnieVilg",
+          "files": [
+            "**/bin/Release/net8.0/**.dll"
+          ]
+        }
+      ],
+      "dest": "dist/api/v0.0.1.4-preview"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "../README.md",
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "dist/_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "../README.md",
+          "images/**"
+        ]
+      }
+    ],
+    "output": "dist/_site/v0.0.1.4-preview",
+    "template": [
+      "default",
+      "modern",
+      "statictoc",
+      //"templates/material"
+      "templates/unity"
+    ],
+    "globalMetadata": {
+      "_appName": "Aeex.LLMService.Baidu",
+      "_appTitle": "Aeex.LLMService.Baidu",
+      "_currentVersion": "0.0.1.4-preview",
+      "_enableSearch": true,
+      "pdf": true
+    }
+  }
+}

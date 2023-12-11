@@ -412,6 +412,7 @@ logs/*
 # Frontier generated dist files
 **/wwwroot/dist/
 **/wwwroot/lib/
+docs/dist
 # Windows Installer files from build outputs
 *.cab
 *.msi

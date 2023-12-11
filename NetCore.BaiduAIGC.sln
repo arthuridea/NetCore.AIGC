@@ -17,9 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Src", "01.Src", "{01705F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLMService.Shared", "src\LLMService.Shared\LLMService.Shared.csproj", "{DC8A11BE-3268-4F1E-B83F-27958041ABF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLMService.Baidu.Wenxinworkshop", "src\LLMService.Baidu.Wenxinworkshop\LLMService.Baidu.Wenxinworkshop.csproj", "{E73CB18F-26D3-4A6C-8AA2-E89FF17B65C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLMService.Baidu.Wenxinworkshop", "src\LLMService.Baidu.Wenxinworkshop\LLMService.Baidu.Wenxinworkshop.csproj", "{E73CB18F-26D3-4A6C-8AA2-E89FF17B65C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLMService.Baidu.ErnieVilg", "src\LLMService.Baidu.ErnieVilg\LLMService.Baidu.ErnieVilg.csproj", "{E3AE89E4-31A0-4EDA-9154-2D089E1FD8A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLMService.Baidu.ErnieVilg", "src\LLMService.Baidu.ErnieVilg\LLMService.Baidu.ErnieVilg.csproj", "{E3AE89E4-31A0-4EDA-9154-2D089E1FD8A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Docs", "03.Docs", "{7E5E6C28-ABB2-4564-AF1B-D9FCC81B8353}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,20 +6,37 @@
 
 `LLMService` 是一个非百度官方的开源项目.提供了接口方法能够在`.NET6.0` `.NET8.0`项目中使用接口调用百度文心大模型和百度智能绘图高级版功能.
 
+## 已知问题
+
 ## 安装
 
 通过`Nuget`安装.
 
 ### 文心大模型
 
+[Nuget地址](https://www.nuget.org/packages/Aeex.LLMService.Baidu.Wenxin/)
+
+#### Package Manager
 ```
 Install-Package Aeex.LLMService.Baidu.Wenxin
 ```
+#### Cli
+```
+dotnet add package Aeex.LLMService.Baidu.Wenxin
+```
 
-### 智能绘图V2
+### 智能绘图V2       
+
+[Nuget地址](https://www.nuget.org/packages/Aeex.LLMService.Baidu.ErnieVilg/)
+
+#### Package Manager
 
 ```
 Install-Package Aeex.LLMService.Baidu.ErnieVilg
+```                                         
+#### Cli
+```
+dotnet add package Aeex.LLMService.Baidu.ErnieVilg
 ```
 
 ## 使用

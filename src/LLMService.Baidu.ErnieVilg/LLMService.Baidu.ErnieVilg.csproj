@@ -7,6 +7,8 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageId>Aeex.LLMService.Baidu.ErnieVilg</PackageId>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageReleaseNotes>0.0.1.4-preview Update documents.
+0.0.1.3-preview Init publish.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
