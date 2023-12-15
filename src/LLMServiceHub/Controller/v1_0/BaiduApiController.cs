@@ -10,6 +10,7 @@ using LLMServiceHub.Common;
 using LLMService.Shared.Extensions;
 using LLMService.Shared.ServiceInterfaces;
 using LLMService.Shared.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LLMServiceHub.Controller.v1_0
 {
@@ -22,7 +23,10 @@ namespace LLMServiceHub.Controller.v1_0
     /// </remarks>
     /// <param name="baiduApiService">The baidu API service.</param>
     /// <param name="ernieVilgApiService">The ernie vilg API service.</param>
-    //[Authorize]
+    
+    // use oidc jwt authentication or local identity
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiController]
     [Route("api/v{version:apiVersion}/baidu")]

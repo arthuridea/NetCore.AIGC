@@ -30,6 +30,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\chat.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<PackageReference Include="Asp.Versioning.Mvc" Version="7.1.1" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
     <PackageReference Include="IdentityModel" Version="6.2.0" />

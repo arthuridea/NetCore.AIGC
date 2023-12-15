@@ -1,10 +1,273 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "文心大模型版本对比";
+}
+@section Headers{
+    <style>
+        .navbar { min-height: auto !important; }
+        .vh-5 { height: 5vh; }
+        .vh-95 { height: 95vh; }
+        .vh-15 { height: 15vh; }
+        .vh-10 { height: 10vh; }
+        .vh-80 { height: 80vh; }
+        .overflow-card { overflow: auto }
+        .chat-bubble-author { color: var(--tblr-blue) }
+    </style>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="page-wrapper vh-95">
+    <div class="page-body mt-0 mb-0">
+        <div class="container-xl">
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="row row-deck row-cards chatboxes">
+                    <div class="col-4 vh-80">
+                        <div class="card m-2">
+                            <div class="card-header pt-2 pb-2">
+                                <div class="card-title">
+                                    <label class="form-check form-check-inline mt-1 mb-0">
+                                        <input class="form-check-input" checked type="checkbox">
+                                    </label>
+                                    Ernie-bot-3.5
+                                </div>
+                                <div class="card-actions btn-actions">
+                                    <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-3.5">
+                                        <!-- Download SVG icon from https://tabler.io/icons/icon/download -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                            <path d="M7 11l5 5l5 -5" />
+                                            <path d="M12 4l0 12" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body ps-2 pe-2 scrollable">
+                                <div class="chat">
+                                    <div class="chat-bubbles" id="wrapper_ConvErnie3_5">
+                                        <!--
+                                        <div class="chat-item">
+                                            <div class="row align-items-end justify-content-end">
+                                                <div class="col col-lg-8">
+                                                    <div class="chat-bubble chat-bubble-me">
+                                                        <div class="chat-bubble-title">
+                                                            <div class="row">
+                                                                <div class="col chat-bubble-author pb-2">我</div>
+                                                                <div class="col-auto chat-bubble-date">09:37:40</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="chat-bubble-body">
+                                                            <p>FAKE DIALOG ME.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <span class="avatar">我</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat-item">
+                                            <div class="row align-items-end">
+                                                <div class="col-auto">
+                                                    <span class="avatar">百</span>
+                                                </div>
+                                                <div class="col col-lg-8">
+                                                    <div class="chat-bubble">
+                                                        <div class="chat-bubble-title">
+                                                            <div class="row">
+                                                                <div class="col chat-bubble-author pb-2">ernie_3_5</div>
+                                                                <div class="col-auto chat-bubble-date" id="reply_time_rpl_pcve2zgs">09:37:41</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="chat-bubble-body" id="reply_rpl_pcve2zgs">
+                                                            <p>FAKE DIALOG <strong>BOT</strong>？</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 vh-80">
+                        <div class="card m-2">
+                            <div class="card-header pt-2 pb-2">
+                                <div class="card-title">
+                                    <label class="form-check form-check-inline mt-1 mb-0">
+                                        <input class="form-check-input" checked type="checkbox">
+                                    </label>
+                                    Ernie-bot-turbo
+                                </div>
+                                <div class="card-actions btn-actions">
+                                    <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-turbo">
+                                        <!-- Download SVG icon from https://tabler.io/icons/icon/download -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                            <path d="M7 11l5 5l5 -5" />
+                                            <path d="M12 4l0 12" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body scrollable">
+                                <div class="chat">
+                                    <div id="wrapper_ConvErnieTurbo" class="chat-bubbles">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 vh-80">
+                        <div class="card m-2">
+                            <div class="card-header pt-2 pb-2">
+                                <div class="card-title">
+                                    <label class="form-check form-check-inline mt-1 mb-0">
+                                        <input class="form-check-input" checked type="checkbox">
+                                    </label>
+                                    Ernie-bot-4.0
+                                </div>
+                                <div class="card-actions btn-actions">
+                                    <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-4.0">
+                                        <!-- Download SVG icon from https://tabler.io/icons/icon/download -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                            <path d="M7 11l5 5l5 -5" />
+                                            <path d="M12 4l0 12" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body scrollable">
+                                <div class="chat">
+                                    <div id="wrapper_ConvErnie4_0" class="chat-bubbles">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 vh-15 mt-0">
+                        <div class="card m-0 me-2 ms-2">
+                            <div class="card-body p-2">
+                                <div class="input-group input-group-flat">
+                                    <input id="ipt-message" type="text" class="form-control vh-10" autocomplete="off" rows="3" placeholder="输入要发送的消息，按“回车键”发送">
+                                    <span class="input-group-text">
+                                        <a href="javascript:void(0)" class="ms-2 btn btn-primary btn-send-message">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M10 14l11 -11" />
+                                                <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
+                                            </svg> &nbsp;发送
+                                        </a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row mt-3">
+                    <div class="col-12 offset-lg-4 col-lg-4">
+
+                        <div class="text-center mb-4">
+                            <a href="." class="navbar-brand navbar-brand-autodark">
+                                @* <img src="./static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image"> *@
+                            </a>
+                        </div>
+                        <div class="card card-md">
+                            <div class="card-body">
+                                <h2 class="h2 text-center mb-4">登　录</h2>
+                                <form autocomplete="off" novalidate="" method="post">
+                                    <div class="mb-3">
+                                        <label class="form-label">用户名</label>
+                                        <input type="text" class="form-control" placeholder="输入用户名" asp-for="Input.UserName" autocomplete="username">
+                                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">
+                                            密　码
+                                            <span class="form-label-description d-none">
+                                                <a href="./forgot-password.html" class="">忘记密码</a>
+                                            </span>
+                                        </label>
+                                        <div class="input-group input-group-flat">
+                                            <input type="password" class="form-control ipt-pwd-control" placeholder="输入密码" asp-for="Input.Password" autocomplete="current-password">
+                                            <span class="input-group-text">
+                                                <a href="javascript:void(0)" class="link-secondary btn-toggle-password" data-bs-toggle="tooltip" aria-label="显示密码" data-bs-original-title="显示密码">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path></svg>
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-2 d-none">
+                                        <label class="form-check">
+                                            <input type="checkbox" class="form-check-input">
+                                            <span class="form-check-label">记住我</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-footer">
+                                        <button type="submit" class="btn btn-primary w-100">登　录</button>
+                                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="hr-text">or</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <p>暂不支持第三方登录</p>
+                                    </div>                                    
+                                    @* <div class="col">
+                                        <a href="#" class="btn w-100">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg>
+                                            Login with Github
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="#" class="btn w-100">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c0 -.249 1.51 -2.772 1.818 -4.013z"></path></svg>
+                                            Login with Twitter
+                                        </a>
+                                    </div> *@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+@section Scripts{
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/easy-typer-js@1.0.3/easy-typer-min.js"></script>
+        <script>
+            const apiEndpoint = '@Url.Content("~/")api/v1.0/baidu/chat';
+        </script>
+        <script src="~/js/index.min.js" asp-append-version="true"></script>
+    }
+    <script>
+        $('.btn-toggle-password').on('click', function () {
+            let el = $('.ipt-pwd-control');
+            let tp = $(el).attr('type') === 'password' ? "text" : "password"
+            $(el).attr('type', tp);
+        });
+    </script>
+}

@@ -9,9 +9,13 @@ using LLMService.Shared.Authentication.Handlers;
 using LLMService.Shared.Authentication.Models;
 using LLMService.Shared.Models;
 using LLMService.Shared.ServiceInterfaces;
+using LLMServiceHub.Common;
 using LLMServiceHub.Configuration;
 using LLMServiceHub.Service;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -59,35 +63,6 @@ namespace LLMServiceHub
             var appSettings = Configuration.GetSection(nameof(AppSettings)).Get<AppSettings>();
             services.AddSingleton(appSettings);
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.Authority = appSettings.IdentityServerBaseUrl;
-                options.RequireHttpsMetadata = appSettings.RequireHttpsMetadata;
-                options.Audience = appSettings.OidcApiName;
-            });
-            //services.AddAuthorization();
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("api-oidc",
-                    policy =>
-                        //policy.RequireAssertion(context => context.User.HasClaim(c =>
-                        //        ((c.Type == JwtClaimTypes.Role && c.Value == appSettings.AdministrationRole) ||
-                        //        (c.Type == $"client_{JwtClaimTypes.Role}" && c.Value == appSettings.AdministrationRole))
-                        //    ) && context.User.HasClaim(c => c.Type == JwtClaimTypes.Scope && c.Value == appSettings.OidcApiName)
-                        //));
-                        policy.RequireAssertion(context => context.User.HasClaim(c => c.Type == JwtClaimTypes.Scope && c.Value == appSettings.OidcApiName)
-                        ));
-            });
-            
 
             // Ensure HttpContext injected. It will be accessed in Chat service.
             services.AddHttpContextAccessor();
@@ -116,6 +91,65 @@ namespace LLMServiceHub
             //        });
             services.AddMvc();
 
+
+            #region authentication
+
+            // use cookies authentication by default.
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = AppConsts.DefaultAuthScheme;
+                options.DefaultAuthenticateScheme = AppConsts.DefaultAuthScheme;
+                options.DefaultChallengeScheme = AppConsts.DefaultAuthScheme;
+                options.DefaultSignInScheme = AppConsts.DefaultAuthScheme;
+                options.DefaultSignOutScheme = AppConsts.DefaultAuthScheme;
+            })
+            .AddCookie(AppConsts.DefaultAuthScheme, options =>
+            {
+                options.Cookie.Name = AppConsts.AuthCookieName;
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+
+                options.LoginPath = new PathString("/");
+
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.SlidingExpiration = true;
+
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    if(context.Request.Path.StartsWithSegments("/api")||
+                       string.Equals(context.HttpContext.Request.Query["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal) ||
+                       string.Equals(context.HttpContext.Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal))
+                    {
+                        context.Response.Clear();
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.FromResult(0);
+                    }
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.FromResult(0);
+                };
+            })
+            // api use jwt authentication
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.Authority = appSettings.IdentityServerBaseUrl;
+                options.RequireHttpsMetadata = appSettings.RequireHttpsMetadata;
+                options.Audience = appSettings.OidcApiName;
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("api-oidc",
+                    policy =>
+                        //policy.RequireAssertion(context => context.User.HasClaim(c =>
+                        //        ((c.Type == JwtClaimTypes.Role && c.Value == appSettings.AdministrationRole) ||
+                        //        (c.Type == $"client_{JwtClaimTypes.Role}" && c.Value == appSettings.AdministrationRole))
+                        //    ) && context.User.HasClaim(c => c.Type == JwtClaimTypes.Scope && c.Value == appSettings.OidcApiName)
+                        //));
+                        policy.RequireAssertion(context => context.User.HasClaim(c => c.Type == JwtClaimTypes.Scope && c.Value == appSettings.OidcApiName)
+                        ));
+            });
+
+            #endregion
 
             services.AddEndpointsApiExplorer();
             services.AddApiVersioning(o =>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>文心分身</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler-flags.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler-payments.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler-vendors.min.css">
+    <style>
+        .navbar { min-height: auto !important; }
+        .vh-5 { height: 5vh; }
+        .vh-95 { height: 95vh; }
+        .vh-15 { height: 15vh; }
+        .vh-10 { height: 10vh; }
+        .vh-80 { height: 80vh; }
+        .overflow-card { overflow: auto }
+        .chat-bubble-author { color: var(--tblr-blue) }
+    </style>
+</head>
+<body class="layout-fluid">
+    <div class="page">
+        <header class="navbar navbar-expand-sm navbar-light d-print-none vh-5">
+            <div class="container-xl">
+                <h1 class="h3 navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    文心大模型版本对比
+                </h1>
+
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0">
+                            <span class="avatar avatar-sm"></span>
+                            <div class="d-none d-xl-block ps-2">
+                                <div>我</div>
+                                <div class="mt-1 small text-secondary">测试用户</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="page-wrapper vh-95">
+            <div class="page-body mt-0 mb-0">
+                <div class="container-xl">
+                    <div class="row row-deck row-cards chatboxes">
+                        <div class="col-4 vh-80">
+                            <div class="card m-2">
+                                <div class="card-header pt-2 pb-2">
+                                    <div class="card-title">
+                                        <label class="form-check form-check-inline mt-1 mb-0">
+                                            <input class="form-check-input" checked type="checkbox">
+                                        </label>
+                                        Ernie-bot-3.5
+                                    </div>
+                                    <div class="card-actions btn-actions">
+                                        <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-3.5">
+                                            <!-- Download SVG icon from https://tabler.io/icons/icon/download -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body ps-2 pe-2 scrollable">
+                                    <div class="chat">
+                                        <div class="chat-bubbles" id="wrapper_ConvErnie3_5">
+                                            <!--
+                                            <div class="chat-item">
+                                                <div class="row align-items-end justify-content-end">
+                                                    <div class="col col-lg-8">
+                                                        <div class="chat-bubble chat-bubble-me">
+                                                            <div class="chat-bubble-title">
+                                                                <div class="row">
+                                                                    <div class="col chat-bubble-author pb-2">我</div>
+                                                                    <div class="col-auto chat-bubble-date">09:37:40</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="chat-bubble-body">
+                                                                <p>FAKE DIALOG ME.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <span class="avatar">我</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat-item">
+                                                <div class="row align-items-end">
+                                                    <div class="col-auto">
+                                                        <span class="avatar">百</span>
+                                                    </div>
+                                                    <div class="col col-lg-8">
+                                                        <div class="chat-bubble">
+                                                            <div class="chat-bubble-title">
+                                                                <div class="row">
+                                                                    <div class="col chat-bubble-author pb-2">ernie_3_5</div>
+                                                                    <div class="col-auto chat-bubble-date" id="reply_time_rpl_pcve2zgs">09:37:41</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="chat-bubble-body" id="reply_rpl_pcve2zgs">
+                                                                <p>FAKE DIALOG <strong>BOT</strong>？</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 vh-80">
+                            <div class="card m-2">
+                                <div class="card-header pt-2 pb-2">
+                                    <div class="card-title">
+                                        <label class="form-check form-check-inline mt-1 mb-0">
+                                            <input class="form-check-input" checked type="checkbox">
+                                        </label>
+                                        Ernie-bot-turbo
+                                    </div>
+                                    <div class="card-actions btn-actions">
+                                        <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-turbo">
+                                            <!-- Download SVG icon from https://tabler.io/icons/icon/download -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body scrollable">
+                                    <div class="chat">
+                                        <div id="wrapper_ConvErnieTurbo" class="chat-bubbles">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 vh-80">
+                            <div class="card m-2">
+                                <div class="card-header pt-2 pb-2">
+                                    <div class="card-title">
+                                        <label class="form-check form-check-inline mt-1 mb-0">
+                                            <input class="form-check-input" checked type="checkbox">
+                                        </label>
+                                        Ernie-bot-4.0
+                                    </div>
+                                    <div class="card-actions btn-actions">
+                                        <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-4.0">
+                                            <!-- Download SVG icon from https://tabler.io/icons/icon/download -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body scrollable">
+                                    <div class="chat">
+                                        <div id="wrapper_ConvErnie4_0" class="chat-bubbles">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 vh-15 mt-0">
+                            <div class="card m-0 me-2 ms-2">
+                                <div class="card-body p-2">
+                                    <div class="input-group input-group-flat">
+                                        <input id="ipt-message" type="text" class="form-control vh-10" autocomplete="off" rows="3" placeholder="输入要发送的消息，按“回车键”发送">
+                                        <span class="input-group-text">
+                                            <a href="javascript:void(0)" class="ms-2 btn btn-primary btn-send-message">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M10 14l11 -11" />
+                                                    <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
+                                                </svg> &nbsp;发送
+                                            </a>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/easy-typer-js@1.0.3/easy-typer-min.js"></script>
+    <script>
+        function dateFormat(fmt, date) {
+            let ret;
+            const opt = {
+                "Y+": date.getFullYear().toString(),        // 年
+                "m+": (date.getMonth() + 1).toString(),     // 月
+                "d+": date.getDate().toString(),            // 日
+                "H+": date.getHours().toString(),           // 时
+                "M+": date.getMinutes().toString(),         // 分
+                "S+": date.getSeconds().toString()          // 秒
+                // 有其他格式化字符需求可以继续添加，必须转化成字符串
+            };
+            for (let k in opt) {
+                ret = new RegExp("(" + k + ")").exec(fmt);
+                if (ret) {
+                    fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+                };
+            };
+            return fmt;
+        }
+
+        //$('.chatboxes .scrollable').each(function (index, ele) {
+        //    $(ele).on('DOMSubtreeModified', function () {
+        //        $(this).css('scrollTop', $(this).height());
+        //    });
+        //});
+
+        let conversations = {
+            ConvErnieTurbo: {
+                "temperature": 0.95,
+                "top_p": 0.8,
+                "penalty_score": 1.0,
+                "stream": false,
+                "conversation_id": "conv-turbo",
+                "message": "",
+                "model": 2,
+                "user_id": "7ffe3194-2bf0-48ba-8dbd-e888d7d556d3"
+            },
+            ConvErnie3_5: {
+                "temperature": 0.95,
+                "top_p": 0.8,
+                "penalty_score": 1.0,
+                "stream": false,
+                "conversation_id": "conv-3_5",
+                "message": "",
+                "model": 1,
+                "user_id": "7ffe3194-2bf0-48ba-8dbd-e888d7d556d3"
+            },
+            ConvErnie4_0: {
+                "temperature": 0.95,
+                "top_p": 0.8,
+                "penalty_score": 1.0,
+                "stream": false,
+                "conversation_id": "conv-4_0",
+                "message": "",
+                "model": 3,
+                "user_id": "7ffe3194-2bf0-48ba-8dbd-e888d7d556d3"
+            }
+        };
+        const apiEndpoint = '/api/v1.0/baidu/chat';
+
+
+        let sendBtnClickEventHandler = function (e) {
+            let msg = $('#ipt-message').val();
+            $('#ipt-message').val('');
+            //console.log(msg);
+            $(Object.keys(conversations)).each(function (index, key) {
+                //console.log(key);
+                let rndStr = Math.random().toString(36).slice(-8);
+                let request = conversations[key];
+                let wrapperId = "#wrapper_" + key;
+                request.message = msg;
+                request.conversation_id = `${request.conversation_id}_${rndStr}`;
+                let wrapper = $(wrapperId);
+                if (wrapper) {
+                    let author = '我';
+                    let time = dateFormat('HH:MM:SS', new Date());
+                    let replyId = `rpl_${rndStr}`;
+                    let botId;
+                    switch (key) {
+                        case 'ConvErnieTurbo': {
+                            botId = 'ernie_turbo';
+                            break;
+                        }
+                        case 'ConvErnie3_5': {
+                            botId = 'ernie_3_5';
+                            break;
+                        }
+                        case 'ConvErnie4_0': {
+                            botId = 'ernie_4_0';
+                            break;
+                        }
+                        default: break;
+                    }
+                    const me = `
+                                <div class="chat-item">
+                                    <div class="row align-items-end justify-content-end">
+                                        <div class="col col-lg-8">
+                                            <div class="chat-bubble chat-bubble-me">
+                                                <div class="chat-bubble-title">
+                                                    <div class="row">
+                                                        <div class="col chat-bubble-author pb-2">${author}</div>
+                                                        <div class="col-auto chat-bubble-date">${time}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="chat-bubble-body">
+                                                    <p>${msg}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <span class="avatar">我</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                    const bot = `
+                                <div class="chat-item">
+                                    <div class="row align-items-end">
+                                        <div class="col-auto">
+                                            <span class="avatar">百</span>
+                                        </div>
+                                        <div class="col col-lg-8">
+                                            <div class="chat-bubble">
+                                                <div class="chat-bubble-title">
+                                                    <div class="row">
+                                                        <div class="col chat-bubble-author pb-2">${botId}</div>
+                                                        <div class="col-auto chat-bubble-date" id='reply_time_${replyId}'></div>
+                                                    </div>
+                                                </div>
+                                                <div class="chat-bubble-body" id='reply_${replyId}'>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+
+                    $(me).appendTo($(wrapper));
+                    $(bot).appendTo($(wrapper));
+
+                    let _scrollItem = $(wrapper).closest('.scrollable');
+                    //console.log(_scrollItem);
+                    let scrollTopVal = $(_scrollItem).height();
+                    //console.log(scrollTopVal);
+                    $(_scrollItem).scrollTop(scrollTopVal);
+
+
+                    $.ajax(apiEndpoint, {
+                        method: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(request)
+                    }).done(function (data, status, xhr) {
+                        //console.log(data);
+                        if (data) {
+                            $(`#reply_time_${replyId}`).html(dateFormat('HH:MM:SS', new Date()));
+                            var markdeownResult = data.result;
+                            const typing = new EasyTyper({
+                                output: '',
+                                isEnd: false,
+                                speed: 20,
+                                singleBack: false,
+                                sleep: 0,
+                                type: 'normal',
+                                backSpeed: 40,
+                                sentencePause: true,
+                            },
+                                marked.parse(markdeownResult),
+                                instance => {
+                                    // 回调函数
+                                    // 此回调一般用于获取新的数据然后循环输出
+                                    // instance { 实例EasyTyper }
+                                    //console.log(instance); // 打印出实例对象
+
+                                    //var result = marked.parse(markdeownResult);
+                                    //$('#reply_' + replyId).html(result);
+
+                                }, (output, instance) => {
+                                    // 钩子函数
+                                    // output { 当前帧的输出内容 }
+                                    // instance { 实例EasyTyper }
+                                    // 通过钩子函数动态更新dom元素
+                                    $('#reply_' + replyId).html(`${output}`);
+
+                                    let _scrollItem = $(wrapper).closest('.scrollable');
+                                    //console.log(_scrollItem);
+                                    let scrollTopVal = $(_scrollItem).prop('scrollTop') + $('#reply_' + replyId).height();
+                                    //console.log(scrollTopVal);
+                                    $(_scrollItem).scrollTop(scrollTopVal);
+                                });
+                        }
+                    })
+                        .fail(function (data, status, xhr) {
+                            console.log(data);
+                            $('#reply_' + replyId).html('发生错误');
+                        });
+
+                }
+            });
+            e.preventDefault();
+        };
+
+        $(document).on('keyup', function (e) {
+            var event = e || window.event;
+            var key = event.which || event.keyCode || event.charCode;
+            if (key == 13) {
+                //这里填写你要做的事件
+                sendBtnClickEventHandler(e);
+            }
+        });
+        $('.btn-send-message').on('click', sendBtnClickEventHandler);
+
+        // 导出
+        function exportBlob(text, fileName) {
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        $('.btn-export').on('click', function () {
+            let exptime = dateFormat('YYYYmmddHHMMSS', new Date());
+            let wrapper = $(this).closest('.card');
+            let filename = $(this).data('key') + '-' + (exptime) + '.txt';
+            let dialogs = $(wrapper).find('.chat-bubble');
+            let sections = [];
+
+            sections.push(`--------------${exptime}-------------\r\n`);
+            $(dialogs).each(function (index, item) {
+                let author = $(item).find('.chat-bubble-author').text();
+                let time = $(item).find('.chat-bubble-date').text();
+                let content = $(item).find('.chat-bubble-body').text();
+
+                sections.push(`[${author}]  ${time}\r\n\r\n`);
+                sections.push(content.trim());
+                sections.push('\r\n-------------------------------\r\n');
+            });
+
+            let blob = sections.join('');
+            console.log(blob);
+
+            exportBlob(blob, filename);
+
+        })
+
+
+    </script>
+</body>
+</html>

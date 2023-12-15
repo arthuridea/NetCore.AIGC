@@ -1,0 +1,16 @@
+﻿@page
+@model LLMServiceHub.Pages.StatusModel
+@{
+}
+
+@if(Model.CacheKeys!=null && Model.CacheKeys.Count()>0){
+
+    <ul>
+
+        @foreach (var item in Model.CacheKeys)
+        {
+
+            <li>@(item)</li>
+        }
+    </ul>
+}

@@ -1,0 +1,27 @@
+﻿@if(User.Identity.IsAuthenticated){
+
+    <div class="nav-item">
+        <a href="javascript:void(0)" class="nav-link d-flex lh-1 text-reset p-0">
+            <span class="avatar avatar-sm"></span>
+            <div class="d-none d-xl-block ps-2">
+                <div>我</div>
+                <div class="mt-1 small text-secondary">测试用户</div>
+            </div>
+        </a>
+    </div>
+    <div class="nav-item">
+        <!-- Download SVG icon from http://tabler-icons.io/i/dots-vertical -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path></svg>
+
+    </div>
+    <div class="nav-item">
+        <a asp-page="SignOut" class="nav-link d-flex lh-1 text-reset p-0">
+            退出登录
+        </a>
+    </div>
+}
+else{
+    <div class="nav-item">
+        <span>尚未登录</span>
+    </div>
+}
