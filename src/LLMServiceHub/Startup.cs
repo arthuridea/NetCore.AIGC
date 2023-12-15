@@ -151,6 +151,7 @@ namespace LLMServiceHub
 
             #endregion
 
+            #region API Versioning
             services.AddEndpointsApiExplorer();
             services.AddApiVersioning(o =>
             {
@@ -196,9 +197,10 @@ namespace LLMServiceHub
                                         );
                 //options.ApiVersionParameterSource
             });
+            #endregion
 
             #region SwashBuckle Config
-            
+
             services.AddTransient<IConfigureNamedOptions<SwaggerGenOptions>, AppSwaggerGenOption>();
 
             services.ConfigureOptions<AppSwaggerGenOption>();
@@ -415,6 +417,8 @@ namespace LLMServiceHub
             app.UseReDoc(); // serve ReDoc UI
             */
             #endregion
+
+            app.UseCookiePolicy();
 
             app.UseAuthentication();
             app.UseAuthorization();
