@@ -36,12 +36,6 @@ namespace LLMServiceHub.Pages
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        //public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string ReturnUrl { get; set; }
 
         /// <summary>
@@ -119,8 +113,6 @@ namespace LLMServiceHub.Pages
         {
             returnUrl ??= Url.Content("~/");
 
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -137,9 +129,7 @@ namespace LLMServiceHub.Pages
                     };
                     var authProperties = new AuthenticationProperties
                     {
-                        IsPersistent = Input.RememberMe,//是否持久化
-
-                        //如果用户点“登录“进来，登录成功后跳转到首页，否则跳转到上一个页面
+                        IsPersistent = Input.RememberMe,// persistance.
                         RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/Index" : returnUrl,
                     };
                     var identity = new ClaimsIdentity(claims, AppConsts.DefaultAuthScheme);
