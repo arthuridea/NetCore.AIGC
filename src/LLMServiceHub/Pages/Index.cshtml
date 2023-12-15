@@ -13,6 +13,35 @@
         .vh-80 { height: 80vh; }
         .overflow-card { overflow: auto }
         .chat-bubble-author { color: var(--tblr-blue) }
+        .model-config-menu{width:22rem;}
+        .dropdown-menu-arrow.dropdown-menu-up:before{
+            content:none !important;
+        }
+        .dropdown-menu-arrow.dropdown-menu-up:after{
+            content: "";
+            position: absolute;
+            left: 0.75rem;
+            display: block;
+            background: inherit;
+            width: 1rem;
+            height: 1rem;
+            transform-origin: center;
+            border: 1px solid;
+            border-color: inherit;
+            z-index: -1;
+            /* clip: rect(0,0.75rem,0.75rem,0); */
+            clip-path:circle(50% at 25% 25%);
+
+
+            bottom:-0.25rem;
+            top:calc(100% - 0.75rem);
+            left:calc(50% - 0.5rem);
+            /* background: lightblue;
+            border-color:red; */
+            transform:rotate(225deg);
+        }
+        .llm-model-config{font-size:0.8rem;color:darkgoldenrod;}
+        .btn-icon-center svg{margin-right:0 !important;}
     </style>
 }
 
@@ -30,7 +59,7 @@
                                     <label class="form-check form-check-inline mt-1 mb-0">
                                         <input class="form-check-input" checked type="checkbox">
                                     </label>
-                                    Ernie-bot-3.5
+                                    文心3.5 <code id="config-3_5" class="llm-model-config" data-llm-name="ConvErnie3_5"></code>
                                 </div>
                                 <div class="card-actions btn-actions">
                                     <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-3.5">
@@ -101,7 +130,7 @@
                                     <label class="form-check form-check-inline mt-1 mb-0">
                                         <input class="form-check-input" checked type="checkbox">
                                     </label>
-                                    Ernie-bot-turbo
+                                    文心turbo <code id="config-turbo" class="llm-model-config" data-llm-name="ConvErnieTurbo"></code>
                                 </div>
                                 <div class="card-actions btn-actions">
                                     <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-turbo">
@@ -130,7 +159,7 @@
                                     <label class="form-check form-check-inline mt-1 mb-0">
                                         <input class="form-check-input" checked type="checkbox">
                                     </label>
-                                    Ernie-bot-4.0
+                                    文心4.0 <code id="config-4_0" class="llm-model-config" data-llm-name="ConvErnie4_0"></code>
                                 </div>
                                 <div class="card-actions btn-actions">
                                     <a href="javascript:void(0)" class="btn-action btn-export" data-key="文心-4.0">
@@ -156,15 +185,115 @@
                         <div class="card m-0 me-2 ms-2">
                             <div class="card-body p-2">
                                 <div class="input-group input-group-flat">
-                                    <input id="ipt-message" type="text" class="form-control vh-10" autocomplete="off" rows="3" placeholder="输入要发送的消息，按“回车键”发送">
+                                    <input id="ipt-message" type="text" class="form-control vh-10" autocomplete="off" rows="3" placeholder="输入要发送的消息，按“回车键”发送" />
                                     <span class="input-group-text">
-                                        <a href="javascript:void(0)" class="ms-2 btn btn-primary btn-send-message">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M10 14l11 -11" />
-                                                <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
-                                            </svg> &nbsp;发送
-                                        </a>
+                                        <div class="dropup-center dropup">
+                                            <a href="#" class="btn-icon-center link-secondary btn btn-link pt-2 pb-2" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                <!-- Download SVG icon from https://tabler.io/icons/icon/settings -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                                                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                                                </svg>
+                                            </a>
+                                            <div class="dropdown-menu model-config-menu dropdown-menu-arrow dropdown-menu-up dropdown-menu-scrollable1">
+                                                <div class="container pb-3 pt-3">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="alert alert-info border-info" role="alert">
+                                                                <div class="d-flex">
+                                                                    <div>
+                                                                        <!-- Download SVG icon from http://tabler-icons.io/i/info-circle -->
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path><path d="M12 9h.01"></path><path d="M11 12h1v4h1"></path></svg>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="text-info">温度和多样性建议只调整其中一个.</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <label for="r-temperature" class="form-label text-primary">温度</label>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <input type="range" class="form-range llm-range-picker" data-sync-key="temperature" min="0.01" max="1" step="0.01" id="r-temperature">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control form-control-sm rounded" id="temperature-val" />
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <a href="javascript:void(0)" class="btn btn-link pt-0 pb-0 ps-2 pe-0 btn-discard-llm-setting" data-rel-key="temperature" data-val='0.95'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history-toggle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969" />
+                                                                    <path d="M14 3.223a9.003 9.003 0 0 1 0 17.554" />
+                                                                    <path d="M4.579 17.093a8.961 8.961 0 0 1 -1.227 -2.592" />
+                                                                    <path d="M3.124 10.5c.16 -.95 .468 -1.85 .9 -2.675l.169 -.305" />
+                                                                    <path d="M6.907 4.579a8.954 8.954 0 0 1 3.093 -1.356" />
+                                                                    <path d="M12 8v4l3 3" />
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <label for="r-top_p" class="form-label text-primary">多样性</label>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <input type="range" class="form-range llm-range-picker" data-sync-key="top_p" min="0" max="1" step="0.1" id="r-top_p">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control form-control-sm rounded" id="top_p-val" />
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <a href="javascript:void(0)" class="btn btn-link pt-0 pb-0 ps-2 pe-0 btn-discard-llm-setting" data-rel-key="top_p" data-val='0.8'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history-toggle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969" />
+                                                                    <path d="M14 3.223a9.003 9.003 0 0 1 0 17.554" />
+                                                                    <path d="M4.579 17.093a8.961 8.961 0 0 1 -1.227 -2.592" />
+                                                                    <path d="M3.124 10.5c.16 -.95 .468 -1.85 .9 -2.675l.169 -.305" />
+                                                                    <path d="M6.907 4.579a8.954 8.954 0 0 1 3.093 -1.356" />
+                                                                    <path d="M12 8v4l3 3" />
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <label for="r-penalty_score" class="form-label text-primary">重复惩罚</label>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <input type="range" class="form-range llm-range-picker" data-sync-key="penalty_score" min="1" max="2" step="0.1" id="r-penalty_score">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control form-control-sm rounded" id="penalty_score-val" />
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <a href="javascript:void(0)" class="btn btn-link pt-0 pb-0 ps-2 pe-0 btn-discard-llm-setting" data-rel-key="penalty_score" data-val='1.0'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history-toggle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969" />
+                                                                    <path d="M14 3.223a9.003 9.003 0 0 1 0 17.554" />
+                                                                    <path d="M4.579 17.093a8.961 8.961 0 0 1 -1.227 -2.592" />
+                                                                    <path d="M3.124 10.5c.16 -.95 .468 -1.85 .9 -2.675l.169 -.305" />
+                                                                    <path d="M6.907 4.579a8.954 8.954 0 0 1 3.093 -1.356" />
+                                                                    <path d="M12 8v4l3 3" />
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="javascript:void(0)" class="ms-2 btn btn-primary btn-send-message ">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M10 14l11 -11" />
+                                                    <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
+                                                </svg> &nbsp;发送
+                                            </a>
+                                        </div>
                                     </span>
                                 </div>
 
@@ -175,73 +304,81 @@
             }
             else
             {
-                <div class="row mt-3">
-                    <div class="col-12 offset-lg-4 col-lg-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-10 offset-1">
 
-                        <div class="text-center mb-4">
-                            <a href="." class="navbar-brand navbar-brand-autodark">
-                                @* <img src="./static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image"> *@
-                            </a>
-                        </div>
-                        <div class="card card-md">
-                            <div class="card-body">
-                                <h2 class="h2 text-center mb-4">登　录</h2>
-                                <form autocomplete="off" novalidate="" method="post">
-                                    <div class="mb-3">
-                                        <label class="form-label">用户名</label>
-                                        <input type="text" class="form-control" placeholder="输入用户名" asp-for="Input.UserName" autocomplete="username">
-                                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                            <div class="row mt-3">
+                                <div class="col-12 offset-lg-4 col-lg-4">
+
+                                    <div class="text-center mb-4">
+                                        @* <a href="." class="navbar-brand navbar-brand-autodark">
+                                            <img src="./static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+                                        </a> *@
                                     </div>
-                                    <div class="mb-2">
-                                        <label class="form-label">
-                                            密　码
-                                            <span class="form-label-description d-none">
-                                                <a href="./forgot-password.html" class="">忘记密码</a>
-                                            </span>
-                                        </label>
-                                        <div class="input-group input-group-flat">
-                                            <input type="password" class="form-control ipt-pwd-control" placeholder="输入密码" asp-for="Input.Password" autocomplete="current-password">
-                                            <span class="input-group-text">
-                                                <a href="javascript:void(0)" class="link-secondary btn-toggle-password" data-bs-toggle="tooltip" aria-label="显示密码" data-bs-original-title="显示密码">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path></svg>
-                                                </a>
-                                            </span>
+                                    <div class="card card-md">
+                                        <div class="card-body">
+                                            <h2 class="h2 text-center mb-4">登　录</h2>
+                                            <form autocomplete="off" novalidate="" method="post">
+                                                <div class="mb-3">
+                                                    <label class="form-label">用户名</label>
+                                                    <input type="text" class="form-control" placeholder="输入用户名" asp-for="Input.UserName" autocomplete="username">
+                                                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label class="form-label">
+                                                        密　码
+                                                        <span class="form-label-description d-none">
+                                                            <a href="./forgot-password.html" class="">忘记密码</a>
+                                                        </span>
+                                                    </label>
+                                                    <div class="input-group input-group-flat">
+                                                        <input type="password" class="form-control ipt-pwd-control" placeholder="输入密码" asp-for="Input.Password" autocomplete="current-password">
+                                                        <span class="input-group-text">
+                                                            <a href="javascript:void(0)" class="link-secondary btn-toggle-password" data-bs-toggle="tooltip" aria-label="显示密码" data-bs-original-title="显示密码">
+                                                                <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path></svg>
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-2 small">
+                                                    <label class="form-check form-control-sm">
+                                                        <input type="checkbox" asp-for="Input.RememberMe" class="form-check-input form-check-input-sm">
+                                                        <span class="form-check-label">记住我</span>
+                                                    </label>
+                                                </div>
+                                                <div class="form-footer">
+                                                    <button type="submit" class="btn btn-primary w-100">登　录</button>
+                                                    <p class="pt-2 pb-2"><small>登录即代表您已阅读并同意<a href="javascript:void(0)">EULA</a>和<a href="javascript:void(0)">隐私政策</a></small></p>
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                    </div>
-                                    <div class="mb-2 d-none">
-                                        <label class="form-check">
-                                            <input type="checkbox" class="form-check-input">
-                                            <span class="form-check-label">记住我</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-footer">
-                                        <button type="submit" class="btn btn-primary w-100">登　录</button>
-                                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="hr-text">or</div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <p>暂不支持第三方登录</p>
-                                    </div>                                    
-                                    @* <div class="col">
-                                        <a href="#" class="btn w-100">
+                                        <div class="hr-text">or</div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p>暂不支持第三方登录</p>
+                                                </div>
+                                                @* <div class="col">
+                                            <a href="#" class="btn w-100">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon text-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg>
                                             Login with Github
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn w-100">
+                                            </a>
+                                            </div>
+                                            <div class="col">
+                                            <a href="#" class="btn w-100">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon text-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c0 -.249 1.51 -2.772 1.818 -4.013z"></path></svg>
                                             Login with Twitter
-                                        </a>
-                                    </div> *@
+                                            </a>
+                                            </div> *@
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

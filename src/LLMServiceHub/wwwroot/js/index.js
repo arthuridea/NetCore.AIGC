@@ -24,11 +24,17 @@ function dateFormat(fmt, date) {
 //    });
 //});
 
+
+//模型设置
+let m_t = 0.95;
+let m_tp = 0.8;
+let m_ps = 1.0;
+
 let conversations = {
     ConvErnieTurbo: {
-        "temperature": 0.95,
-        "top_p": 0.8,
-        "penalty_score": 1.0,
+        "temperature": m_t || 0.95,
+        "top_p": m_tp || 0.8,
+        "penalty_score": m_ps || 1.0,
         "stream": false,
         "conversation_id": "conv-turbo",
         "message": "",
@@ -36,9 +42,9 @@ let conversations = {
         "user_id": "7ffe3194-2bf0-48ba-8dbd-e888d7d556d3"
     },
     ConvErnie3_5: {
-        "temperature": 0.95,
-        "top_p": 0.8,
-        "penalty_score": 1.0,
+        "temperature": m_t || 0.95,
+        "top_p": m_tp || 0.8,
+        "penalty_score": m_ps || 1.0,
         "stream": false,
         "conversation_id": "conv-3_5",
         "message": "",
@@ -46,9 +52,9 @@ let conversations = {
         "user_id": "7ffe3194-2bf0-48ba-8dbd-e888d7d556d3"
     },
     ConvErnie4_0: {
-        "temperature": 0.95,
-        "top_p": 0.8,
-        "penalty_score": 1.0,
+        "temperature": m_t || 0.95,
+        "top_p": m_tp || 0.8,
+        "penalty_score": m_ps || 1.0,
         "stream": false,
         "conversation_id": "conv-4_0",
         "message": "",
@@ -56,6 +62,51 @@ let conversations = {
         "user_id": "7ffe3194-2bf0-48ba-8dbd-e888d7d556d3"
     }
 };
+
+$('#r-temperature').val(m_t);
+$('#temperature-val').val(m_t);
+$('#r-top_p').val(m_tp);
+$('#top_p-val').val(m_tp);
+$('#r-penalty_score').val(m_ps);
+$('#penalty_score-val').val(m_ps);
+
+$('.llm-model-config').html(`温度:${m_t};多样性:${m_tp};惩罚系数:${m_ps};`);
+
+
+function syncCurrentVal(dataKey, currentVal) {
+    $(`#${dataKey}-val`).val(currentVal);
+    conversations.ConvErnieTurbo[dataKey] = parseFloat(currentVal);
+    conversations.ConvErnie3_5[dataKey] = parseFloat(currentVal);
+    conversations.ConvErnie4_0[dataKey] = parseFloat(currentVal);
+
+    //data-llm-name
+    $('.llm-model-config').each(function (index, tagEl) {
+        let llmName = $(tagEl).data('llm-name');
+        let bindingData = conversations[llmName];
+        $(tagEl).html(`温度:${bindingData.temperature};多样性:${bindingData.top_p};惩罚系数:${bindingData.penalty_score};`);
+    });
+}
+
+$('.llm-range-picker').on('change', function (e) {
+    let _self = $(this);
+    let currentVal = $(_self).val();
+    let dataKey = $(_self).data('sync-key');
+
+    syncCurrentVal(dataKey, currentVal);
+});
+
+$('.btn-discard-llm-setting').on('click', function (e) {
+    let _self = $(this);
+    let defaultVal = $(_self).data('val');
+    let dataKey = $(_self).data('rel-key');
+    console.log(defaultVal);
+    console.log(dataKey);
+
+    $(`#r-${dataKey}`).val(defaultVal);
+
+    syncCurrentVal(dataKey, defaultVal);
+});
+
 
 
 let sendBtnClickEventHandler = function (e) {
@@ -143,6 +194,8 @@ let sendBtnClickEventHandler = function (e) {
             //console.log(scrollTopVal);
             $(_scrollItem).scrollTop(scrollTopVal);
 
+            console.log('sending request with:');
+            console.log(request);
 
             $.ajax(apiEndpoint, {
                 method: 'POST',
