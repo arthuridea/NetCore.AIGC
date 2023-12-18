@@ -43,11 +43,11 @@ namespace LLMService.Shared.Models
         /// </para>
         /// </summary>
         /// <value>
-        /// 默认 1.5
+        /// 默认 1.0
         /// </value>
-        /// <example>1.5</example>
+        /// <example>1.0</example>
         [JsonPropertyName("penalty_score")]
-        public float PenaltyScore { get; set; } = 1.5F;
+        public float PenaltyScore { get; set; } = 1.0F;
         /// <summary>
         /// 是否以流式接口的形式返回数据，默认false
         /// </summary>

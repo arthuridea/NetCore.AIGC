@@ -397,7 +397,7 @@ namespace LLMServiceHub
                 }
 
                 option.RoutePrefix = "api-docs";
-                option.DocumentTitle = "幸福泉百度千帆大模型 API";
+                option.DocumentTitle = "百度千帆大模型 API";
 
                 option.DefaultModelRendering(Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Model);
                 option.DefaultModelExpandDepth(4);

@@ -4,7 +4,7 @@ using static LLMService.Shared.Models.BaiduApiDefaults;
 namespace LLMService.Shared.Models
 {
     /// <summary>
-    /// 
+    /// baidu API response model
     /// </summary>
     public class BaiduWenxinChatResponse /*: IServerSentEventData*/
     {
@@ -91,7 +91,7 @@ namespace LLMService.Shared.Models
     }
 
     /// <summary>
-    /// 
+    /// baidu API response wrapper
     /// </summary>
     /// <seealso cref="BaiduWenxinChatResponse" />
     public class ChatApiResponse : BaiduWenxinChatResponse
@@ -114,33 +114,9 @@ namespace LLMService.Shared.Models
 
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class ResponseStream<T>
-    {
-        /// <summary>
-        /// Gets or sets the data.
-        /// </summary>
-        /// <value>
-        /// The data.
-        /// </value>
-        [JsonPropertyName("data")]
-        public T Data { get; set; }
-
-        /// <summary>
-        /// Unfolds this instance.
-        /// </summary>
-        /// <returns></returns>
-        public T Unfold()
-        {
-            return Data;
-        }
-    }
-
 
     /// <summary>
-    /// 
+    /// baidu API token usage per request.
     /// </summary>
     public class BaiduWenxinUsage
     {
@@ -168,5 +144,29 @@ namespace LLMService.Shared.Models
         /// </value>
         [JsonPropertyName("total_tokens")]
         public int TotalTokens {  get; set; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ResponseStream<T>
+    {
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
+        [JsonPropertyName("data")]
+        public T Data { get; set; }
+
+        /// <summary>
+        /// Unfolds this instance.
+        /// </summary>
+        /// <returns></returns>
+        public T Unfold()
+        {
+            return Data;
+        }
     }
 }
