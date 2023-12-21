@@ -39,6 +39,8 @@ namespace LLMService.Shared.ChatService
         where TChatMessage : IChatMessage<TMessageContent>, new()
         where TChatServiceOption : class, IChatServiceOption, new()
     {
+
+        #region fields
         /// <summary>
         /// The chat option
         /// </summary>
@@ -70,6 +72,8 @@ namespace LLMService.Shared.ChatService
         /// </summary>
         private readonly ILogger _logger;
 
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChatServiceBase{TRequestDto, TResponseDto, TBackendRequestDto, TBackendResponseDto, TChatMessage, TMessageContent, TChatServiceOption}" /> class.
         /// </summary>
@@ -95,49 +99,6 @@ namespace LLMService.Shared.ChatService
             _context = context;
             _chatDataProvider = chatDataProvider;
             _logger = logger;
-        }
-
-        /// <summary>
-        /// Gets the client.
-        /// </summary>
-        /// <returns></returns>
-        private HttpClient GetClient()
-        {
-            var client = _httpClientFactory.CreateClient(_api_client_key);
-            _logger.LogDebug($"[API CLIENT]{_api_client_key} -> {client.BaseAddress}");
-            return client;
-        }
-
-        /// <summary>
-        /// Builds the backend request data.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns></returns>
-        private async Task<(TBackendRequestDto BackendRequest, List<TChatMessage> Conversation)> BuildBackendRequestData(TRequestDto request)
-        {
-            TBackendRequestDto backendRequest = new();
-            #region 初始化会话内容，读取历史记录并加入当前会话中
-            if (string.IsNullOrEmpty(request.ConversationId))
-            {
-                request.ConversationId = Guid.NewGuid().ToString();
-            }
-
-            var conversation = await _chatDataProvider.GetConversationHistory(request.ConversationId);
-
-            await _chatDataProvider.AddChatMessage(conversation, CreateMessageContent(request.Message, "text", "user"), "user");
-
-#if DEBUG
-            _logger.LogDebug(@$"【CALL {request.ModelSchema}】{JsonSerializer.Serialize(conversation, new JsonSerializerOptions
-            {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            })}");
-#endif
-            #endregion
-
-            backendRequest = LLMRequestMapping(request);
-            backendRequest.Messages = conversation;
-
-            return (BackendRequest: backendRequest, Conversation: conversation);
         }
 
         /// <summary>
@@ -270,6 +231,56 @@ namespace LLMService.Shared.ChatService
             }
         }
 
+        #region helper methods
+
+        /// <summary>
+        /// Gets the client.
+        /// </summary>
+        /// <returns></returns>
+        private HttpClient GetClient()
+        {
+            var client = _httpClientFactory.CreateClient(_api_client_key);
+            _logger.LogDebug($"[API CLIENT]{_api_client_key} -> {client.BaseAddress}");
+            return client;
+        }
+
+        /// <summary>
+        /// Builds the backend request data.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns></returns>
+        private async Task<(TBackendRequestDto BackendRequest, List<TChatMessage> Conversation)> BuildBackendRequestData(TRequestDto request)
+        {
+            TBackendRequestDto backendRequest = new();
+            #region 初始化会话内容，读取历史记录并加入当前会话中
+            if (string.IsNullOrEmpty(request.ConversationId))
+            {
+                request.ConversationId = Guid.NewGuid().ToString();
+            }
+
+            var conversation = await _chatDataProvider.GetConversationHistory(request.ConversationId);
+
+            await _chatDataProvider.AddChatMessage(conversation, CreateMessageContent(request.Message, "text", "user"), "user");
+
+#if DEBUG
+            _logger.LogDebug(@$"【CALL {request.ModelSchema}】{JsonSerializer.Serialize(conversation, new JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            })}");
+#endif
+            #endregion
+
+            backendRequest = LLMRequestMapping(request);
+            backendRequest.Messages = conversation;
+
+            return (BackendRequest: backendRequest, Conversation: conversation);
+        }
+
+        /// <summary>
+        /// Gets the segment status.
+        /// </summary>
+        /// <param name="sseSection">The sse section.</param>
+        /// <returns></returns>
         private (bool IsEnd, bool RequireWrap) GetSegmentStatus(string sseSection)
         {
             bool isEnd = sseSection.Contains(_chatOption.BackendStreamEndTokenPattern);
@@ -277,8 +288,13 @@ namespace LLMService.Shared.ChatService
             return (IsEnd: isEnd, RequireWrap: requireWrap);
         }
 
-        //what is the difference between star and planet?
-
+        /// <summary>
+        /// Wraps the data.
+        /// </summary>
+        /// <param name="sseSection">The sse section.</param>
+        /// <param name="request">The request.</param>
+        /// <param name="aigc">The aigc.</param>
+        /// <returns></returns>
         private TResponseDto WrapData(string sseSection, TRequestDto request, StringBuilder aigc)
         {
             if (sseSection.StartsWith(_chatOption.BackendStreamPrefixToken))
@@ -305,28 +321,31 @@ namespace LLMService.Shared.ChatService
             return default;
         }
 
+        /// <summary>
+        /// Generates the sse response.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="response">The response.</param>
+        /// <param name="content">The content.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         private async Task GenerateSSEResponse<T>(HttpResponse response, T content, CancellationToken cancellationToken)
         {
-            try
+            if (content.GetType() == typeof(string))
             {
-                if (content.GetType() == typeof(string))
-                {
-                    await response.WriteAsync($"{content} \n", cancellationToken: cancellationToken);
-                }
-                else
-                {
-                    string plainText = JsonSerializer.Serialize(content);
-                    await response.WriteAsync($"data: {plainText} \n", cancellationToken: cancellationToken);
-                }
-                await response.WriteAsync("\n", cancellationToken: cancellationToken);
-                await response.Body.FlushAsync(cancellationToken);
+                await response.WriteAsync($"{content} \n", cancellationToken: cancellationToken);
             }
-            catch (Exception ex)
+            else
             {
-                throw;
+                string plainText = JsonSerializer.Serialize(content);
+                await response.WriteAsync($"data: {plainText} \n", cancellationToken: cancellationToken);
             }
+            await response.WriteAsync("\n", cancellationToken: cancellationToken);
+            await response.Body.FlushAsync(cancellationToken);
         }
+        #endregion
 
+        #region abstract methods for subclass data mapping
         /// <summary>
         /// Creates the API message.
         /// </summary>
@@ -349,5 +368,8 @@ namespace LLMService.Shared.ChatService
         /// <param name="response">The response.</param>
         /// <returns></returns>
         protected abstract ChatMessageBase GetAIMessage(TBackendResponseDto response);
+
+        #endregion
+
     }
 }
