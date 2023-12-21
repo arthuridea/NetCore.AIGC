@@ -28,6 +28,8 @@ namespace LLMServiceHub.Controller.v1_0
 
         /// <summary>
         /// 发起ChatGPT对话
+        /// eg.
+        /// what is the difference between star and planet?
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns></returns>
