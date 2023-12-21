@@ -2,28 +2,30 @@
 using LLMService.Shared.ServiceInterfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
-namespace LLMServiceHub.Service
+namespace LLMService.Shared.DataProvider
 {
     /// <summary>
     /// 用MemoryCache持久化会话内容
     /// <para>TODO:使用数据库结合分布式cache/nodb等做持久化</para>
     /// </summary>
     /// <typeparam name="TChatMessage">The type of the chat message.</typeparam>
-    public class ChatDataProvider<TChatMessage>: IChatDataProvider<TChatMessage>
-        where TChatMessage : IChatMessage, new()
+    /// <typeparam name="TMessageContent"></typeparam>
+    public class ChatDataProvider<TChatMessage, TMessageContent> : IChatDataProvider<TChatMessage, TMessageContent>
+        where TChatMessage : IChatMessage<TMessageContent>, new()
     {
         private readonly IMemoryCache _cache;
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChatDataProvider{TChatMessage}"/> class.
+        /// Initializes a new instance of the <see cref="ChatDataProvider{TChatMessage, TMessageContent}"/> class.
         /// </summary>
         /// <param name="cache">The cache.</param>
         /// <param name="logger">The logger.</param>
         public ChatDataProvider(
             IMemoryCache cache,
-            ILogger<ChatDataProvider<TChatMessage>> logger)
+            ILogger<ChatDataProvider<TChatMessage, TMessageContent>> logger)
         {
             _cache = cache;
             _logger = logger;
@@ -52,7 +54,7 @@ namespace LLMServiceHub.Service
         /// <param name="message">The message.</param>
         /// <param name="role">The role.</param>
         /// <returns></returns>
-        public async Task<List<TChatMessage>> AddChatMessage(List<TChatMessage> conversation, string message, string role = "user")
+        public async Task<List<TChatMessage>> AddChatMessage(List<TChatMessage> conversation, TMessageContent message, string role = "user")
         {
             AddChatRound(conversation, message, role);
             return await Task.FromResult(conversation);
@@ -66,6 +68,13 @@ namespace LLMServiceHub.Service
         public async Task SaveChat(string conversationId, IEnumerable<TChatMessage> conversation)
         {
             _cache.Set(conversationId, conversation, TimeSpan.FromMinutes(30));
+
+#if DEBUG
+            _logger.LogDebug(@$"【save chat】{JsonSerializer.Serialize(conversation, new JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            })}");
+#endif
 
             await Task.CompletedTask.ConfigureAwait(false);
         }
@@ -88,7 +97,7 @@ namespace LLMServiceHub.Service
             }
         }
 
-        internal List<TChatMessage> AddChatRound(List<TChatMessage> conversation, string message, string role = "user")
+        internal List<TChatMessage> AddChatRound(List<TChatMessage> conversation, TMessageContent message, string role = "user")
         {
             conversation.Add(new TChatMessage
             {

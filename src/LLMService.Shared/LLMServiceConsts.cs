@@ -26,6 +26,21 @@ namespace LLMService.Shared
         #endregion
 
 
+        /****** OpenAI LLM ******/
+
+        #region 
+        /// <summary>
+        /// The open ai API authority
+        /// </summary>
+        public const string OpenAIApiAuthority = "https://api.openai.com";
+
+        /// <summary>
+        /// The open ai API client name
+        /// </summary>
+        public const string OpenAIApiClientName = "_OpenAI_Client";
+        #endregion
+
+
         /***** 智能绘画 ****/
 
         #region

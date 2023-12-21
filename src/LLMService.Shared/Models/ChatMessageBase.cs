@@ -6,7 +6,7 @@ namespace LLMService.Shared.Models
     /// 
     /// </summary>
     /// <seealso cref="IChatMessage" />
-    public class BaiduWenxinMessage : IChatMessage
+    public class ChatMessageBase : IChatMessage
     {
         /// <summary>
         /// Gets or sets the role.

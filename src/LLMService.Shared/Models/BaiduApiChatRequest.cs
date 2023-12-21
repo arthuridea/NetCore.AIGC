@@ -7,7 +7,7 @@ namespace LLMService.Shared.Models
     /// 内部调用百度api的接口
     /// TODO:字段不够全
     /// </summary>
-    public class BaiduApiChatRequest: AIFeatureModel
+    public class BaiduApiChatRequest: AIFeatureModel, IBackendChatRequest<ChatMessageBase>
     {
         /// <summary>
         /// Gets or sets the messages.
@@ -17,7 +17,7 @@ namespace LLMService.Shared.Models
         /// </value>
         [JsonPropertyName("messages")]
         [Required]
-        public List<BaiduWenxinMessage> Messages { get; set; }
+        public List<ChatMessageBase> Messages { get; set; }
         /// <summary>
         /// 表示最终用户的唯一标识符，可以监视和检测滥用行为，防止接口恶意调用
         /// </summary>

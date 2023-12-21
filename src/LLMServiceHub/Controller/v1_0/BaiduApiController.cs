@@ -11,6 +11,7 @@ using LLMService.Shared.Extensions;
 using LLMService.Shared.ServiceInterfaces;
 using LLMService.Shared.Models;
 using Microsoft.AspNetCore.Identity;
+using LLMService.Baidu.Wenxinworkshop;
 
 namespace LLMServiceHub.Controller.v1_0
 {
@@ -23,22 +24,26 @@ namespace LLMServiceHub.Controller.v1_0
     /// </remarks>
     /// <param name="baiduApiService">The baidu API service.</param>
     /// <param name="ernieVilgApiService">The ernie vilg API service.</param>
-    
-    // use oidc jwt authentication or local identity
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+// use oidc jwt authentication or local identity
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+#if !DEBUG
     [Authorize]
+#endif
     [ApiVersion("1.0")]
     [ApiController]
     [Route("api/v{version:apiVersion}/baidu")]
     [ApiExplorerSettings(GroupName = "百度大模型")]
     public class BaiduApiController(
-        IAIChatApiService<ChatRequest, ChatApiResponse> baiduApiService,
+        IBaiduErniebotLLMService baiduApiService,
         IAIPaintApiService<PaintApplyRequest, PaintResultResponse> ernieVilgApiService) : ControllerBase
     {
         /// <summary>
         /// The API service
         /// </summary>
-        private readonly IAIChatApiService<ChatRequest, ChatApiResponse> _apiService = baiduApiService;
+        //private readonly IBaiduWenxinApiService _apiService = baiduApiService;
+        private readonly IBaiduErniebotLLMService _apiService = baiduApiService;
         /// <summary>
         /// The ernie vilg API service
         /// </summary>

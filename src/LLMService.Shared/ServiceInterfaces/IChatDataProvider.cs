@@ -7,8 +7,9 @@ namespace LLMService.Shared.ServiceInterfaces
     /// 
     /// </summary>
     /// <typeparam name="TChatMessage">The type of the chat message.</typeparam>
-    public interface IChatDataProvider<TChatMessage>
-        where TChatMessage : IChatMessage, new()
+    /// <typeparam name="TMessageContent"></typeparam>
+    public interface IChatDataProvider<TChatMessage, TMessageContent>
+        where TChatMessage : IChatMessage<TMessageContent>, new()
     {
         /// <summary>
         /// Gets the conversation.
@@ -25,7 +26,7 @@ namespace LLMService.Shared.ServiceInterfaces
         /// <param name="message">The message.</param>
         /// <param name="role">The role.</param>
         /// <returns></returns>
-        Task<List<TChatMessage>> AddChatMessage(List<TChatMessage> conversation, string message, string role = "user");
+        Task<List<TChatMessage>> AddChatMessage(List<TChatMessage> conversation, TMessageContent message, string role = "user");
 
         /// <summary>
         /// Saves the chat.

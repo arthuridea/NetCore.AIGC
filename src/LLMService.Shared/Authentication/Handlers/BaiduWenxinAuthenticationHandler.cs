@@ -15,7 +15,7 @@ namespace LLMService.Shared.Authentication.Handlers
         /// <summary>
         /// The client credentials
         /// </summary>
-        private readonly ClientCredentials _clientCredentials;
+        private readonly OAuth2BackendServiceConfig _clientCredentials;
         /// <summary>
         /// The access control HTTP client
         /// </summary>
@@ -33,7 +33,7 @@ namespace LLMService.Shared.Authentication.Handlers
         /// <param name="identityAuthority">The identity authority.</param>
         public BaiduApiAuthenticationHandler(
             IAccessTokensCacheManager accessTokensCacheManager,
-            ClientCredentials clientCredentials,
+            OAuth2BackendServiceConfig clientCredentials,
             string identityAuthority)
             : this(accessTokensCacheManager,
                 clientCredentials,
@@ -50,7 +50,7 @@ namespace LLMService.Shared.Authentication.Handlers
         /// <exception cref="AuthenticationHandlerException"></exception>
         public BaiduApiAuthenticationHandler(
             IAccessTokensCacheManager accessTokensCacheManager,
-            ClientCredentials clientCredentials,
+            OAuth2BackendServiceConfig clientCredentials,
             HttpClient accessControlHttpClient)
         {
             _accessTokensCacheManager = accessTokensCacheManager;
@@ -133,7 +133,7 @@ namespace LLMService.Shared.Authentication.Handlers
         /// <param name="credentials">The credentials.</param>
         /// <returns></returns>
         /// <exception cref="AuthenticationHandlerException"></exception>
-        private async Task<TokenResponse> GetNewToken(ClientCredentials credentials)
+        private async Task<TokenResponse> GetNewToken(OAuth2BackendServiceConfig credentials)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, _clientCredentials.TokenEndpoint);
             request.Content = new FormUrlEncodedContent(new[]

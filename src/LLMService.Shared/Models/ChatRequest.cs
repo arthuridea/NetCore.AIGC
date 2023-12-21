@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using static LLMService.Shared.Models.BaiduApiDefaults;
+using static LLMService.Shared.Models.LLMApiDefaults;
 
 namespace LLMService.Shared.Models
 {
@@ -8,7 +8,7 @@ namespace LLMService.Shared.Models
     /// 对话请求实体
     /// </summary>
     /// <seealso cref="AIFeatureModel" />
-    public class ChatRequest: AIFeatureModel
+    public class ChatRequest: AIFeatureModel, IChatRequest<string>
     {
         /// <summary>
         /// 会话编号

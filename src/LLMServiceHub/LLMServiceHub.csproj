@@ -63,6 +63,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LLMService.Baidu.ErnieVilg\LLMService.Baidu.ErnieVilg.csproj" />
     <ProjectReference Include="..\LLMService.Baidu.Wenxinworkshop\LLMService.Baidu.Wenxinworkshop.csproj" />
+    <ProjectReference Include="..\LLMService.OpenAI.ChatGPT\LLMService.OpenAI.ChatGPT.csproj" />
   </ItemGroup>
 
 </Project>

@@ -72,7 +72,7 @@ namespace LLMService.Baidu.ErnieVilg
 
             var _client = GetClient();
 
-            string paintApiEndpoint = BaiduApiDefaults.ErnieVilgV2ApiEndpoint;
+            string paintApiEndpoint = LLMApiDefaults.ErnieVilgV2ApiEndpoint;
             var response = await _client.PostAsJsonAsync(paintApiEndpoint, request);
             response.EnsureSuccessStatusCode();
 
@@ -91,7 +91,7 @@ namespace LLMService.Baidu.ErnieVilg
         private async Task<PaintResultResponse> challengePaintResult(HttpClient client, string id, int initDelayInSeconds = 3000)
         {
             PaintResultResponse result = new();
-            string paintResultApiEndpoint = BaiduApiDefaults.ErnieVilgV2ResultApiEndpoint;
+            string paintResultApiEndpoint = LLMApiDefaults.ErnieVilgV2ResultApiEndpoint;
             bool taskFinished = false;
             int retrys = 0;
             Thread.Sleep(initDelayInSeconds);

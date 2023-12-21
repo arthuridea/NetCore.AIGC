@@ -115,6 +115,12 @@ let sendBtnClickEventHandler = function (e) {
     //console.log(msg);
     $(Object.keys(conversations)).each(function (index, key) {
         //console.log(key);
+        var availableLLM = $('#chk-' + key).is(':checked');
+        console.log(`MODEL: ${key} -> ${availableLLM}`);
+
+        if (!availableLLM){
+            return false;
+        }
         let rndStr = Math.random().toString(36).slice(-8);
         let request = conversations[key];
         let wrapperId = "#wrapper_" + key;

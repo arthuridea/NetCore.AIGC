@@ -38,6 +38,10 @@ namespace LLMService.Shared.Extensions
             {
                 response.ContentType = "text/event-stream;charset=utf-8";
             }
+            else
+            {
+                response.ContentType = "application/json";
+            }
         }
     }
 }

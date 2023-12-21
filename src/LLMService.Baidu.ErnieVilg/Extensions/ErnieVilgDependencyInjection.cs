@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddErnieVilg(this IServiceCollection services, IConfiguration configuration, string ernieVilgConfigKey = "BaiduErnieVilgSettings")
         {
             // 百度配置文件
-            var ernieVilgSettings = configuration.GetSection(ernieVilgConfigKey).Get<ClientCredentials>();
+            var ernieVilgSettings = configuration.GetSection(ernieVilgConfigKey).Get<OAuth2BackendServiceConfig>();
 
             // 智能绘画客户端
             services.AddHttpClient(LLMServiceConsts.BaiduErnieVilgApiClientName, client =>

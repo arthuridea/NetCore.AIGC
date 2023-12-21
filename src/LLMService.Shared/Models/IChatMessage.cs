@@ -9,7 +9,15 @@ namespace LLMService.Shared.Models
     /// <summary>
     /// 
     /// </summary>
-    public interface IChatMessage
+    public interface IChatMessage : IChatMessage<string>
+    {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TContent">The type of the content.</typeparam>
+    public interface IChatMessage<TContent>
     {
         /// <summary>
         /// Gets or sets the role.
@@ -24,6 +32,6 @@ namespace LLMService.Shared.Models
         /// <value>
         /// The content.
         /// </value>
-        string Content { get; set; }
+        TContent Content { get; set; }
     }
 }

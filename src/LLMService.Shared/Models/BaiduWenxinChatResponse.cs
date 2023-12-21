@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using static LLMService.Shared.Models.BaiduApiDefaults;
+using static LLMService.Shared.Models.LLMApiDefaults;
 
 namespace LLMService.Shared.Models
 {
@@ -87,14 +87,14 @@ namespace LLMService.Shared.Models
         /// The usage.
         /// </value>
         [JsonPropertyName("usage")]
-        public BaiduWenxinUsage Usage { get; set; }
+        public ChatApiTokenUsage Usage { get; set; }
     }
 
     /// <summary>
     /// baidu API response wrapper
     /// </summary>
     /// <seealso cref="BaiduWenxinChatResponse" />
-    public class ChatApiResponse : BaiduWenxinChatResponse
+    public class ChatApiResponse: IChatResponse<BaiduWenxinChatResponse>
     {
         /// <summary>
         /// Gets or sets the conversation identifier.
@@ -111,40 +111,55 @@ namespace LLMService.Shared.Models
         /// <example>2</example>
         [JsonPropertyName("model")]
         public LLM_ModelType ModelSchema { get; set; } = LLM_ModelType.ERNIE_BOT_TURBO;
-
+        /// <summary>
+        /// Gets or sets the result.
+        /// </summary>
+        /// <value>
+        /// The result.
+        /// </value>
+        [JsonPropertyName("result")]
+        public BaiduWenxinChatResponse Result { get; set; }
+        /// <summary>
+        /// Gets a value indicating whether [need clear history].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [need clear history]; otherwise, <c>false</c>.
+        /// </value>
+        [JsonPropertyName("need_clear_history")]
+        public bool NeedClearHistory => Result?.NeedClearHistory ?? false;
     }
 
 
-    /// <summary>
-    /// baidu API token usage per request.
-    /// </summary>
-    public class BaiduWenxinUsage
-    {
-        /// <summary>
-        /// Gets or sets the prompt tokens.
-        /// </summary>
-        /// <value>
-        /// The prompt tokens.
-        /// </value>
-        [JsonPropertyName("prompt_tokens")]
-        public int PromptTokens { get; set; }
-        /// <summary>
-        /// Gets or sets the completion tokens.
-        /// </summary>
-        /// <value>
-        /// The completion tokens.
-        /// </value>
-        [JsonPropertyName("completion_tokens")]
-        public int CompletionTokens { get; set; }
-        /// <summary>
-        /// Gets or sets the total tokens.
-        /// </summary>
-        /// <value>
-        /// The total tokens.
-        /// </value>
-        [JsonPropertyName("total_tokens")]
-        public int TotalTokens {  get; set; }
-    }
+    ///// <summary>
+    ///// baidu API token usage per request.
+    ///// </summary>
+    //public class BaiduWenxinUsage
+    //{
+    //    /// <summary>
+    //    /// Gets or sets the prompt tokens.
+    //    /// </summary>
+    //    /// <value>
+    //    /// The prompt tokens.
+    //    /// </value>
+    //    [JsonPropertyName("prompt_tokens")]
+    //    public int PromptTokens { get; set; }
+    //    /// <summary>
+    //    /// Gets or sets the completion tokens.
+    //    /// </summary>
+    //    /// <value>
+    //    /// The completion tokens.
+    //    /// </value>
+    //    [JsonPropertyName("completion_tokens")]
+    //    public int CompletionTokens { get; set; }
+    //    /// <summary>
+    //    /// Gets or sets the total tokens.
+    //    /// </summary>
+    //    /// <value>
+    //    /// The total tokens.
+    //    /// </value>
+    //    [JsonPropertyName("total_tokens")]
+    //    public int TotalTokens {  get; set; }
+    //}
 
     /// <summary>
     /// 

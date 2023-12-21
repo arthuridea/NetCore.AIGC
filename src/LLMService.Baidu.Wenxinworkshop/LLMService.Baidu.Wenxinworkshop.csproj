@@ -23,4 +23,8 @@
     <ProjectReference Include="..\LLMService.Shared\LLMService.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+
 </Project>

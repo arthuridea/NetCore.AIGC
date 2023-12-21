@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// AI Chat interface
-    /// <para>NOTE: Should ALWAYS initialize <seealso cref="IChatDataProvider{TChatMessage}"/> first before DI.</para>
+    /// <para>NOTE: Should ALWAYS initialize <seealso cref="IChatDataProvider{TChatMessage, TChatResponse}"/> first before DI.</para>
     /// </summary>
     /// <typeparam name="TChatRequest">The type of the chat request.</typeparam>
     /// <typeparam name="TChatResponse">The type of the chat response.</typeparam>

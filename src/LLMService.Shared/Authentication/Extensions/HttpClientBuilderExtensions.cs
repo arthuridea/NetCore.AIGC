@@ -27,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IHttpClientBuilder AddBaiduApiAuthentication<TAuthenticationHandler>(
             this IServiceCollection services,
-            Func<IServiceProvider, ClientCredentials> credentialsProvider,
+            Func<IServiceProvider, OAuth2BackendServiceConfig> credentialsProvider,
             Func<IServiceProvider, string> identityAuthorityProvider)
             where TAuthenticationHandler : DelegatingHandler
         {
@@ -60,7 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IHttpClientBuilder AddBaiduApiAuthentication<TAuthenticationHandler>(
             this IServiceCollection services, 
-            ClientCredentials credentials, 
+            OAuth2BackendServiceConfig credentials, 
             string identityAuthority)
             where TAuthenticationHandler : DelegatingHandler
         {
@@ -83,7 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="identityAuthorityProvider">The identity authority provider.</param>
         /// <returns></returns>
         public static IHttpClientBuilder AddBaiduApiAuthentication<TAuthenticationHandler>(this IHttpClientBuilder builder,
-            Func<IServiceProvider, ClientCredentials> credentialsProvider,
+            Func<IServiceProvider, OAuth2BackendServiceConfig> credentialsProvider,
             Func<IServiceProvider, string> identityAuthorityProvider)
             where TAuthenticationHandler : DelegatingHandler
         {
@@ -109,7 +109,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IHttpClientBuilder AddBaiduApiAuthentication<TAuthenticationHandler>(
             this IHttpClientBuilder builder, 
-            ClientCredentials credentials, 
+            OAuth2BackendServiceConfig credentials, 
             string identityAuthority)
             where TAuthenticationHandler : DelegatingHandler
         {
@@ -130,7 +130,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         private static TAuthenticationHandler CreateDelegatingHandler<TAuthenticationHandler>(
             IServiceProvider provider,
-            ClientCredentials credentials, 
+            OAuth2BackendServiceConfig credentials, 
             string identityAuthority)
             where TAuthenticationHandler : DelegatingHandler
         {

@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddWenxinworkshop(this IServiceCollection services, IConfiguration configuration, string wenxinworkshopConfigKey = "BaiduWenxinSettings")
         {
             // 百度配置文件
-            var wenxinSettings = configuration.GetSection(wenxinworkshopConfigKey).Get<ClientCredentials>();
+            var wenxinSettings = configuration.GetSection(wenxinworkshopConfigKey).Get<OAuth2BackendServiceConfig>();
 
             // 文心大模型客户端
 
@@ -39,7 +39,9 @@ namespace Microsoft.Extensions.DependencyInjection
                     LLMServiceConsts.BaiduWenxinApiAuthority);
 
 
-            services.AddTransient<IAIChatApiService<ChatRequest, ChatApiResponse>, BaiduWenxinApiService>();
+            //services.AddTransient<IAIChatApiService<ChatRequest, ChatApiResponse>, BaiduWenxinApiService>();
+            //services.AddTransient<IBaiduWenxinApiService, BaiduWenxinApiService>();
+            services.AddTransient<IBaiduErniebotLLMService, BaiduErniebotLLMService>();
 
             return services;
         }
