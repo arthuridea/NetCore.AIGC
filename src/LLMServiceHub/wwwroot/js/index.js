@@ -209,10 +209,10 @@ let sendBtnClickEventHandler = function (e) {
                 contentType: 'application/json',
                 data: JSON.stringify(request)
             }).done(function (data, status, xhr) {
-                //console.log(data);
+                console.log(data);
                 if (data) {
                     $(`#reply_time_${replyId}`).html(dateFormat('HH:MM:SS', new Date()));
-                    var markdeownResult = data.result;
+                    var markdeownResult = data.result.result;
                     const typing = new EasyTyper({
                         output: '',
                         isEnd: false,
