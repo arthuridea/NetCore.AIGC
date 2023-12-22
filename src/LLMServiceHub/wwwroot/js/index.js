@@ -212,7 +212,7 @@ let sendBtnClickEventHandler = function (e) {
                 console.log(data);
                 if (data) {
                     $(`#reply_time_${replyId}`).html(dateFormat('HH:MM:SS', new Date()));
-                    var markdeownResult = data.result.result;
+                    var markdeownResult = data.aigc_message;
                     const typing = new EasyTyper({
                         output: '',
                         isEnd: false,

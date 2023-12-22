@@ -64,9 +64,9 @@ namespace LLMServiceHub.Configuration
         {
             var info = new OpenApiInfo()
             {
-                Title = "百度千帆大模型 API",
+                Title = "Baidu Erniebot & OpenAI ChatGPT LLM API for .NET",
                 Version = $"v{apiDescription.ApiVersion.ToString()}",
-                Description = " API for LLMServiceHub ",
+                Description = " API for Erniebot|ErnieVilg|ChatGPT. ",
                 Contact = new OpenApiContact() { Name = "arthuridea", Email = "arthuridea@gmail.com" }
             };
 

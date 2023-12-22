@@ -7,7 +7,7 @@ namespace LLMService.OpenAI.ChatGPT.Model
     /// 
     /// </summary>
     /// <seealso cref="IChatResponse{TChatApiResponse}" />
-    public class OpenAIChatResponse: IChatResponse<OpenAIBackendResponseModel>
+    public class OpenAIChatResponse : IChatResponse<OpenAIBackendResponseModel>
     {
         /// <summary>
         /// Gets or sets the result.
@@ -15,8 +15,8 @@ namespace LLMService.OpenAI.ChatGPT.Model
         /// <value>
         /// The result.
         /// </value>
-        [JsonPropertyName("result")]
-        public OpenAIBackendResponseModel Result { get; set; }
+        [JsonPropertyName("llm_response_data")]
+        public OpenAIBackendResponseModel LLMResponseData { get; set; }
         /// <summary>
         /// Gets or sets the conversation identifier.
         /// </summary>
@@ -41,6 +41,29 @@ namespace LLMService.OpenAI.ChatGPT.Model
         /// </value>
         [JsonPropertyName("need_clear_history")]
         public bool NeedClearHistory { get; set; }
+
+        /// <summary>
+        /// latest aigc message.
+        /// </summary>
+        /// <value>
+        /// The aigc message.
+        /// </value>
+        [JsonPropertyName("aigc_message")]
+        public string AIGCMessage {
+            get
+            {
+                var ret = LLMResponseData?.Choices.FirstOrDefault();
+                if(ret.Message == null)
+                {
+                    return ret.Delta?.Content;
+                }
+                else
+                {
+                    return ret.Message?.Content;
+                }
+            }
+
+        }
 
 
     }

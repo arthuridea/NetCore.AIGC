@@ -1,4 +1,5 @@
-﻿using LLMService.Shared;
+﻿using LLMService.Baidu.ErnieVilg.Models;
+using LLMService.Shared;
 using LLMService.Shared.Extensions;
 using LLMService.Shared.Models;
 using LLMService.Shared.ServiceInterfaces;

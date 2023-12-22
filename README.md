@@ -1,16 +1,20 @@
-# 百度文心千帆大模型（文心一言、智能作画）SDK (.net6+)
+# OpenAI ChatGPT、文心一言、百度智能作画 SDK (.net6.0+)
 
 ![.NET6.0](https://badgen.net/badge/.NET/6.0/green)
 ![.NET8.0](https://badgen.net/badge/.NET/8.0/green)
 ![license](https://badgen.net/badge/license/mit)
 
-`LLMService` 是一个非百度官方的开源项目.提供了接口方法能够在`.NET6.0` `.NET8.0`项目中使用接口调用百度文心大模型和百度智能绘图高级版功能.
+`Aeex.LLMService` 是一个非官方的开源项目.提供了在`.NET6.0` `.NET8.0`项目中使用接口调用OpenAI ChatGPT、百度文心大模型和百度智能绘图高级版功能.
 
 ## 已知问题
 
 ## 安装
 
 通过`Nuget`安装.
+
+### OpenAI ChatGPT
+
+
 
 ### 文心大模型
 
@@ -53,9 +57,13 @@ public void ConfigureServices(IServiceCollection services, IConfiguration config
     // inject image storage provider
     services.AddTransient<IImageStorageProvider, LocalImageStorageProvider>();
     // inject chat data provider
-    services.AddTransient<IChatDataProvider<BaiduWenxinMessage>, ChatDataProvider<BaiduWenxinMessage>>();
+    // for baidu chat caching
+    services.AddTransient<IChatDataProvider<ChatMessageBase, string>, ChatDataProvider<ChatMessageBase, string>>();
+    // for chatgpt
+    services.AddTransient<IChatDataProvider<OpenAIChatMessage, List<OpenAIMessageContent>>, ChatDataProvider<OpenAIChatMessage, List<OpenAIMessageContent>>>();
     
-    // inject baidu api service
+    // inject service
+    services.AddChatGPT(config);
     services.AddWenxinworkshop(config);
     services.AddErnieVilg(config);
 
@@ -116,19 +124,24 @@ public void ConfigureServices(IServiceCollection services, IConfiguration config
 
 ## 支持的模型
 
-`LLMService` 支持的语言模型列表如下：
+`Aeex.LLMService` 支持的语言模型列表如下：
 
 | 模型 | 描述 |
 | --- | --- |
 | ERNIEBot | 百度自行研发的大语言模型，覆盖海量中文数据，具有更强的对话问答、内容创作生成等能力。 |
 | ERNIEBotTurbo | 百度自行研发的大语言模型，覆盖海量中文数据，具有更强的对话问答、内容创作生成等能力，响应速度更快。 |
 | ERNIE-Bot-4 | ERNIE-Bot-4是百度自行研发的大语言模型，覆盖海量中文数据，具有更强的对话问答、内容创作生成等能力。 |
+| GPT_3_5_TURBO| |
+| GPT_3_5_TURBO_1106| |
+| GPT_4| |              
+| GPT_4_32K| |
 
 ## 项目说明
 
 | 项目 | 说明 |
 | --- | --- |
-| `LLMService.Shared` | 公共模型和接口及扩展方法 |
+| `LLMService.Shared` | 公共模型和接口及扩展方法 |            
+| `LLMService.OpenAI.ChatGPT` | ChatGPT大模型项目，目前支持文字对话|
 | `LLMService.Baidu.WenxinWorkshop` | 百度千帆大模型项目，目前提供ErnieBot系列API调用支持 |
 | `LLMService.Baidu.ErnieVilg` | 百度智能创作模块，目前支持AI作画高级版2 |
 | `LLMServiceHub` | `.NET8 MVC WebApi` 项目示例，填入自己的 `application id`可以完美调用，实现了基本的接口 |

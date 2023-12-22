@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace LLMService.Shared.Models
+namespace LLMService.Baidu.ErnieVilg.Models
 {
     /// <summary>
     /// 

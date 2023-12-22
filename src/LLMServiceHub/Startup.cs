@@ -3,20 +3,13 @@ using Asp.Versioning.ApiExplorer;
 using Asp.Versioning.Conventions;
 using IdentityModel;
 using LLMService.Baidu.ErnieVilg;
-using LLMService.Baidu.Wenxinworkshop;
 using LLMService.OpenAI.ChatGPT.Model;
-using LLMService.Shared;
-using LLMService.Shared.Authentication.Handlers;
-using LLMService.Shared.Authentication.Models;
 using LLMService.Shared.DataProvider;
 using LLMService.Shared.Models;
 using LLMService.Shared.ServiceInterfaces;
 using LLMServiceHub.Common;
 using LLMServiceHub.Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -77,7 +70,7 @@ namespace LLMServiceHub
             services.AddTransient<IChatDataProvider<ChatMessageBase, string>, ChatDataProvider<ChatMessageBase, string>>();
             services.AddTransient<IChatDataProvider<OpenAIChatMessage, List<OpenAIMessageContent>>, ChatDataProvider<OpenAIChatMessage, List<OpenAIMessageContent>>>();
 
-            // inject baidu api service
+            // inject service
             services.AddWenxinworkshop(Configuration);
             services.AddChatGPT(Configuration);
             services.AddErnieVilg(Configuration);

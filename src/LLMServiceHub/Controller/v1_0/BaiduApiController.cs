@@ -1,17 +1,12 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Polly;
-using Swashbuckle.AspNetCore.Annotations;
-using LLMServiceHub.Common;
-using LLMService.Shared.Extensions;
-using LLMService.Shared.ServiceInterfaces;
-using LLMService.Shared.Models;
-using Microsoft.AspNetCore.Identity;
+using LLMService.Baidu.ErnieVilg.Models;
 using LLMService.Baidu.Wenxinworkshop;
+using LLMService.Baidu.Wenxinworkshop.Models;
+using LLMService.Shared.Extensions;
+using LLMService.Shared.Models;
+using LLMService.Shared.ServiceInterfaces;
+using LLMServiceHub.Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LLMServiceHub.Controller.v1_0
 {
@@ -25,8 +20,8 @@ namespace LLMServiceHub.Controller.v1_0
     /// <param name="baiduApiService">The baidu API service.</param>
     /// <param name="ernieVilgApiService">The ernie vilg API service.</param>
 
-// use oidc jwt authentication or local identity
-//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // use oidc jwt authentication or local identity
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
 #if !DEBUG
     [Authorize]
@@ -56,7 +51,7 @@ namespace LLMServiceHub.Controller.v1_0
         /// <returns></returns>
         [HttpPost("chat")]
         [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(ChatApiResponse), 200)]
+        [ProducesResponseType(typeof(BaiduChatApiResponse), 200)]
         [AppExceptionInterceptor(ReturnCode = -100001, ApiVersion = "1.0")]
         public async Task Chat(ChatRequest request)
         {

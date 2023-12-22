@@ -1,8 +1,8 @@
 ﻿using LLMService.Baidu.ErnieVilg;
+using LLMService.Baidu.ErnieVilg.Models;
 using LLMService.Shared;
 using LLMService.Shared.Authentication.Handlers;
 using LLMService.Shared.Authentication.Models;
-using LLMService.Shared.Models;
 using LLMService.Shared.ServiceInterfaces;
 using Microsoft.Extensions.Configuration;
 

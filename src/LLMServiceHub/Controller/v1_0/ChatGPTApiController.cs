@@ -1,9 +1,8 @@
 ﻿using Asp.Versioning;
 using LLMService.OpenAI.ChatGPT;
+using LLMService.OpenAI.ChatGPT.Model;
 using LLMService.Shared.Models;
 using LLMServiceHub.Common;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LLMServiceHub.Controller.v1_0
@@ -35,7 +34,7 @@ namespace LLMServiceHub.Controller.v1_0
         /// <returns></returns>
         [HttpPost("chat")]
         [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(ChatApiResponse), 200)]
+        [ProducesResponseType(typeof(OpenAIChatResponse), 200)]
         [AppExceptionInterceptor(ReturnCode = -100001, ApiVersion = "1.0")]
         public async Task Chat(ChatRequest request)
         {

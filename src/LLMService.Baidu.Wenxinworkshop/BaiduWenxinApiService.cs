@@ -1,15 +1,11 @@
-﻿using LLMService.Shared;
+﻿using LLMService.Baidu.Wenxinworkshop.Models;
+using LLMService.Shared.Authentication.Models;
+using LLMService.Shared.ChatService;
 using LLMService.Shared.Models;
-using LLMService.Shared.Extensions;
 using LLMService.Shared.ServiceInterfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Net.Http.Json;
-using System.Text.Json;
-using LLMService.Shared.ChatService;
-using LLMService.Shared.Authentication.Models;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic;
 
 namespace LLMService.Baidu.Wenxinworkshop
 {
@@ -33,10 +29,10 @@ namespace LLMService.Baidu.Wenxinworkshop
     /// <seealso cref="ChatServiceBase{TRequestDto, TResponseDto, TBackendRequestDto, TBackendResponseDto, TChatMessage, TMessageContent, TChatServiceOption}" />
     /// <seealso cref="IBaiduErniebotLLMService" />
     public class BaiduErniebotLLMService :
-        ChatServiceBase<ChatRequest, ChatApiResponse,
+        ChatServiceBase<ChatRequest, BaiduChatApiResponse,
                         BaiduApiChatRequest, BaiduWenxinChatResponse,
                         ChatMessageBase, string,
-                        OAuth2BackendServiceConfig>, IBaiduErniebotLLMService, IAIChatApiService<ChatRequest, ChatApiResponse>
+                        OAuth2BackendServiceConfig>, IBaiduErniebotLLMService, IAIChatApiService<ChatRequest, BaiduChatApiResponse>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaiduErniebotLLMService"/> class.

@@ -4,17 +4,9 @@ using LLMService.Shared.ServiceInterfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace LLMService.Shared.ChatService
 {
@@ -134,7 +126,7 @@ namespace LLMService.Shared.ChatService
                 apiResponseData = await apiResponse.DeserializeAsync<TBackendResponseDto>(logger: _logger);
                 result.ConversationId = request.ConversationId;
                 result.ModelSchema = request.ModelSchema;
-                result.Result = apiResponseData;
+                result.LLMResponseData = apiResponseData;
 
                 //只有流模式会返回是否结束标识，在非流式请求中直接设置为true.
                 //result.IsEnd = !request.Stream || result.IsEnd;
@@ -312,7 +304,7 @@ namespace LLMService.Shared.ChatService
                     TResponseDto result = new();
                     result.ConversationId = request.ConversationId;
                     result.ModelSchema = request.ModelSchema;
-                    result.Result = ldata;
+                    result.LLMResponseData = ldata;
 
                     return result;
                     //await GenerateSSEResponse(response, result, cancellationToken);

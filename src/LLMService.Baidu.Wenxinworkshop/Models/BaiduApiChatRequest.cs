@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LLMService.Shared.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace LLMService.Shared.Models
+namespace LLMService.Baidu.Wenxinworkshop.Models
 {
     /// <summary>
     /// 内部调用百度api的接口

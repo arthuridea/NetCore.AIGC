@@ -34,12 +34,19 @@ namespace LLMService.Shared.Models
         /// </value>
         bool NeedClearHistory { get; }
         /// <summary>
-        /// Gets or sets the result.
+        /// Gets or sets the LLM response data.
         /// </summary>
         /// <value>
-        /// The result.
+        /// The LLM response data.
         /// </value>
-        TChatApiResponse Result { get; set; }
+        TChatApiResponse LLMResponseData { get; set; }
+        /// <summary>
+        /// Gets the aigc message.
+        /// </summary>
+        /// <value>
+        /// The aigc message.
+        /// </value>
+        string AIGCMessage { get; }
 
     }
 }
