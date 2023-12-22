@@ -19,9 +19,15 @@
           "files": [
             "**/bin/Release/net8.0/**.dll"
           ]
+        },
+        {
+          "src": "../src/LLMService.OpenAI.ChatGPT",
+          "files": [
+            "**/bin/Release/net8.0/**.dll"
+          ]
         }
       ],
-      "dest": "dist/api/v0.0.1.4-preview"
+      "dest": "dist/api/v0.0.2.0-preview"
     }
   ],
   "build": {
@@ -44,7 +50,7 @@
         ]
       }
     ],
-    "output": "dist/_site/v0.0.1.4-preview",
+    "output": "dist/_site/v0.0.2.0-preview",
     "template": [
       "default",
       "modern",
@@ -55,7 +61,7 @@
     "globalMetadata": {
       "_appName": "Aeex.LLMService.Baidu",
       "_appTitle": "Aeex.LLMService.Baidu",
-      "_currentVersion": "0.0.1.4-preview",
+      "_currentVersion": "0.0.2.0-preview",
       "_enableSearch": true,
       "pdf": true
     }
