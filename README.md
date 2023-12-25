@@ -1,4 +1,4 @@
-# OpenAI ChatGPT、文心一言、百度智能作画 SDK (.net6.0+)
+# ChatGPT、文心一言、百度智能作画 SDK (.net6.0+)
 
 ![.NET6.0](https://badgen.net/badge/.NET/6.0/green)
 ![.NET8.0](https://badgen.net/badge/.NET/8.0/green)
@@ -14,7 +14,16 @@
 
 ### OpenAI ChatGPT
 
+[Nuget地址](https://www.nuget.org/packages/Aeex.LLMService.OpenAI.ChatGPT/)
 
+#### Package Manager
+``` bat
+Install-Package Aeex.LLMService.OpenAI.ChatGPT
+```
+#### Cli
+``` bat
+dotnet add package Aeex.LLMService.OpenAI.ChatGPT
+```
 
 ### 文心大模型
 
