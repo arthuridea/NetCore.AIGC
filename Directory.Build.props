@@ -1,12 +1,12 @@
 <Project>
 
   <PropertyGroup>
-    <Version>0.0.2.0-preview</Version>
+    <Version>0.0.2.1-preview</Version>
     <Authors>arthuridea</Authors>
     <LangVersion>latest</LangVersion>
-	<Description>A dotnet Library for Baidu ernie-bot and ErnievilgV2</Description>
+	<Description>A dotnet Library for ChatGPT, Baidu ernie-bot and ErnievilgV2</Description>
 	<Copyright>MIT</Copyright>
-    <PackageTags>A dotnet Library for Baidu ernie-bot and ErnievilgV2</PackageTags>
+    <PackageTags>A dotnet Library for ChatGPT, Baidu ernie-bot and ErnievilgV2</PackageTags>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageProjectUrl>https://github.com/arthuridea/NetCore.BaiduAIGC</PackageProjectUrl>

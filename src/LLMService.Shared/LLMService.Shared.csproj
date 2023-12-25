@@ -2,6 +2,12 @@
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Aeex.LLMService.Shared</PackageId>
+		<PackageReleaseNotes>
+			0.0.2.0-preview Init publish.
+		</PackageReleaseNotes>
 	</PropertyGroup>
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -9,5 +15,12 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 </Project>

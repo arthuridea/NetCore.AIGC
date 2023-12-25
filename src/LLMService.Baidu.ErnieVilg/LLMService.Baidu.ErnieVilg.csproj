@@ -18,8 +18,12 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\LLMService.Shared\LLMService.Shared.csproj" />
-  </ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'DEBUG'">
+		<ProjectReference Include="..\LLMService.Shared\LLMService.Shared.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'RELEASE'">
+		<PackageReference Include="Aeex.LLMService.Shared" Version="0.0.2.1-preview" />
+	</ItemGroup>
 
 </Project>
