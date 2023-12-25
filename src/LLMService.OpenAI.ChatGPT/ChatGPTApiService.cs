@@ -13,7 +13,10 @@ namespace LLMService.OpenAI.ChatGPT
 {
 
     /// <summary>
-    /// 
+    /// ChatGPT LLM chat service.
+    /// <para>
+    /// Derived <see cref="ChatServiceBase{TRequestDto, TResponseDto, TBackendRequestDto, TBackendResponseDto, TChatMessage, TMessageContent, TChatServiceOption}" />, an implementation of <see cref="IChatGPTLLMService"/> interface.
+    /// </para>
     /// </summary>
     /// <seealso cref="ChatServiceBase{TRequestDto, TResponseDto, TBackendRequestDto, TBackendResponseDto, TChatMessage, TMessageContent, TChatServiceOption}" />
     public class ChatGPTLLMService: 
@@ -93,7 +96,8 @@ namespace LLMService.OpenAI.ChatGPT
     }
 
     /// <summary>
-    /// 
+    /// ChatGPT LLM chat service interfaces.
+    /// <para>Provide interfaces for chat with LLM.</para>
     /// </summary>
     public interface IChatGPTLLMService
     {
@@ -102,7 +106,7 @@ namespace LLMService.OpenAI.ChatGPT
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>Chat Task.</returns>
         Task Chat(ChatRequest request, CancellationToken cancellationToken = default);
     }
     

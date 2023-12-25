@@ -81,12 +81,17 @@ public void ConfigureServices(IServiceCollection services, IConfiguration config
     [ApiVersion("1.0")]
     [ApiController]
     [Route("api/v{version:apiVersion}/baidu")]
-    [ApiExplorerSettings(GroupName = "百度大模型")]
     public class BaiduApiController(
-        IAIChatApiService<ChatRequest, ChatApiResponse> baiduApiService,
+        IBaiduErniebotLLMService baiduApiService,
         IAIPaintApiService<PaintApplyRequest, PaintResultResponse> ernieVilgApiService) : ControllerBase
     {
-        private readonly IAIChatApiService<ChatRequest, ChatApiResponse> _apiService = baiduApiService;
+        /// <summary>
+        /// The API service
+        /// </summary>
+        private readonly IBaiduErniebotLLMService _apiService = baiduApiService;
+        /// <summary>
+        /// The ernie vilg API service
+        /// </summary>
         private readonly IAIPaintApiService<PaintApplyRequest, PaintResultResponse> _ernieVilgApiService = ernieVilgApiService;
 
         /// <summary>
@@ -118,6 +123,40 @@ public void ConfigureServices(IServiceCollection services, IConfiguration config
         }
     }
 
+```
+
+``` Csharp
+
+    [ApiVersion("1.0")]
+    [ApiController]
+    [Route("api/v{version:apiVersion}/chatgpt")]
+    [ApiExplorerSettings(GroupName = "ChatGPT")]
+    public class ChatGPTApiController(
+        IChatGPTLLMService gptService): ControllerBase
+    {
+
+        /// <summary>
+        /// The API service
+        /// </summary>
+        private readonly IChatGPTLLMService _apiService = gptService;
+
+        /// <summary>
+        /// 发起ChatGPT对话
+        /// eg.
+        /// what is the difference between star and planet?
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns></returns>
+        [HttpPost("chat")]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(OpenAIChatResponse), 200)]
+        [AppExceptionInterceptor(ReturnCode = -100001, ApiVersion = "1.0")]
+        public async Task Chat(ChatRequest request)
+        {
+            await _apiService.Chat(request);
+        }
+
+    }
 ```
 
 
