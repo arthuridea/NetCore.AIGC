@@ -104,6 +104,7 @@ namespace LLMServiceHub
                 options.Cookie.Name = AppConsts.AuthCookieName;
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 
                 options.LoginPath = new PathString("/");
 
