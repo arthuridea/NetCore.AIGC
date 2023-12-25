@@ -35,7 +35,8 @@
       {
         "files": [
           "../README.md",
-          "**/*.{md,yml}"
+          "**/*.{md,yml}",
+          "**/*.swagger.json"
         ],
         "exclude": [
           "dist/_site/**"
@@ -54,13 +55,13 @@
     "template": [
       "default",
       "modern",
-      "statictoc",
-      //"templates/material"
-      "templates/unity"
+      //"statictoc",
+      "templates/material"
+      //"templates/unity"
     ],
     "globalMetadata": {
-      "_appName": "Aeex.LLMService.Baidu",
-      "_appTitle": "Aeex.LLMService.Baidu",
+      "_appName": "Aeex.LLMService",
+      "_appTitle": "Aeex.LLMService",
       "_currentVersion": "0.0.2.0-preview",
       "_enableSearch": true,
       "pdf": true
