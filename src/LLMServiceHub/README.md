@@ -1,4 +1,4 @@
-# An MVC Webapp demonstration
+# .NET8.0 MVC WebApp sample project
 
 ## Content
 
