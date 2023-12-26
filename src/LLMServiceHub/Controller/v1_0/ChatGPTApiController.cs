@@ -36,7 +36,7 @@ namespace LLMServiceHub.Controller.v1_0
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(OpenAIChatResponse), 200)]
         [AppExceptionInterceptor(ReturnCode = -100001, ApiVersion = "1.0")]
-        public async Task Chat(ChatRequest request)
+        public async Task Chat(OpenAIChatRequest request)
         {
             await _apiService.Chat(request);
         }

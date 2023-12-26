@@ -6,6 +6,7 @@ using LLMService.Shared.Extensions;
 using LLMService.Shared.Models;
 using LLMService.Shared.ServiceInterfaces;
 using LLMServiceHub.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LLMServiceHub.Controller.v1_0
@@ -23,9 +24,9 @@ namespace LLMServiceHub.Controller.v1_0
     // use oidc jwt authentication or local identity
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-#if !DEBUG
+//#if !DEBUG
     [Authorize]
-#endif
+//#endif
     [ApiVersion("1.0")]
     [ApiController]
     [Route("api/v{version:apiVersion}/baidu")]
