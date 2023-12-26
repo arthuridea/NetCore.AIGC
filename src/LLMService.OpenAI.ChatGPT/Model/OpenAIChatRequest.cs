@@ -1,43 +1,45 @@
 ﻿using LLMService.Shared.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace LLMService.OpenAI.ChatGPT.Model
 {
     /// <summary>
-    /// 
+    /// OpenAI chat request model.
     /// </summary>
-    public class OpenAIBackendRequestModel: IBackendChatRequest<OpenAIChatMessage>
+    /// <seealso cref="IChatRequest{T}" />
+    public class OpenAIChatRequest : IChatRequest<string>
     {
         /// <summary>
-        /// Gets or sets the model.
+        /// conversation id.
+        /// <para>Will be cached by IChatDataProvider."/></para>
         /// </summary>
-        /// <value>
-        /// The model.
-        /// </value>
-        [JsonPropertyName("model")]
-        public string Model { get; set; }
+        /// <example></example>
+        [JsonPropertyName("conversation_id")]
+        public string ConversationId { get; set; } = Guid.NewGuid().ToString();
+        /// <summary>
+        /// user chat message for the last round.
+        /// </summary>
+        /// <example></example>
+        [JsonPropertyName("message")]
+        [Required]
+        public string Message { get; set; }
 
         /// <summary>
-        /// Gets or sets the messages.
+        /// llm model enum.
+        /// <para>available values：GPT_3_5_TURBO_1106(default)|GPT_3_5_TURBO|GPT_4|GPT_4_32K|GPT_4_TURBO</para>
         /// </summary>
-        /// <value>
-        /// The messages.
-        /// </value>
-        [JsonPropertyName("messages")]
-        public List<OpenAIChatMessage> Messages { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="OpenAIBackendRequestModel"/> is stream.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if stream; otherwise, <c>false</c>.
-        /// </value>
-        [JsonPropertyName("stream")]
-        public bool Stream { get; set; } = false;
+        /// <example>5</example>
+        [JsonPropertyName("model")]
+        [Required]
+        public LLMApiDefaults.LLM_ModelType ModelSchema { get; set; } = LLMApiDefaults.LLM_ModelType.GPT_3_5_TURBO_1106;
 
         /// <summary>
         /// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
@@ -83,5 +85,14 @@ namespace LLMService.OpenAI.ChatGPT.Model
         /// <example>0.0</example>
         [JsonPropertyName("presence_penalty")]
         public float PresencePenalty { get; set; } = 0.0F;
+        /// <summary>
+        /// If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message. 
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if stream; otherwise, <c>false</c>.
+        /// </value>
+        /// <example>false</example>
+        [JsonPropertyName("stream")]
+        public bool Stream { get; set; } = false;
     }
 }

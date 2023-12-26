@@ -20,7 +20,7 @@ namespace LLMService.OpenAI.ChatGPT
     /// </summary>
     /// <seealso cref="ChatServiceBase{TRequestDto, TResponseDto, TBackendRequestDto, TBackendResponseDto, TChatMessage, TMessageContent, TChatServiceOption}" />
     public class ChatGPTLLMService: 
-        ChatServiceBase<ChatRequest, OpenAIChatResponse, 
+        ChatServiceBase<OpenAIChatRequest, OpenAIChatResponse, 
                         OpenAIBackendRequestModel, OpenAIBackendResponseModel, 
                         OpenAIChatMessage, List<OpenAIMessageContent>, 
                         OpenAIBackendServiceConfig>, IChatGPTLLMService
@@ -40,7 +40,6 @@ namespace LLMService.OpenAI.ChatGPT
             IOptionsSnapshot<OpenAIBackendServiceConfig> chatOption,
             ILogger<ChatGPTLLMService> logger)
                 : base(factory, context, chatDataProvider, chatOption, logger) { }
-
 
         /// <summary>
         /// Creates the API message.
@@ -74,12 +73,16 @@ namespace LLMService.OpenAI.ChatGPT
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        protected override OpenAIBackendRequestModel LLMRequestMapping(ChatRequest source)
+        protected override OpenAIBackendRequestModel LLMRequestMapping(OpenAIChatRequest source)
         {
             return new OpenAIBackendRequestModel
             {
                 Model = source.ModelSchema.GetAttribute<DisplayAttribute>().Name,
                 Stream = source.Stream,
+                FrequentPenalty = source.FrequentPenalty,
+                PresencePenalty = source.PresencePenalty,
+                Temperature = source.Temperature,
+                TopP = source.TopP
             };
         }
 
@@ -107,7 +110,7 @@ namespace LLMService.OpenAI.ChatGPT
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Chat Task.</returns>
-        Task Chat(ChatRequest request, CancellationToken cancellationToken = default);
+        Task Chat(OpenAIChatRequest request, CancellationToken cancellationToken = default);
     }
     
 }
