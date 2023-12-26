@@ -1,11 +1,13 @@
 ﻿using LLMServiceHub.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
+using Polly;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -92,7 +94,7 @@ namespace LLMServiceHub.Pages
         /// <summary>
         /// Called when [get].
         /// </summary>
-        public void OnGet(string returnUrl = null)
+        public async Task OnGet(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
@@ -100,6 +102,16 @@ namespace LLMServiceHub.Pages
             }
 
             returnUrl ??= Url.Content("~/");
+
+            if(!User.Identity.IsAuthenticated)
+            {
+                var result = await HttpContext.AuthenticateAsync(OpenIdConnectDefaults.AuthenticationScheme);
+                if (result.Succeeded)
+                {
+                    await ExecSignIn(AppConsts.DefaultAuthScheme, result.Principal.Identity.Name, true, returnUrl);
+                    Redirect(returnUrl);
+                }
+            }
 
             ReturnUrl = returnUrl;
         }
@@ -121,20 +133,8 @@ namespace LLMServiceHub.Pages
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    // set authentication cookie
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, Input.UserName),
-                        new Claim(ClaimTypes.Role, "User")
-                    };
-                    var authProperties = new AuthenticationProperties
-                    {
-                        IsPersistent = Input.RememberMe,// persistance.
-                        RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/Index" : returnUrl,
-                    };
-                    var identity = new ClaimsIdentity(claims, AppConsts.DefaultAuthScheme);
-                    var principal = new ClaimsPrincipal(identity);
-                    await HttpContext.SignInAsync(AppConsts.DefaultAuthScheme, principal, authProperties);
+
+                    await ExecSignIn(AppConsts.DefaultAuthScheme, result.IdentityName, Input.RememberMe, returnUrl);
                     return LocalRedirect(returnUrl);
                 }
                 else
@@ -148,15 +148,35 @@ namespace LLMServiceHub.Pages
             return Page();
         }
 
-        private (bool Succeeded, string Message) ValidateUser(string username, string password,  bool persist = false)
+        private async Task ExecSignIn(string scheme, string identityUserName, bool rememberme, string returnUrl)
         {
-            var ret = (Succeeded: false, Message: "用户不存在");
+            // set authentication cookie
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, identityUserName),
+                new Claim(ClaimTypes.Role, "User")
+            };
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = rememberme,// persistance.
+                RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/Index" : returnUrl,
+            };
+            var identity = new ClaimsIdentity(claims, scheme);
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(scheme, principal, authProperties);
+        }
+
+        private (bool Succeeded, string IdentityName, string Message) ValidateUser(string username, string password)
+        {
+            var ret = (Succeeded: false, IdentityName: "", Message: "用户不存在");
             var validusers = _configuration.GetSection("Users")
                                            .Get<List<BuildInUser>>();
-            if(validusers.Any(x=> x.UserName== username && x.Password == password))
+            var user = validusers.FirstOrDefault(x => x.UserName == username && x.Password == password);
+            if (user != null)
             {
                 ret.Succeeded = true;
-                ret.Message = "Ok";
+                ret.IdentityName = user.DisplayName;
+                ret.Message = "ok";
             }
             return ret;
         }

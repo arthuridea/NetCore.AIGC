@@ -1,6 +1,7 @@
 using LLMServiceHub.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,8 +21,13 @@ namespace LLMServiceHub.Pages
         {
             returnUrl ??= Url.Content("~/");
             // Clear the existing external cookie to ensure a clean login process
-            //await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            await HttpContext.SignOutAsync(AppConsts.DefaultAuthScheme);
+            await HttpContext.SignOutAsync();
+
+            var oauthResult = await HttpContext.AuthenticateAsync(OpenIdConnectDefaults.AuthenticationScheme);
+            if (oauthResult.Succeeded)
+            {
+                return RedirectToAction("SignOut", "Account", new { Area = "MicrosoftIdentity", returnUrl });
+            }
 
             return LocalRedirect(returnUrl);
         }

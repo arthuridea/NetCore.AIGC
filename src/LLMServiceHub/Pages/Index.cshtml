@@ -363,7 +363,16 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col">
-                                                    <p>暂不支持第三方登录</p>
+                                                    <p>
+                                                        <environment exclude="Development">
+                                                            暂不支持第三方登录
+                                                        </environment>
+                                                        <environment exclude="Production">
+                                                            <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">MS Sign in</a>
+                                                        </environment>
+                
+
+                                                    </p>
                                                 </div>
                                                 @* <div class="col">
                                             <a href="#" class="btn w-100">

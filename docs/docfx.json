@@ -27,7 +27,7 @@
           ]
         }
       ],
-      "dest": "dist/api/v0.0.2.0-preview"
+      "dest": "dist/api/v0.0.2.2-preview"
     }
   ],
   "build": {
@@ -51,7 +51,7 @@
         ]
       }
     ],
-    "output": "dist/_site/v0.0.2.0-preview",
+    "output": "dist/_site/v0.0.2.2-preview",
     "template": [
       "default",
       "modern",
@@ -62,7 +62,7 @@
     "globalMetadata": {
       "_appName": "Aeex.LLMService",
       "_appTitle": "Aeex.LLMService",
-      "_currentVersion": "0.0.2.0-preview",
+      "_currentVersion": "0.0.2.2-preview",
       "_enableSearch": true,
       "pdf": true
     }

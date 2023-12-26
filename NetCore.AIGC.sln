@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLMService.Baidu.ErnieVilg"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Docs", "03.Docs", "{7E5E6C28-ABB2-4564-AF1B-D9FCC81B8353}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLMService.OpenAI.ChatGPT", "src\LLMService.OpenAI.ChatGPT\LLMService.OpenAI.ChatGPT.csproj", "{09322116-1405-47CE-BBB5-35E02167905D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLMService.OpenAI.ChatGPT", "src\LLMService.OpenAI.ChatGPT\LLMService.OpenAI.ChatGPT.csproj", "{09322116-1405-47CE-BBB5-35E02167905D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

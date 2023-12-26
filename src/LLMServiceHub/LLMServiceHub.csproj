@@ -42,9 +42,13 @@
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
     <PackageReference Include="IdentityModel" Version="6.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.16.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
     <PackageReference Include="Polly.Extensions" Version="8.2.0" />
     <PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
     <!--<PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />-->
@@ -63,8 +67,14 @@
 	<ItemGroup>
 		<PackageReference Include="Aeex.LLMService.Baidu.Wenxin" Version="0.0.2.1-preview" />
 		<PackageReference Include="Aeex.LLMService.Baidu.ErnieVilg" Version="0.0.2.1-preview" />
-		<!--<PackageReference Include="Aeex.LLMService.Shared" Version="0.0.2.1-preview" />-->
-		<PackageReference Include="Aeex.LLMService.OpenAI.ChatGPT" Version="0.0.2.1-preview" />
+		<PackageReference Include="Aeex.LLMService.OpenAI.ChatGPT" Version="0.0.2.2-preview" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Areas\MicrosoftIdentity\Controllers\" />
+	  <Folder Include="Areas\MicrosoftIdentity\Data\" />
+	  <Folder Include="Areas\MicrosoftIdentity\Models\" />
+	  <Folder Include="Areas\MicrosoftIdentity\Views\" />
 	</ItemGroup>
 
   <!--<ItemGroup Condition="'$(Configuration)' == 'DEBUG'">
@@ -75,8 +85,7 @@
 	<Target Name="_ResolveCopyLocalNuGetPkgXmls" AfterTargets="ResolveReferences">
 		<ItemGroup>
 			<!-- Copy XML files from all PackageReferences to output dir -->
-			<ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')"
-			Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)'!='' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
+			<ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)'!='' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
 		</ItemGroup>
 	</Target>
 </Project>

@@ -1,4 +1,4 @@
 - name: Docs
   href: docs/
-- name: API(v0.0.2.0-preview)
-  href: dist/api/v0.0.2.0-preview/
+- name: API(v0.0.2.2-preview)
+  href: dist/api/v0.0.2.2-preview/

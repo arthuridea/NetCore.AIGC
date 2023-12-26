@@ -16,6 +16,12 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Unchase.Swashbuckle.AspNetCore.Extensions.Extensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace LLMServiceHub
 {
@@ -57,6 +63,17 @@ namespace LLMServiceHub
             var appSettings = Configuration.GetSection(nameof(AppSettings)).Get<AppSettings>();
             services.AddSingleton(appSettings);
 
+            /***** cookies ***/
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
+                // Handling SameSite cookie according to https://docs.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-3.1
+                options.HandleSameSiteCookieCompatibility();
+            });
+
 
             // Ensure HttpContext injected. It will be accessed in Chat service.
             services.AddHttpContextAccessor();
@@ -77,6 +94,9 @@ namespace LLMServiceHub
 
             /********************************************* End Dependency Injection **********************************************/
 
+            services.AddMvc().AddMicrosoftIdentityUI();
+            //services.AddControllersWithViews().AddMicrosoftIdentityUI();
+
 
             // Add services to the container.
             services.AddRazorPages();
@@ -85,7 +105,7 @@ namespace LLMServiceHub
             //        .AddJsonOptions(options => {
             //            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             //        });
-            services.AddMvc();
+            //services.AddMvc();
 
 
             #region authentication
@@ -113,7 +133,7 @@ namespace LLMServiceHub
 
                 options.Events.OnRedirectToLogin = context =>
                 {
-                    if(context.Request.Path.StartsWithSegments("/api")||
+                    if (context.Request.Path.StartsWithSegments("/api") ||
                        string.Equals(context.HttpContext.Request.Query["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal) ||
                        string.Equals(context.HttpContext.Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal))
                     {
@@ -124,6 +144,8 @@ namespace LLMServiceHub
                     context.Response.Redirect(context.RedirectUri);
                     return Task.FromResult(0);
                 };
+
+                //options.ForwardAuthenticate = OpenIdConnectDefaults.AuthenticationScheme;
             })
             // api use jwt authentication
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -131,7 +153,11 @@ namespace LLMServiceHub
                 options.Authority = appSettings.IdentityServerBaseUrl;
                 options.RequireHttpsMetadata = appSettings.RequireHttpsMetadata;
                 options.Audience = appSettings.OidcApiName;
-            });
+            })
+            //.AddMicrosoftIdentityWebApp(options => Configuration.Bind("AzureAd", options));
+            ;
+
+            services.AddMicrosoftIdentityWebAppAuthentication(configuration: Configuration);
 
             services.AddAuthorization(options =>
             {
