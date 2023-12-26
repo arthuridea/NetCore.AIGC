@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Version>0.0.2.2-preview</Version>
 	<TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -8,6 +9,7 @@
 	  <PackageId>Aeex.LLMService.OpenAI.ChatGPT</PackageId>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <PackageReleaseNotes>
+		  0.0.2.2-preview override chat method.
 		  0.0.1.5-preview Init publish.
 	  </PackageReleaseNotes>
   </PropertyGroup>

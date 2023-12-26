@@ -1,7 +1,6 @@
 <Project>
 
   <PropertyGroup>
-    <Version>0.0.2.1-preview</Version>
     <Authors>arthuridea</Authors>
     <LangVersion>latest</LangVersion>
 	<Description>A dotnet Library for ChatGPT, Baidu ernie-bot and ErnievilgV2</Description>
