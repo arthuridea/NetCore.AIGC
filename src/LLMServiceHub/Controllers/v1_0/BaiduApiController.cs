@@ -9,7 +9,7 @@ using LLMServiceHub.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LLMServiceHub.Controller.v1_0
+namespace LLMServiceHub.Controllers.v1_0
 {
     /// <summary>
     /// 集成百度AI类api

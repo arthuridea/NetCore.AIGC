@@ -40,6 +40,7 @@
   <ItemGroup>
 	<PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
+    <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="8.0.0" />
     <PackageReference Include="IdentityModel" Version="6.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.0" />
@@ -51,6 +52,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
     <PackageReference Include="Polly.Extensions" Version="8.2.0" />
     <PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
     <!--<PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />-->
     <PackageReference Include="SwaggerDoc" Version="1.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
@@ -71,6 +73,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Areas\GitHubIdentity\Data\" />
+	  <Folder Include="Areas\GitHubIdentity\Models\" />
+	  <Folder Include="Areas\GitHubIdentity\Views\" />
 	  <Folder Include="Areas\MicrosoftIdentity\Controllers\" />
 	  <Folder Include="Areas\MicrosoftIdentity\Data\" />
 	  <Folder Include="Areas\MicrosoftIdentity\Models\" />

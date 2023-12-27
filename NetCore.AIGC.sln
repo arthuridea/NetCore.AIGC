@@ -23,8 +23,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLMService.Baidu.ErnieVilg", "src\LLMService.Baidu.ErnieVilg\LLMService.Baidu.ErnieVilg.csproj", "{E3AE89E4-31A0-4EDA-9154-2D089E1FD8A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Docs", "03.Docs", "{7E5E6C28-ABB2-4564-AF1B-D9FCC81B8353}"
+	ProjectSection(SolutionItems) = preProject
+		docs\build.cmd = docs\build.cmd
+		docs\docfx.json = docs\docfx.json
+		docs\index.md = docs\index.md
+		docs\toc.yml = docs\toc.yml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLMService.OpenAI.ChatGPT", "src\LLMService.OpenAI.ChatGPT\LLMService.OpenAI.ChatGPT.csproj", "{09322116-1405-47CE-BBB5-35E02167905D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Sample", "02.Sample", "{0B000384-47E8-4013-A1CE-59A465017EF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,7 +65,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3CA26111-12C9-4AF1-966F-45019EA52385} = {01705FE5-59E6-4B65-B545-5DFD3AFB1F16}
+		{3CA26111-12C9-4AF1-966F-45019EA52385} = {0B000384-47E8-4013-A1CE-59A465017EF2}
 		{DC8A11BE-3268-4F1E-B83F-27958041ABF1} = {01705FE5-59E6-4B65-B545-5DFD3AFB1F16}
 		{E73CB18F-26D3-4A6C-8AA2-E89FF17B65C5} = {01705FE5-59E6-4B65-B545-5DFD3AFB1F16}
 		{E3AE89E4-31A0-4EDA-9154-2D089E1FD8A4} = {01705FE5-59E6-4B65-B545-5DFD3AFB1F16}

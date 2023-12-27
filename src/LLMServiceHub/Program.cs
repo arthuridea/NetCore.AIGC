@@ -43,6 +43,7 @@ namespace LLMServiceHub
         /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
                 .UseSerilog()
+                .ConfigureDefaults(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config = _loadConfig(args, hostingContext, config);
@@ -50,10 +51,18 @@ namespace LLMServiceHub
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
+                        .UseDefaultServiceProvider(conf =>
+                        {
+                        })
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .UseIISIntegration()
                         .UseStartup<Startup>();
-                });
+                })
+                .ConfigureWebHost(config =>
+                {
+                })
+            ;
+                
 
         private static IConfigurationBuilder _loadConfig(string[] args, HostBuilderContext hostingContext, IConfigurationBuilder config = null)
         {

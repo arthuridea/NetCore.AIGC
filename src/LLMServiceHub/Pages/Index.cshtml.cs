@@ -48,6 +48,14 @@ namespace LLMServiceHub.Pages
         public string ErrorMessage { get; set; }
 
         /// <summary>
+        /// Gets or sets the OAuth schemes.
+        /// </summary>
+        /// <value>
+        /// The OAuth schemes.
+        /// </value>
+        public AuthenticationScheme[] OAuthSchemes { get; set; }
+
+        /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
@@ -101,17 +109,12 @@ namespace LLMServiceHub.Pages
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
+            OAuthSchemes = await HttpContext.GetExternalProvidersAsync();
+
             returnUrl ??= Url.Content("~/");
 
-            if(!User.Identity.IsAuthenticated)
-            {
-                var result = await HttpContext.AuthenticateAsync(OpenIdConnectDefaults.AuthenticationScheme);
-                if (result.Succeeded)
-                {
-                    await ExecSignIn(AppConsts.DefaultAuthScheme, result.Principal.Identity.Name, true, returnUrl);
-                    Redirect(returnUrl);
-                }
-            }
+            await ChallengeExternal(AppConsts.MicrosoftAuthScheme, returnUrl);
+            await ChallengeExternal(AppConsts.GitHubAuthScheme, returnUrl);
 
             ReturnUrl = returnUrl;
         }
@@ -147,6 +150,19 @@ namespace LLMServiceHub.Pages
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+        private async Task ChallengeExternal(string scheme, string returnUrl)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                var result = await HttpContext.AuthenticateAsync(scheme);
+                if (result.Succeeded)
+                {
+                    await ExecSignIn(AppConsts.DefaultAuthScheme, result.Principal.Identity.Name, true, returnUrl);
+                    Redirect(returnUrl);
+                }
+            }
+        } 
 
         private async Task ExecSignIn(string scheme, string identityUserName, bool rememberme, string returnUrl)
         {

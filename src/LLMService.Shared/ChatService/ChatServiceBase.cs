@@ -13,8 +13,8 @@ namespace LLMService.Shared.ChatService
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TRequestDto">The type of the request dto.</typeparam>
-    /// <typeparam name="TResponseDto">The type of the response dto.</typeparam>
+    /// <typeparam name="TRequestDto">The type of the request dto.<see cref="IChatRequest{TMessageContent}"/></typeparam>
+    /// <typeparam name="TResponseDto">The type of the response dto.<see cref="IChatResponse{TBackendResponseDto}"/></typeparam>
     /// <typeparam name="TBackendRequestDto">The type of the backend request dto.</typeparam>
     /// <typeparam name="TBackendResponseDto">The type of the backend response dto.</typeparam>
     /// <typeparam name="TChatMessage">The type of the chat message.</typeparam>

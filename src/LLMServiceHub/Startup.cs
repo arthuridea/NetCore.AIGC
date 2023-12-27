@@ -74,6 +74,12 @@ namespace LLMServiceHub
                 options.HandleSameSiteCookieCompatibility();
             });
 
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.Name = AppConsts.AntiforgeryCookieName;
+            });
+
+            services.AddRouting();
 
             // Ensure HttpContext injected. It will be accessed in Chat service.
             services.AddHttpContextAccessor();
@@ -94,6 +100,7 @@ namespace LLMServiceHub
 
             /********************************************* End Dependency Injection **********************************************/
 
+            services.AddControllers();
             services.AddMvc().AddMicrosoftIdentityUI();
             //services.AddControllersWithViews().AddMicrosoftIdentityUI();
 
@@ -154,10 +161,18 @@ namespace LLMServiceHub
                 options.RequireHttpsMetadata = appSettings.RequireHttpsMetadata;
                 options.Audience = appSettings.OidcApiName;
             })
+            .AddGitHub(AppConsts.GitHubAuthScheme, options =>
+            {
+                options.ClientId = Configuration["GitHub:ClientId"] ?? string.Empty;
+                options.ClientSecret = Configuration["GitHub:ClientSecret"] ?? string.Empty;
+                options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"] ?? string.Empty;
+                options.Scope.Add("user:email");
+                //options.CallbackPath = new PathString("/signin-github");
+            })
             //.AddMicrosoftIdentityWebApp(options => Configuration.Bind("AzureAd", options));
             ;
 
-            services.AddMicrosoftIdentityWebAppAuthentication(configuration: Configuration);
+            services.AddMicrosoftIdentityWebAppAuthentication(configuration: Configuration, openIdConnectScheme: AppConsts.MicrosoftAuthScheme);
 
             services.AddAuthorization(options =>
             {
@@ -453,7 +468,8 @@ namespace LLMServiceHub
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllers();
+                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "area-route",

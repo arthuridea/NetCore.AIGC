@@ -23,12 +23,19 @@ namespace LLMServiceHub.Pages
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync();
 
-            var oauthResult = await HttpContext.AuthenticateAsync(OpenIdConnectDefaults.AuthenticationScheme);
-            if (oauthResult.Succeeded)
-            {
-                return RedirectToAction("SignOut", "Account", new { Area = "MicrosoftIdentity", returnUrl });
-            }
+            return await SignOutExternal([AppConsts.MicrosoftAuthScheme, AppConsts.GitHubAuthScheme], returnUrl);            
+        }
 
+        private async Task<IActionResult> SignOutExternal(string[] schemes, string returnUrl = null)
+        {
+            foreach (var scheme in schemes)
+            {
+                var oauthResult = await HttpContext.AuthenticateAsync(scheme);
+                if (oauthResult.Succeeded)
+                {
+                    return RedirectToAction("SignOut", "Account", new { Area = $"{scheme}Identity", scheme, returnUrl });
+                }
+            }
             return LocalRedirect(returnUrl);
         }
     }
