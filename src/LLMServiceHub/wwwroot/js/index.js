@@ -119,7 +119,7 @@ let sendBtnClickEventHandler = function (e) {
         console.log(`MODEL: ${key} -> ${availableLLM}`);
 
         if (!availableLLM){
-            return false;
+            return;
         }
         let rndStr = Math.random().toString(36).slice(-8);
         let request = conversations[key];
