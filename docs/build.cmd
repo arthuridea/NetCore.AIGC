@@ -8,9 +8,9 @@ chcp 65001
 ::rd /s /q .\obj\.cache
 echo 【INFO】清除过期文件...
 echo 【INFO】清除.\dist\api
-rd /s /q .\dist\api
-echo 【INFO】清除.\dist\_site
-rd /s /q .\dist\_site
+rd /s /q .\dist\api\%1
+echo 【INFO】清除.\dist\_site\v%1
+rd /s /q .\dist\_site\v%1
 echo 【INFO】重建元数据...
 docfx metadata docfx.json
 echo 【INFO】构建文档...
