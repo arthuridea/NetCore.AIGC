@@ -33,7 +33,7 @@ namespace LLMService.Baidu.ErnieVilg
         /// <returns></returns>
         public async Task<string> Save(string url, string pathname)
         {
-            string localPathName = Path.Combine(_env.WebRootPath, pathname);
+            string localPathName = Path.Combine(_env.WebRootPath, pathname).Replace('\\','/');
             _logger.LogDebug($"LOCAL PATH -> {localPathName}");
 
             var httpClient = _httpClientFactory.CreateClient();

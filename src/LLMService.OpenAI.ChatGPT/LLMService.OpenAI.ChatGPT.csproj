@@ -25,7 +25,11 @@
 		<ProjectReference Include="..\LLMService.Shared\LLMService.Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'RELEASE'">
-		<PackageReference Include="Aeex.LLMService.Shared" Version="0.0.2.1-preview" />
+		<PackageReference Include="Aeex.LLMService.Shared" Version="0.0.2.2-preview" />
 	</ItemGroup>
+
+	<!--<ItemGroup>
+		<ProjectReference Include="..\LLMService.Shared\LLMService.Shared.csproj" />
+	</ItemGroup>-->
 
 </Project>

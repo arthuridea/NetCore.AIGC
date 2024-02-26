@@ -4,15 +4,17 @@ using LLMService.Shared.Extensions;
 using LLMService.Shared.Models;
 using LLMService.Shared.ServiceInterfaces;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Net.Http.Json;
 using System.Text.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LLMService.Baidu.ErnieVilg
 {
     /// <summary>
     /// 百度智能绘图api
     /// </summary>
-    public class BaiduErnieVilgApiService : IAIPaintApiService<PaintApplyRequest, PaintResultResponse>
+    public class BaiduErnieVilgApiService : IAIPaintApiService<PaintApplyRequest, PaintApiResult>
     {
         const string _api_client_key = LLMServiceConsts.BaiduErnieVilgApiClientName;
         /// <summary>
@@ -59,7 +61,7 @@ namespace LLMService.Baidu.ErnieVilg
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns></returns>
-        public async Task<PaintResultResponse> Text2Image(PaintApplyRequest request)
+        public async Task<PaintApiResult> Text2Image(PaintApplyRequest request)
         {
             if (string.IsNullOrEmpty(request.ConversationId))
             {
@@ -89,8 +91,25 @@ namespace LLMService.Baidu.ErnieVilg
             return null;
         }
 
-        private async Task<PaintResultResponse> challengePaintResult(HttpClient client, string id, int initDelayInSeconds = 3000)
+        /// <summary>
+        /// Challenges the paint result.
+        /// </summary>
+        /// <param name="client">The client.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="saveRemoteImage">if set to <c>true</c> [save remote image].</param>
+        /// <param name="createYearMonthFolder">if set to <c>true</c> [create year month folder].</param>
+        /// <param name="strategy">The strategy.</param>
+        /// <param name="initDelayInSeconds">The initialize delay in seconds.</param>
+        /// <returns></returns>
+        private async Task<PaintApiResult> challengePaintResult(
+            HttpClient client, 
+            string id, 
+            bool saveRemoteImage=true, 
+            bool createYearMonthFolder = true, 
+            string strategy = "rnd_prefix", 
+            int initDelayInSeconds = 3000)
         {
+            PaintApiResult apiResult = new();
             PaintResultResponse result = new();
             string paintResultApiEndpoint = LLMApiDefaults.ErnieVilgV2ResultApiEndpoint;
             bool taskFinished = false;
@@ -117,13 +136,90 @@ namespace LLMService.Baidu.ErnieVilg
                     foreach (var image in images)
                     {
                         _logger.LogDebug("{0}", image);
-                        await _imageProvider.Save(image, $"aigc\\images\\{DateTime.Now:yyyyMM}\\{DateTime.Now:yyyyMMddHHmmssffff}.jpg");
+
+                        if (saveRemoteImage)
+                        {
+                            string savedPath = getSavedPath(image, null, createYearMonthFolder, strategy);
+                            string localPathName = await _imageProvider.Save(image, savedPath);
+                            apiResult.AIImages.Add(localPathName);
+                        }
+                        else
+                        {
+                            apiResult.AIImages.Add(image);
+                        }
                     }
                     break;
                 }
                 Thread.Sleep(3000);
             }
+            apiResult.LLMResponseData = result;
+            return apiResult;
+        }
+
+        private string getSavedPath(string url, string root = null, bool createYearMonthFolder = true, string strategy = "rnd_prefix")
+        {
+            List<string> props = new();
+            if(string.IsNullOrEmpty(root))
+            {
+                root = $"aigc{Path.PathSeparator}images";
+            }
+            props.Add(root);
+            if (createYearMonthFolder)
+            {
+                props.Add($"{DateTime.Now:yyyyMM}");
+            }
+
+            string filename = $"{DateTime.UtcNow:yyyyMMddHHmmssfff}{getFileExtension(url)}";
+            if (strategy == "rnd_prefix")
+            {
+                string originalFilename = getOriginalFilenme(url);
+                filename = $"{GenerateRandomString(5)}_{originalFilename}";
+            }
+            props.Add(filename);
+            string path = Path.Combine(props.ToArray()).Replace('\\','/');
+            return path;
+        }
+
+        private static string getOriginalFilenme(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return string.Empty;
+            }
+            var uri = new Uri(url);
+            return Path.GetFileName(uri.LocalPath);
+        }
+
+        private static string getFileExtension(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return string.Empty;
+            }
+            var uri = new Uri(url);
+            return Path.GetExtension(uri.LocalPath);
+        }
+
+        /// <summary>
+        /// Generates the random string.
+        /// </summary>
+        /// <param name="length">The length.</param>
+        /// <returns></returns>
+        private static string GenerateRandomString(int length)
+        {
+            string result = "";
+            Random ran = new Random();
+            string dictionary = "0123456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+            int len = dictionary.Length;
+            char[] arrList = dictionary.ToCharArray();
+            for (int i = 0; i < length; i++)
+            {
+                int RandKey = ran.Next(0, len - 1);
+                result += arrList[RandKey];
+            }
+
             return result;
         }
     }
+
 }

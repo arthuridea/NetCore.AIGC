@@ -22,11 +22,29 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The services.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="ernieVilgConfigKey"></param>
+        /// <param name="imageProvider">aliyun_oss | local</param>
         /// <returns></returns>
-        public static IServiceCollection AddErnieVilg(this IServiceCollection services, IConfiguration configuration, string ernieVilgConfigKey = "BaiduErnieVilgSettings")
+        public static IServiceCollection AddErnieVilg(
+            this IServiceCollection services, 
+            IConfiguration configuration, 
+            string ernieVilgConfigKey = "BaiduErnieVilgSettings", 
+            string imageProvider = "local")
         {
             // 百度配置文件
             var ernieVilgSettings = configuration.GetSection(ernieVilgConfigKey).Get<OAuth2BackendServiceConfig>();
+
+            // 图片持久化处理程序
+            if (imageProvider == "aliyun_oss")
+            {
+                //阿里云oss option
+
+                //注入服务
+                services.AddTransient<IImageStorageProvider, AliyunOSSImageStorageProvider>();
+            }
+            else if (imageProvider == "local")
+            {
+                services.AddTransient<IImageStorageProvider, LocalImageStorageProvider>();
+            }
 
             // 智能绘画客户端
             services.AddHttpClient(LLMServiceConsts.BaiduErnieVilgApiClientName, client =>
@@ -37,7 +55,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     ernieVilgSettings,
                     LLMServiceConsts.BaiduErnieVilgApiAuthority);
 
-            services.AddTransient<IAIPaintApiService<PaintApplyRequest, PaintResultResponse>, BaiduErnieVilgApiService>();
+            services.AddTransient<IAIPaintApiService<PaintApplyRequest, PaintApiResult>, BaiduErnieVilgApiService>();
 
             return services;
         }

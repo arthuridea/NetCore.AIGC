@@ -159,6 +159,7 @@ namespace LLMService.Baidu.ErnieVilg.Models
         /// </value>
         [JsonPropertyName("img_url")]
         public string Url {  get; set; }
+
         /// <summary>
         /// 图片机审结果，"block"：输出图片违规；"review": 输出图片疑似违规；"pass": 输出图片未发现问题；
         /// </summary>
@@ -175,6 +176,29 @@ namespace LLMService.Baidu.ErnieVilg.Models
         /// </value>
         [JsonPropertyName("is_approved")]
         public bool IsApproved => ApproveResult == "pass";
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PaintApiResult
+    {
+        /// <summary>
+        /// Gets or sets the ai images.
+        /// </summary>
+        /// <value>
+        /// The ai images.
+        /// </value>
+        [JsonPropertyName("ai_images")]
+        public List<string> AIImages { get; set; } = new();
+        /// <summary>
+        /// Gets or sets the LLM response data.
+        /// </summary>
+        /// <value>
+        /// The LLM response data.
+        /// </value>
+        [JsonPropertyName("llm_response_data")]
+        public PaintResultResponse LLMResponseData {  get; set; }
     }
 
 
