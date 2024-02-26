@@ -4,5 +4,11 @@
     "inputFiles": [
       "wwwroot/js/index.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/paint.min.js",
+    "inputFiles": [
+      "wwwroot/js/paint.js"
+    ]
   }
 ]

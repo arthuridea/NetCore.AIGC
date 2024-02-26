@@ -30,6 +30,15 @@ let m_t = 0.95;
 let m_tp = 0.8;
 let m_ps = 1.0;
 
+let _con_id = {
+    ConvErnie3_5: '',
+    ConvErnieTurbo: '',
+    ConvErnie4_0: ''
+};
+
+
+//let rndStr = Math.random().toString(36).slice(-8);
+
 let conversations = {
     ConvErnieTurbo: {
         "temperature": m_t || 0.95,
@@ -114,7 +123,7 @@ let sendBtnClickEventHandler = function (e) {
     $('#ipt-message').val('');
     //console.log(msg);
     $(Object.keys(conversations)).each(function (index, key) {
-        //console.log(key);
+        console.log(`key->${key}`);
         var availableLLM = $('#chk-' + key).is(':checked');
         console.log(`MODEL: ${key} -> ${availableLLM}`);
 
@@ -125,7 +134,15 @@ let sendBtnClickEventHandler = function (e) {
         let request = conversations[key];
         let wrapperId = "#wrapper_" + key;
         request.message = msg;
-        request.conversation_id = `${request.conversation_id}_${rndStr}`;
+        if (_con_id[key] != '') {
+            console.log(`convid found: ${_con_id[key]}`)
+            request.conversation_id = _con_id[key];
+        }
+        else {
+            request.conversation_id = `${request.conversation_id}_${rndStr}`;
+            _con_id[key] = request.conversation_id;
+        }
+        
         let wrapper = $(wrapperId);
         if (wrapper) {
             let author = '我';

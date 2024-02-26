@@ -15,7 +15,7 @@
 
     </div>
     <div class="nav-item">
-        <a asp-page="SignOut" class="nav-link d-flex lh-1 text-reset p-0">
+        <a asp-page="SignOut" asp-route-returnurl="@ViewData["ReturnUrl"]" class="nav-link d-flex lh-1 text-reset p-0">
             退出登录
         </a>
     </div>

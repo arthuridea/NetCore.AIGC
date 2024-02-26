@@ -1,6 +1,7 @@
 ﻿using LLMServiceHub.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,7 @@ namespace LLMServiceHub.Pages
     /// <seealso cref="Microsoft.AspNetCore.Mvc.RazorPages.PageModel" />
     public class IndexModel : PageModel
     {
+        private readonly IAppAuthenticateManager _appAuth;
         /// <summary>
         /// The logger
         /// </summary>
@@ -90,11 +92,14 @@ namespace LLMServiceHub.Pages
         /// Initializes a new instance of the <see cref="IndexModel"/> class.
         /// </summary>
         /// <param name="config"></param>
+        /// <param name="appAuthManager"></param>
         /// <param name="logger">The logger.</param>
         public IndexModel(
+            IAppAuthenticateManager appAuthManager,
             IConfiguration config, 
             ILogger<IndexModel> logger)
         {
+            _appAuth = appAuthManager;
             _configuration = config;
             _logger = logger;
         }
@@ -132,12 +137,12 @@ namespace LLMServiceHub.Pages
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = ValidateUser(Input.UserName, Input.Password);
+                var result = _appAuth.ValidateUser(Input.UserName, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
 
-                    await ExecSignIn(AppConsts.DefaultAuthScheme, result.IdentityName, Input.RememberMe, returnUrl);
+                    await _appAuth.ExecSignIn(AppConsts.DefaultAuthScheme, result.IdentityName, Input.RememberMe, returnUrl);
                     return LocalRedirect(returnUrl);
                 }
                 else
@@ -158,44 +163,46 @@ namespace LLMServiceHub.Pages
                 var result = await HttpContext.AuthenticateAsync(scheme);
                 if (result.Succeeded)
                 {
-                    await ExecSignIn(AppConsts.DefaultAuthScheme, result.Principal.Identity.Name, true, returnUrl);
+                    await _appAuth.ExecSignIn(AppConsts.DefaultAuthScheme, result.Principal.Identity.Name, true, returnUrl);
                     Redirect(returnUrl);
                 }
             }
         } 
 
-        private async Task ExecSignIn(string scheme, string identityUserName, bool rememberme, string returnUrl)
-        {
-            // set authentication cookie
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, identityUserName),
-                new Claim(ClaimTypes.Role, "User")
-            };
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = rememberme,// persistance.
-                RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/Index" : returnUrl,
-            };
-            var identity = new ClaimsIdentity(claims, scheme);
-            var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(scheme, principal, authProperties);
-        }
+        //private async Task ExecSignIn(string scheme, string identityUserName, bool rememberme, string returnUrl)
+        //{
+        //    // set authentication cookie
+        //    var claims = new List<Claim>
+        //    {
+        //        new Claim(ClaimTypes.Name, identityUserName),
+        //        new Claim(ClaimTypes.Role, "User")
+        //    };
+        //    var authProperties = new AuthenticationProperties
+        //    {
+        //        IsPersistent = rememberme,// persistance.
+        //        RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/Index" : returnUrl,
+        //    };
+        //    var identity = new ClaimsIdentity(claims, scheme);
+        //    var principal = new ClaimsPrincipal(identity);
+        //    await HttpContext.SignInAsync(scheme, principal, authProperties);
+        //}
 
-        private (bool Succeeded, string IdentityName, string Message) ValidateUser(string username, string password)
-        {
-            var ret = (Succeeded: false, IdentityName: "", Message: "用户不存在");
-            var validusers = _configuration.GetSection("Users")
-                                           .Get<List<BuildInUser>>();
-            var user = validusers.FirstOrDefault(x => x.UserName == username && x.Password == password);
-            if (user != null)
-            {
-                ret.Succeeded = true;
-                ret.IdentityName = user.DisplayName;
-                ret.Message = "ok";
-            }
-            return ret;
-        }
+        //private (bool Succeeded, string IdentityName, string Message) ValidateUser(string username, string password)
+        //{
+        //    var ret = (Succeeded: false, IdentityName: "", Message: "用户不存在");
+        //    var validusers = _configuration.GetSection("Users")
+        //                                   .Get<List<BuildInUser>>();
+        //    var user = validusers.FirstOrDefault(x => x.UserName == username && x.Password == password);
+        //    if (user != null)
+        //    {
+        //        ret.Succeeded = true;
+        //        ret.IdentityName = user.DisplayName;
+        //        ret.Message = "ok";
+        //    }
+        //    return ret;
+        //}
+
+        
 
     }
 }

@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/core@latest/dist/css/tabler.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/core@latest/dist/css/tabler-flags.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/core@latest/dist/css/tabler-payments.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/core@latest/dist/css/tabler-vendors.min.css">
+    <link rel="stylesheet" href="~/lib/@@tabler/core/css/tabler.min.css">
+    <link rel="stylesheet" href="~/lib/@@tabler/core/css/tabler-flags.min.css">
+    <link rel="stylesheet" href="~/lib/@@tabler/core/css/tabler-payments.min.css">
+    <link rel="stylesheet" href="~/lib/@@tabler/core/css/tabler-vendors.min.css">
     @await RenderSectionAsync("Headers", required: false)
 </head>
 <body class="layout-fluid">
@@ -29,7 +29,7 @@
     
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@@tabler/core@latest/dist/js/tabler.min.js"></script>
+    <script src="~/lib/@@tabler/core/js/tabler.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

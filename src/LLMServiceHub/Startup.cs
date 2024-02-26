@@ -22,6 +22,10 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Swashbuckle.AspNetCore.Filters;
+using Microsoft.OpenApi.Any;
 
 namespace LLMServiceHub
 {
@@ -84,16 +88,28 @@ namespace LLMServiceHub
             // Ensure HttpContext injected. It will be accessed in Chat service.
             services.AddHttpContextAccessor();
 
+            /**** cors ****/
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
+
 
             /****************************************** Dependency Injection Goes Here ******************************************/
 
-            // inject image storage provider
-            services.AddTransient<IImageStorageProvider, LocalImageStorageProvider>();
+            
             // inject chat data provider
             services.AddTransient<IChatDataProvider<ChatMessageBase, string>, ChatDataProvider<ChatMessageBase, string>>();
             services.AddTransient<IChatDataProvider<OpenAIChatMessage, List<OpenAIMessageContent>>, ChatDataProvider<OpenAIChatMessage, List<OpenAIMessageContent>>>();
 
             // inject service
+            services.AddTransient<IAppAuthenticateManager, AppAuthenticateManager>();
             services.AddWenxinworkshop(Configuration);
             services.AddChatGPT(Configuration);
             services.AddErnieVilg(Configuration);
@@ -157,9 +173,24 @@ namespace LLMServiceHub
             // api use jwt authentication
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
-                options.Authority = appSettings.IdentityServerBaseUrl;
-                options.RequireHttpsMetadata = appSettings.RequireHttpsMetadata;
-                options.Audience = appSettings.OidcApiName;
+                //options.Authority = appSettings.IdentityServerBaseUrl;
+                //options.RequireHttpsMetadata = appSettings.RequireHttpsMetadata;
+                //options.Audience = appSettings.OidcApiName;
+
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = Configuration["JWtConfig:Issuer"],
+                    ValidAudience = Configuration["JWtConfig:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWtConfig:SecurityKey"])),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero,// It forces tokens to expire exactly at token expiration time instead of 5 minutes later
+                };
             })
             .AddGitHub(AppConsts.GitHubAuthScheme, options =>
             {
@@ -176,6 +207,11 @@ namespace LLMServiceHub
 
             services.AddAuthorization(options =>
             {
+                //options.AddPolicy("jwt-policy", options =>
+                //{
+                //    options.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                //    options.
+                //});
                 options.AddPolicy("api-oidc",
                     policy =>
                         //policy.RequireAssertion(context => context.User.HasClaim(c =>
@@ -357,22 +393,32 @@ namespace LLMServiceHub
                 option.OperationFilter<SortedQueryWithSignatureParameterOperationFilter>(description);
 
                 //oauth2
+                //option.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                //{
+                //    Type = SecuritySchemeType.OAuth2,
+                //    Flows = new OpenApiOAuthFlows
+                //    {
+                //        AuthorizationCode = new OpenApiOAuthFlow
+                //        {
+                //            AuthorizationUrl = new Uri($"{appSettings.IdentityServerBaseUrl}/connect/authorize"),
+                //            TokenUrl = new Uri($"{appSettings.IdentityServerBaseUrl}/connect/token"),
+                //            Scopes = new Dictionary<string, string> {
+                //                { appSettings.OidcApiName, appSettings.ApiName }
+                //            }
+                //        }
+                //    }
+                //});
+
                 option.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows
-                    {
-                        AuthorizationCode = new OpenApiOAuthFlow
-                        {
-                            AuthorizationUrl = new Uri($"{appSettings.IdentityServerBaseUrl}/connect/authorize"),
-                            TokenUrl = new Uri($"{appSettings.IdentityServerBaseUrl}/connect/token"),
-                            Scopes = new Dictionary<string, string> {
-                                { appSettings.OidcApiName, appSettings.ApiName }
-                            }
-                        }
-                    }
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
                 });
-                option.OperationFilter<AuthorizeCheckOperationFilter>();
+
+                //option.OperationFilter<AuthorizeCheckOperationFilter>();
+                option.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
             #endregion
@@ -408,6 +454,8 @@ namespace LLMServiceHub
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

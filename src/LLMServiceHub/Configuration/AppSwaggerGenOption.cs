@@ -8,7 +8,7 @@ namespace LLMServiceHub.Configuration
 {
     /// <summary>
     /// 
-    /// </summary>>
+    /// </summary>
     public class AppSwaggerGenOption
     : IConfigureNamedOptions<SwaggerGenOptions>
     {
@@ -16,15 +16,22 @@ namespace LLMServiceHub.Configuration
         /// The provider
         /// </summary>
         private readonly IApiVersionDescriptionProvider _provider;
+        /// <summary>
+        /// The configuration
+        /// </summary>
+        private readonly IConfiguration _configuration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppSwaggerGenOption"/> class.
+        /// Initializes a new instance of the <see cref="AppSwaggerGenOption" /> class.
         /// </summary>
         /// <param name="provider">The provider.</param>
+        /// <param name="configuration">The configuration.</param>
         public AppSwaggerGenOption(
-            IApiVersionDescriptionProvider provider)
+            IApiVersionDescriptionProvider provider, 
+            IConfiguration configuration)
         {
             _provider = provider;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -64,10 +71,10 @@ namespace LLMServiceHub.Configuration
         {
             var info = new OpenApiInfo()
             {
-                Title = "Baidu Erniebot & OpenAI ChatGPT LLM API for .NET",
+                Title = _configuration["ApiDocumentInfo:Title"],
                 Version = $"v{apiDescription.ApiVersion.ToString()}",
-                Description = " API for Erniebot|ErnieVilg|ChatGPT. ",
-                Contact = new OpenApiContact() { Name = "arthuridea", Email = "arthuridea@gmail.com" }
+                Description = _configuration["ApiDocumentInfo:Description"],
+                Contact = new OpenApiContact() { Name = _configuration["ApiDocumentInfo:Contact:Author"], Email = _configuration["ApiDocumentInfo:Contact:Email"] }
             };
 
             if (apiDescription.IsDeprecated)

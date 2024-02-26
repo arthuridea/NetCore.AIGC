@@ -1,0 +1,44 @@
+﻿@page
+@model PaintModel
+@{
+    ViewData["Title"] = "Paint";
+    ViewData["ReturnUrl"] = Url.Page("/Paint");
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 vh-15 mt-0">
+            <div class="card m-0 me-2 ms-2">
+                <div class="card-body p-2">
+                    <div class="input-group input-group-flat">
+                        <input id="ipt-message" type="text" class="form-control vh-10" autocomplete="off" rows="3" placeholder="输入要发送的消息，按“回车键”发送" />
+                        <span class="input-group-text">
+                            <div class="dropup-center dropup">
+                                <a href="javascript:void(0)" class="ms-2 btn btn-primary btn-send-message ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M10 14l11 -11" />
+                                        <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
+                                    </svg> &nbsp;发送
+                                </a>
+                            </div>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            const apiEndpoint = '@Url.Content("~/")api/v1.0/baidu/text2img';
+        </script>
+        <script src="~/js/paint.min.js" asp-append-version="true"></script>
+    }
+}
