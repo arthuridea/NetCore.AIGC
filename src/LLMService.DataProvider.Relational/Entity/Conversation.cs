@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace LLMService.DataProvider.Relational.Entity
+﻿namespace LLMService.DataProvider.Relational.Entity
 {
     /// <summary>
     /// 

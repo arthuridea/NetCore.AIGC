@@ -1,7 +1,12 @@
 ﻿using LLMService.DataProvider.Relational.Entity;
+using LLMService.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using static LLMService.DataProvider.Relational.Entity.EntityConsts;
+using static LLMService.Shared.Models.LLMApiDefaults;
 
 namespace LLMService.DataProvider.Relational.Data
 {
@@ -218,12 +223,45 @@ namespace LLMService.DataProvider.Relational.Data
             builder.ToTable("ChatMessage");
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.ConversationId)
+                   .IsRequired(true);
+
             builder.Property(x => x.Role)
                    .HasMaxLength(256);
 
+            // model type comments.
+
+            builder.Property(x => x.ModelType)
+                   .HasComment(_getCommentFromEnum<LLM_ModelType>());
+
+            // MessageDataType comments.
+            builder.Property(x => x.DataType)
+                   .HasComment(_getCommentFromEnum<MessageDataType>());
+
+            // MessageContentType comments.
+            builder.Property(x => x.ContentType)
+                   .HasComment(_getCommentFromEnum<MessageContentType>());
         }
 
-
+        private static string _getCommentFromEnum<TEnum>()
+            where TEnum : Enum
+        {
+            StringBuilder comments = new();
+            var lists = Enum.GetValues(typeof(TEnum))
+                            .Cast<TEnum>()
+                            .Select(x => new
+                            {
+                                Value = (int)(object)x,
+                                Name = x.ToString(),
+                                DisplayName = x.GetAttribute<DisplayAttribute>()?.Name ?? "",
+                                Description = x.GetAttribute<DescriptionAttribute>()?.Description ?? "",
+                            });
+            foreach (var item in lists)
+            {
+                comments.Append($"{item.Name} = {item.Value}{(string.IsNullOrEmpty(item.Description) ? "" : $"({item.Description})")} | ");
+            }
+            return comments.ToString();
+        }
 
         #endregion
     }

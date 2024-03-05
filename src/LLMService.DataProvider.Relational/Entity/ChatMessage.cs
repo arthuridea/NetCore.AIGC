@@ -1,11 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using static LLMService.DataProvider.Relational.Entity.EntityConsts;
+﻿using static LLMService.DataProvider.Relational.Entity.EntityConsts;
 using static LLMService.Shared.Models.LLMApiDefaults;
 
 namespace LLMService.DataProvider.Relational.Entity
 {
-#nullable enable
     /// <summary>
     /// 
     /// </summary>
@@ -32,14 +29,14 @@ namespace LLMService.DataProvider.Relational.Entity
         /// <value>
         /// The identifier.
         /// </value>
-        public TMessageKey Id {  get; set; }
+        public TMessageKey Id { get; set; }
         /// <summary>
         /// Gets or sets the conversation identifier.
         /// </summary>
         /// <value>
         /// The conversation identifier.
         /// </value>
-        public TConversationKey? ConversationId { get; set; }
+        public TConversationKey ConversationId { get; set; }
         /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
@@ -120,5 +117,4 @@ namespace LLMService.DataProvider.Relational.Entity
 
 
     }
-#nullable disable
 }
