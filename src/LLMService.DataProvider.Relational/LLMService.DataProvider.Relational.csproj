@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'DEBUG'">
+		<ProjectReference Include="..\LLMService.Shared\LLMService.Shared.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'RELEASE'">
+		<PackageReference Include="Aeex.LLMService.Shared" Version="0.0.2.2-preview" />
+	</ItemGroup>
+
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<!--<PackageReference Include="Microsoft.EntityFrameworkCore">
+			<Version>6.0.0</Version>
+		</PackageReference>-->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational">
+			<Version>6.0.0</Version>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+	  <!--<PackageReference Include="Microsoft.EntityFrameworkCore">
+	    <Version>8.0.0</Version>
+	  </PackageReference>-->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational">
+			<Version>8.0.0</Version>
+		</PackageReference>
+	</ItemGroup>
+
+</Project>
