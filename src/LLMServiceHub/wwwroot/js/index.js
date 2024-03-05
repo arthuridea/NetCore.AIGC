@@ -240,35 +240,35 @@ let sendBtnClickEventHandler = function (e) {
                         backSpeed: 40,
                         sentencePause: true,
                     },
-                        marked.parse(markdeownResult),
-                        instance => {
-                            // 回调函数
-                            // 此回调一般用于获取新的数据然后循环输出
-                            // instance { 实例EasyTyper }
-                            //console.log(instance); // 打印出实例对象
+                    marked.parse(markdeownResult),
+                    instance => {
+                        // 回调函数
+                        // 此回调一般用于获取新的数据然后循环输出
+                        // instance { 实例EasyTyper }
+                        //console.log(instance); // 打印出实例对象
 
-                            //var result = marked.parse(markdeownResult);
-                            //$('#reply_' + replyId).html(result);
+                        //var result = marked.parse(markdeownResult);
+                        //$('#reply_' + replyId).html(result);
 
-                        }, (output, instance) => {
-                            // 钩子函数
-                            // output { 当前帧的输出内容 }
-                            // instance { 实例EasyTyper }
-                            // 通过钩子函数动态更新dom元素
-                            $('#reply_' + replyId).html(`${output}`);
+                    }, (output, instance) => {
+                        // 钩子函数
+                        // output { 当前帧的输出内容 }
+                        // instance { 实例EasyTyper }
+                        // 通过钩子函数动态更新dom元素
+                        $('#reply_' + replyId).html(`${output}`);
 
-                            let _scrollItem = $(wrapper).closest('.scrollable');
-                            //console.log(_scrollItem);
-                            let scrollTopVal = $(_scrollItem).prop('scrollTop') + $('#reply_' + replyId).height();
-                            //console.log(scrollTopVal);
-                            $(_scrollItem).scrollTop(scrollTopVal);
-                        });
+                        let _scrollItem = $(wrapper).closest('.scrollable');
+                        //console.log(_scrollItem);
+                        let scrollTopVal = $(_scrollItem).prop('scrollTop') + $('#reply_' + replyId).height();
+                        //console.log(scrollTopVal);
+                        $(_scrollItem).scrollTop(scrollTopVal);
+                    });
                 }
             })
-                .fail(function (data, status, xhr) {
-                    console.log(data);
-                    $('#reply_' + replyId).html('发生错误');
-                });
+            .fail(function (data, status, xhr) {
+                console.log(data);
+                $('#reply_' + replyId).html('发生错误');
+            });
 
         }
     });
