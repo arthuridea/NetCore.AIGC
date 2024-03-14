@@ -115,6 +115,9 @@ function procLib(done) {
         },
         "easy-typer-js": {
             from: [`${_npm_folder}/easy-typer-js/**`]
+        },
+        "highlight.js": {
+            from: [`${_npm_folder}/highlight.js/**`]
         }
     };
     let _libtasks = Object.keys(libs);
