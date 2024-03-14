@@ -27,7 +27,7 @@ namespace LLMServiceHub.Controllers.v1_0
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
     #if !DEBUG
-    //[Authorize]
+    [Authorize]
     [Authorize(AuthenticationSchemes = $"{JwtBearerDefaults.AuthenticationScheme},{AppConsts.DefaultAuthScheme}")]
     #endif
     [ApiVersion("1.0")]

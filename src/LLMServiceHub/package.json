@@ -32,7 +32,8 @@
     "gulp-rename": "^2.0.0",
     "gulp-uglify": "^3.0.2",
     "marked": "11.1.1",
-    "easy-typer-js": "1.0.3"
+    "easy-typer-js": "1.0.3",
+    "highlight.js": "11.9.0"
   },
   "dependencies": {
     "@tabler/core": "1.0.0-beta20",

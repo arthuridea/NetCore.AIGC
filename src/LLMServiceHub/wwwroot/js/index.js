@@ -278,7 +278,7 @@ let sendBtnClickEventHandler = function (e) {
 $(document).on('keyup', function (e) {
     var event = e || window.event;
     var key = event.which || event.keyCode || event.charCode;
-    if (key == 13) {
+    if (key == 13 && event.ctrlKey) {
         //这里填写你要做的事件
         sendBtnClickEventHandler(e);
     }
