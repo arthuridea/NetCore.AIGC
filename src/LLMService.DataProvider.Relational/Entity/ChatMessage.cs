@@ -3,9 +3,7 @@ using static LLMService.Shared.Models.LLMApiDefaults;
 
 namespace LLMService.DataProvider.Relational.Entity
 {
-    /// <summary>
-    /// 
-    /// </summary>
+
     public class ChatMessage: ChatMessage<Guid, Guid, string, string>
     {
     }

@@ -31,5 +31,11 @@
 			<Version>8.0.0</Version>
 		</PackageReference>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Namotion.Reflection" Version="3.1.1" />
+	</ItemGroup>
 
 </Project>

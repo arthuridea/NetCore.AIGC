@@ -9,7 +9,7 @@
 
 
     /// <summary>
-    /// 
+    /// Conversations.
     /// </summary>
     /// <typeparam name="TConversationKey">The type of the conversation key.</typeparam>
     /// <typeparam name="TTenantKey">The type of the tenant key.</typeparam>

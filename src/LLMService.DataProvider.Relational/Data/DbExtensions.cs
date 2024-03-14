@@ -1,12 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using LLMService.DataProvider.Relational.Entity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LLMService.DataProvider.Relational.Entity;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Namotion.Reflection;
 
 namespace LLMService.DataProvider.Relational.Data
 {
@@ -15,6 +11,39 @@ namespace LLMService.DataProvider.Relational.Data
     /// </summary>
     public static class DbExtensions
     {
+        /// <summary>
+        /// Sets the comment.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        public static void SetComment(this ModelBuilder modelBuilder)
+        {
+            
+            var entityTypes = modelBuilder.Model.GetEntityTypes();
+            foreach (var item in entityTypes)
+            {
+                var entityType = item.ClrType;
+                var summary = entityType?.GetXmlDocsSummary();
+                if (!string.IsNullOrEmpty(summary))
+                {
+                    item.SetComment($"{summary}");
+                }
+
+                var typeProperties = entityType.GetProperties();
+
+                var properties = item.GetProperties();
+                foreach (var property in properties)
+                {
+                    var typeprop = typeProperties.FirstOrDefault(a => a.Name == property.Name);
+                    summary = typeprop?.GetXmlDocsSummary();
+
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        property.SetComment(summary);
+                    }
+                }
+            }
+            
+        }
 
         /// <summary>
         /// Configurations the entities that implemented from i domain entity.

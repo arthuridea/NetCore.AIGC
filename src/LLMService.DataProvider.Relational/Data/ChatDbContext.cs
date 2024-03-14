@@ -38,9 +38,27 @@ namespace LLMService.DataProvider.Relational.Data
         {            
         }
 
-        internal override void OnModelCreatingFinishing(ModelBuilder modelBuilder)
+        /// <summary>
+        /// Override this method to further configure the model that was discovered by convention from the entity types
+        /// exposed in <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1" /> properties on your derived context. The resulting model may be cached
+        /// and re-used for subsequent instances of your derived context.
+        /// </summary>
+        /// <param name="modelBuilder">The builder being used to construct the model for this context. Databases (and other extensions) typically
+        /// define extension methods on this object that allow you to configure aspects of the model that are specific
+        /// to a given database.</param>
+        /// <remarks>
+        /// <para>
+        /// If a model is explicitly set on the options for this context (via <see cref="M:Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.UseModel(Microsoft.EntityFrameworkCore.Metadata.IModel)" />)
+        /// then this method will not be run.
+        /// </para>
+        /// <para>
+        /// See <see href="https://aka.ms/efcore-docs-modeling">Modeling entity types and relationships</see> for more information.
+        /// </para>
+        /// </remarks>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreatingFinishing(modelBuilder);
+            base.OnModelCreating(modelBuilder);
+
 
             modelBuilder.Entity<ChatFolder>()
                         .Property(x => x.TenantId)
@@ -60,8 +78,8 @@ namespace LLMService.DataProvider.Relational.Data
             modelBuilder.Entity<ChatMessage>()
                         .Property(x => x.UserId)
                         .HasMaxLength(128);
-
         }
+
     }
 
     /// <summary>
@@ -134,8 +152,8 @@ namespace LLMService.DataProvider.Relational.Data
         }
         #endregion
 
-        #region FluentAPI config       
-        
+        #region FluentAPI config 
+
         /// <summary>
         /// Override this method to further configure the model that was discovered by convention from the entity types
         /// exposed in <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1" /> properties on your derived context. The resulting model may be cached
@@ -157,12 +175,18 @@ namespace LLMService.DataProvider.Relational.Data
         {
             base.OnModelCreating(modelBuilder);
 
+#if DEBUG
+            // write xml docs summary to field description.
+            //modelBuilder.SetComment();
+#endif
+
+            // default values indexing,etc.
+            modelBuilder.ConfigEntitiesThatImplementedFromIDomainEntity(this);
+
             // overriding configurations
             modelBuilder.Entity<TChatFolder>(_configureChatFolder);
             modelBuilder.Entity<TConversation>(_configureConversation);
             modelBuilder.Entity<TMessage>(_configureChatMessage);
-
-            modelBuilder.ConfigEntitiesThatImplementedFromIDomainEntity(this);
 
             OnModelCreatingFinishing(modelBuilder);
         }
@@ -181,7 +205,6 @@ namespace LLMService.DataProvider.Relational.Data
         /// Configures the chat folder.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
         private void _configureChatFolder(EntityTypeBuilder<TChatFolder> builder)
         {
             builder.ToTable("ChatFolder");
@@ -194,13 +217,11 @@ namespace LLMService.DataProvider.Relational.Data
                    .WithOne()
                    .HasForeignKey(x => x.ParentId)
                    .IsRequired(false);
-
         }
         /// <summary>
         /// Configures the conversation.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
         private void _configureConversation(EntityTypeBuilder<TConversation> builder)
         {
             builder.ToTable("Conversation");
@@ -217,7 +238,6 @@ namespace LLMService.DataProvider.Relational.Data
         /// Configures the chat message.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
         private void _configureChatMessage(EntityTypeBuilder<TMessage> builder)
         {
             builder.ToTable("ChatMessage");
@@ -229,8 +249,8 @@ namespace LLMService.DataProvider.Relational.Data
             builder.Property(x => x.Role)
                    .HasMaxLength(256);
 
+#if DEBUG
             // model type comments.
-
             builder.Property(x => x.ModelType)
                    .HasComment(_getCommentFromEnum<LLM_ModelType>());
 
@@ -241,8 +261,13 @@ namespace LLMService.DataProvider.Relational.Data
             // MessageContentType comments.
             builder.Property(x => x.ContentType)
                    .HasComment(_getCommentFromEnum<MessageContentType>());
+#endif
         }
-
+        /// <summary>
+        /// Gets the comment from enum.
+        /// </summary>
+        /// <typeparam name="TEnum">The type of the enum.</typeparam>
+        /// <returns></returns>
         private static string _getCommentFromEnum<TEnum>()
             where TEnum : Enum
         {

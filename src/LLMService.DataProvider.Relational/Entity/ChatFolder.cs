@@ -1,14 +1,21 @@
 ﻿namespace LLMService.DataProvider.Relational.Entity
 {
     /// <summary>
-    /// 
+    /// Folders in percific 
     /// </summary>
     public class ChatFolder : ChatFolder<string, string>
     {
+        /// <summary>
+        /// [derrived] Gets or sets the tenant identifier.
+        /// </summary>
+        /// <value>
+        /// The tenant identifier.
+        /// </value>
+        public override string TenantId { get; set; }
     }
 
     /// <summary>
-    /// 
+    /// Chat folders.
     /// </summary>
     /// <typeparam name="TUserKey">The type of the user key.</typeparam>
     /// <typeparam name="TTenantKey">The type of the tenant key.</typeparam>
