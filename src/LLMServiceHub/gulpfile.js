@@ -118,6 +118,9 @@ function procLib(done) {
         },
         "highlight.js": {
             from: [`${_npm_folder}/highlight.js/**`]
+        },
+        "sse.js": {
+            from: [`${_npm_folder}/sse.js/lib/**`]
         }
     };
     let _libtasks = Object.keys(libs);
