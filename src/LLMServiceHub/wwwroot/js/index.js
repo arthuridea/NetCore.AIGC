@@ -26,6 +26,7 @@ function dateFormat(fmt, date) {
 
 
 //模型设置
+let useSSE = true;
 let m_t = 0.95;
 let m_tp = 0.8;
 let m_ps = 1.0;
@@ -44,7 +45,7 @@ let conversations = {
         "temperature": m_t || 0.95,
         "top_p": m_tp || 0.8,
         "penalty_score": m_ps || 1.0,
-        "stream": false,
+        "stream": useSSE,
         "conversation_id": "conv-turbo",
         "message": "",
         "model": 2,
@@ -54,17 +55,17 @@ let conversations = {
         "temperature": m_t || 0.95,
         "top_p": m_tp || 0.8,
         "penalty_score": m_ps || 1.0,
-        "stream": false,
         "conversation_id": "conv-3_5",
         "message": "",
         "model": 1,
+        "stream": useSSE,
         "user_id": "7ffe3194-2bf0-48ba-8dbd-e888d7d556d3"
     },
     ConvErnie4_0: {
         "temperature": m_t || 0.95,
         "top_p": m_tp || 0.8,
         "penalty_score": m_ps || 1.0,
-        "stream": false,
+        "stream": useSSE,
         "conversation_id": "conv-4_0",
         "message": "",
         "model": 3,
@@ -118,11 +119,11 @@ $('.btn-discard-llm-setting').on('click', function (e) {
 
 
 
-let sendBtnClickEventHandler = function (e) {
+let sendBtnClickEventHandler = async function (e) {
     let msg = $('#ipt-message').val();
     $('#ipt-message').val('');
     //console.log(msg);
-    $(Object.keys(conversations)).each(function (index, key) {
+    $(Object.keys(conversations)).each(async function (index, key) {
         console.log(`key->${key}`);
         var availableLLM = $('#chk-' + key).is(':checked');
         console.log(`MODEL: ${key} -> ${availableLLM}`);
@@ -135,7 +136,7 @@ let sendBtnClickEventHandler = function (e) {
         let wrapperId = "#wrapper_" + key;
         request.message = msg;
         if (_con_id[key] != '') {
-            console.log(`convid found: ${_con_id[key]}`)
+            console.log(`conversation_id found: ${_con_id[key]}`)
             request.conversation_id = _con_id[key];
         }
         else {
@@ -202,6 +203,7 @@ let sendBtnClickEventHandler = function (e) {
                                          </div>
                                          <div class="chat-bubble-body" id='reply_${replyId}'>
                                          </div>
+                                         <input type='hidden' id='reply_hid_${replyId}' value='' />
                                      </div>
                                  </div>
                              </div>
@@ -220,56 +222,160 @@ let sendBtnClickEventHandler = function (e) {
             console.log('sending request with:');
             console.log(request);
 
-            $.ajax(apiEndpoint, {
-                method: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(request)
-            }).done(function (data, status, xhr) {
-                console.log(data);
-                if (data) {
-                    $(`#reply_time_${replyId}`).html(dateFormat('HH:MM:SS', new Date()));
-                    var markdeownResult = data.aigc_message;
-                    const typing = new EasyTyper({
-                        output: '',
-                        isEnd: false,
-                        speed: 20,
-                        singleBack: false,
-                        sleep: 0,
-                        type: 'normal',
-                        backSpeed: 40,
-                        sentencePause: true,
-                    },
-                    marked.parse(markdeownResult),
-                    instance => {
-                        // 回调函数
-                        // 此回调一般用于获取新的数据然后循环输出
-                        // instance { 实例EasyTyper }
-                        //console.log(instance); // 打印出实例对象
+            /*
+            if (!useSSE) {
+                // normal ajax request
+                $.ajax(apiEndpoint, {
+                    method: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(request)
+                }).done(function (data, status, xhr) {
+                    console.log(data);
+                    if (data) {
+                        $(`#reply_time_${replyId}`).html(dateFormat('HH:MM:SS', new Date()));
+                        var markdeownResult = data.aigc_message;
+                        const typing = new EasyTyper({
+                            output: '',
+                            isEnd: false,
+                            speed: 20,
+                            singleBack: false,
+                            sleep: 0,
+                            type: 'normal',
+                            backSpeed: 40,
+                            sentencePause: true,
+                        },
+                            marked.parse(markdeownResult),
+                            instance => {
+                                // 回调函数
+                                // 此回调一般用于获取新的数据然后循环输出
+                                // instance { 实例EasyTyper }
+                                //console.log(instance); // 打印出实例对象
 
-                        //var result = marked.parse(markdeownResult);
-                        //$('#reply_' + replyId).html(result);
+                                //var result = marked.parse(markdeownResult);
+                                //$('#reply_' + replyId).html(result);
 
-                    }, (output, instance) => {
-                        // 钩子函数
-                        // output { 当前帧的输出内容 }
-                        // instance { 实例EasyTyper }
-                        // 通过钩子函数动态更新dom元素
-                        $('#reply_' + replyId).html(`${output}`);
+                            }, (output, instance) => {
+                                // 钩子函数
+                                // output { 当前帧的输出内容 }
+                                // instance { 实例EasyTyper }
+                                // 通过钩子函数动态更新dom元素
+                                $('#reply_' + replyId).html(`${output}`);
 
-                        let _scrollItem = $(wrapper).closest('.scrollable');
+                                let _scrollItem = $(wrapper).closest('.scrollable');
+                                //console.log(_scrollItem);
+                                let scrollTopVal = $(_scrollItem).prop('scrollTop') + $('#reply_' + replyId).height();
+                                //console.log(scrollTopVal);
+                                $(_scrollItem).scrollTop(scrollTopVal);
+                            });
+                    }
+                })
+                    .fail(function (data, status, xhr) {
+                        console.log(data);
+                        $('#reply_' + replyId).html('发生错误');
+                    });
+            }
+            else {
+                
+            }
+            */
+
+            // sse request
+            var firstLineRecieved = false;
+            var chunktimeout = 120000;
+            var chunkQueue = [];
+            var curChunkIndex = 0;
+            var curCharIndex = 0;
+            var lastSentence = -1;
+            var chunkTimer = null;
+            var itv = 50;
+            var timeelapsed = 0;
+
+            var typeChunk = function () {
+                if (timeelapsed > chunktimeout) {
+                    //console.log(`timeout: ${timeelapsed}`);
+                    clearInterval(chunkTimer);
+                }
+                var curChunk = chunkQueue[curChunkIndex];
+                if (!curChunk) return;
+                var cur_sentence = curChunk.chunk || '';
+
+                if (lastSentence > 0 && ((curChunkIndex == lastSentence) || !cur_sentence)) {
+                    //console.log('>>>>>>>> end');
+                    clearInterval(chunkTimer);
+                    curChunkIndex = 0;
+                    return;
+                }
+                var sl = 0;
+                if (cur_sentence) {
+                    sl = cur_sentence.length || 0;
+                    var ch = cur_sentence[curCharIndex] || '';
+                    if (ch) {
+                        var reply = ($(`#reply_hid_${replyId}`).val() || '') + ch;
+                        $(`#reply_hid_${replyId}`).val(reply);
+                        $(`#reply_${replyId}`).html(marked.parse(reply));
+                        //$(`#reply_${replyId}`).html(reply);
+
+                        // set scroll position
+                        var _scrollItem = $(wrapper).closest('.scrollable');
                         //console.log(_scrollItem);
-                        let scrollTopVal = $(_scrollItem).prop('scrollTop') + $('#reply_' + replyId).height();
+                        var scrollTopVal = $(_scrollItem).prop('scrollTop') + $('#reply_' + replyId).height();
                         //console.log(scrollTopVal);
                         $(_scrollItem).scrollTop(scrollTopVal);
-                    });
+                    }
                 }
-            })
-            .fail(function (data, status, xhr) {
-                console.log(data);
-                $('#reply_' + replyId).html('发生错误');
+                curCharIndex++;
+                if (curCharIndex == sl) {
+                    //console.log(cur_sentence);
+                    //console.log(`[${curChunkIndex}][${curCharIndex}] | lastsentence: ${lastSentence}`);
+                    curCharIndex = 0;
+                    curChunkIndex++;
+                }
+                timeelapsed += itv;
+            };
+
+            EventSource = SSE;
+            var source = new SSE(apiEndpoint, {
+                headers: { 'Content-Type': 'application/json' },
+                payload: JSON.stringify(request),
+                withCredentials: true,
+                debug: false,
+                start: false,
+                method: 'POST'
+            });
+            //source.addEventListener('status', function (e) {
+            //    console.log('\n>>>>>>>>>>>>>>>[status]>>>>>>>>>>>>>>>>>>\n' + e.data);
+            //});
+            source.addEventListener('message', function (e) {
+                // Assuming we receive JSON-encoded data payloads:
+                var ret = useSSE ? e.data : e.source.chunk;
+                var data = JSON.parse(ret);
+                //console.log(`-------------${botId} message in ↓-------------`);
+                //console.log(data);
+                if (data) {
+                    var chunk = data.aigc_message;
+                    //chunkQueue.push(Array.from(chunk));
+                    chunkQueue.push({
+                        row: data.llm_response_data.sentence_id,
+                        chunk: chunk.split('')
+                    });
+                    //markdownResult += chunk;
+
+                    if (!firstLineRecieved) {
+                        $(`#reply_time_${replyId}`).html(dateFormat('HH:MM:SS', new Date()));
+                        //typeChunk();
+                        chunkTimer = setInterval(typeChunk, itv);
+                        firstLineRecieved = true;
+                    }
+
+                    if (data.llm_response_data.is_end) {
+                        lastSentence = data.llm_response_data.sentence_id;
+                    }
+                }
             });
 
+            source.stream();            
+            
         }
     });
     e.preventDefault();

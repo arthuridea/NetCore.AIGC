@@ -42,6 +42,12 @@
         }
         .llm-model-config{font-size:0.8rem;color:darkgoldenrod;}
         .btn-icon-center svg{margin-right:0 !important;}
+
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { border-radius: 10px !important; margin-block: 5px; }
+        ::-webkit-scrollbar-thumb { border-radius: 10px !important; }
+        * { scrollbar-width: thin; }
     </style>
 }
 
@@ -188,7 +194,7 @@
                         <div class="card m-0 me-2 ms-2">
                             <div class="card-body p-2">
                                 <div class="input-group input-group-flat">
-                                    <textarea id="ipt-message" type="text" class="form-control vh-10" autocomplete="off" rows="3" placeholder="输入要发送的消息，按“回车键”发送"></textarea>
+                                    <textarea id="ipt-message" type="text" class="form-control vh-10" autocomplete="off" rows="3" placeholder="输入要发送的消息，按“Ctrl + 回车键”发送"></textarea>
                                     <span class="input-group-text">
                                         <div class="dropup-center dropup">
                                             <a href="#" class="btn-icon-center link-secondary btn btn-link pt-2 pb-2" data-bs-toggle="dropdown" data-bs-auto-close="outside">
@@ -399,6 +405,7 @@
 
     @if (User.Identity.IsAuthenticated)
     {
+        <script src="~/js/sse.js" asp-append-version="true" ></script>
         <script src="~/lib/marked/marked.min.js"></script>
         <script src="~/lib/easy-typer-js/easy-typer-min.js"></script>
         <script>

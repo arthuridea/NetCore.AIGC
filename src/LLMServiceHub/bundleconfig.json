@@ -6,6 +6,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/sse.min.js",
+    "inputFiles": [
+      "wwwroot/js/sse.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/paint.min.js",
     "inputFiles": [
       "wwwroot/js/paint.js"
