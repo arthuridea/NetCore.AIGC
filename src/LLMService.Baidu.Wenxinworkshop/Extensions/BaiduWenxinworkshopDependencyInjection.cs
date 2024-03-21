@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // 文心大模型客户端
 
-            services.AddHttpClient(LLMServiceConsts.BaiduWenxinApiClientName, client =>
+            services.AddHttpClient(wenxinSettings.BackendHttpClientName, client =>
             {
                 client.BaseAddress = new Uri($"{LLMServiceConsts.BaiduWenxinApiAuthority}/");
             })

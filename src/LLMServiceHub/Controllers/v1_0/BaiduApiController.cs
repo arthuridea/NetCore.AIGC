@@ -61,7 +61,7 @@ namespace LLMServiceHub.Controllers.v1_0
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(BaiduChatApiResponse), 200)]
         [AppExceptionInterceptor(ReturnCode = -100001, ApiVersion = "1.0")]
-        public async Task Chat(ChatRequest request)
+        public async Task Chat(BaiduChatRequestDto request)
         {
             _logger.LogInformation($">{User.Identity.Name}: [{request.ModelSchema}]{request.Message}");
             await _apiService.Chat(request);

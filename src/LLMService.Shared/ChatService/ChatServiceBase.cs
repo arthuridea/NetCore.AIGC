@@ -215,7 +215,7 @@ namespace LLMService.Shared.ChatService
                             break;
                         }
 
-                        await Task.Delay(100, cancellationToken);
+                        await Task.Delay(50, cancellationToken);
                     }
                 }
                 #endregion

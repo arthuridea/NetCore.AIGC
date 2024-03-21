@@ -20,7 +20,7 @@ namespace LLMService.Baidu.Wenxinworkshop
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
-        Task Chat(ChatRequest request, CancellationToken cancellationToken = default);
+        Task Chat(BaiduChatRequestDto request, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -29,10 +29,10 @@ namespace LLMService.Baidu.Wenxinworkshop
     /// <seealso cref="ChatServiceBase{TRequestDto, TResponseDto, TBackendRequestDto, TBackendResponseDto, TChatMessage, TMessageContent, TChatServiceOption}" />
     /// <seealso cref="IBaiduErniebotLLMService" />
     public class BaiduErniebotLLMService :
-        ChatServiceBase<ChatRequest, BaiduChatApiResponse,
+        ChatServiceBase<BaiduChatRequestDto, BaiduChatApiResponse,
                         BaiduApiChatRequest, BaiduWenxinChatResponse,
                         ChatMessageBase, string,
-                        OAuth2BackendServiceConfig>, IBaiduErniebotLLMService, IAIChatApiService<ChatRequest, BaiduChatApiResponse>
+                        OAuth2BackendServiceConfig>, IBaiduErniebotLLMService, IAIChatApiService<BaiduChatRequestDto, BaiduChatApiResponse>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaiduErniebotLLMService"/> class.
@@ -68,13 +68,14 @@ namespace LLMService.Baidu.Wenxinworkshop
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        protected override BaiduApiChatRequest LLMRequestMapping(ChatRequest source)
+        protected override BaiduApiChatRequest LLMRequestMapping(BaiduChatRequestDto source)
         {
             return new BaiduApiChatRequest
             {
                 Temperature = source.Temperature,
                 TopP = source.TopP,
                 PenaltyScore = source.PenaltyScore,
+                System = source.System,
                 Stream = source.Stream,
                 UserId = source.UserId,
             };
